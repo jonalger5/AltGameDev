@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     public float speed;
     [SerializeField]
+    public float sensitivity;
+    [SerializeField]
     public float health;
     private Text healthUI;
 
@@ -15,11 +17,13 @@ public class PlayerController : MonoBehaviour {
 
     public List<Item> inventory;
     private int slotX = 4, slotY = 4;
-    //private int[] slots;
     private ItemDatabase database;
     private bool showInventory = false;
     private bool showItem = false;
     private string ItemDetails;
+    public Texture2D InventoryBackground;
+    public Texture2D EmptySlot;
+    public GUISkin slotBackground;
 
     // Use this for initialization
     void Start () {
@@ -27,26 +31,20 @@ public class PlayerController : MonoBehaviour {
         renderer = GetComponent<Renderer>();
         renderer.material.color = Color.yellow;
         inventory = new List<Item>();
-        //slots = new int[slotX * slotY];
         database = GameObject.Find("Item Database").GetComponent<ItemDatabase>();
 
         //Used for testing inventory
-        //inventory.Add(database.Items[0]);
-        //inventory.Add(database.Items[1]);
-        //inventory.Add(database.Items[2]);
-        //inventory.Add(database.Items[3]);
-        //inventory.Add(database.Items[0]);
-        //inventory.Add(database.Items[1]);
-        //inventory.Add(database.Items[2]);
-        //inventory.Add(database.Items[3]);
-        //inventory.Add(database.Items[0]);
-        //inventory.Add(database.Items[1]);
-        //inventory.Add(database.Items[2]);
-        //inventory.Add(database.Items[3]);
-        //inventory.Add(database.Items[0]);
-        //inventory.Add(database.Items[1]);
-        //inventory.Add(database.Items[2]);
-        //inventory.Add(database.Items[3]);
+        inventory.Add(database.Items[0]);
+        inventory.Add(database.Items[1]);
+        inventory.Add(database.Items[2]);
+        inventory.Add(database.Items[3]);
+        inventory.Add(database.Items[0]);
+        inventory.Add(database.Items[1]);
+        inventory.Add(database.Items[2]);
+        inventory.Add(database.Items[3]);
+        inventory.Add(database.Items[0]);
+        inventory.Add(database.Items[1]);
+        inventory.Add(database.Items[2]);
     }
 	
 	// Update is called once per frame
@@ -55,6 +53,9 @@ public class PlayerController : MonoBehaviour {
         //Used for Movement
         transform.Translate(Vector3.forward * Time.deltaTime * Input.GetAxis("Vertical") * speed);
         transform.Translate(Vector3.right * Time.deltaTime * Input.GetAxis("Horizontal") * speed);
+
+        if (!showInventory)
+            transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
 
         //Updating HealthUI
         healthUI.text = health.ToString();
@@ -67,10 +68,12 @@ public class PlayerController : MonoBehaviour {
 
     void OnGUI()
     {
+        //GUI.skin = slotBackground;
         ItemDetails = "";
-
+        
         if (showInventory)
         {
+            //GUI.Box(new Rect(10, 50, 240, 240), InventoryBackground);
             for (int x = 0; x < slotX; x++)
             {
                 for (int y = 0; y < slotY; y++)
@@ -87,7 +90,12 @@ public class PlayerController : MonoBehaviour {
 
                         if (ItemDetails == "")
                             showItem = false;
-                    }                    
+                    }
+                    else
+                    {
+                        Rect slot = new Rect(10 + y * 60, 50 + x * 60, 50, 50);
+                        GUI.Box(slot, EmptySlot);
+                    }                  
                 }
             }
         }
