@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -329,6 +329,7 @@ GameObject:
   - component: {fileID: 837287750}
   - component: {fileID: 837287749}
   - component: {fileID: 837287748}
+  - component: {fileID: 837287752}
   m_Layer: 0
   m_Name: YellowPile
   m_TagString: Untagged
@@ -402,6 +403,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &837287752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 837287747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 413674946feeb264898cc3b6059bc970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binType: 1
+  name: Yellow
 --- !u!1 &1174580067
 GameObject:
   m_ObjectHideFlags: 0
@@ -413,6 +427,7 @@ GameObject:
   - component: {fileID: 1174580070}
   - component: {fileID: 1174580069}
   - component: {fileID: 1174580068}
+  - component: {fileID: 1174580072}
   m_Layer: 0
   m_Name: BluePile
   m_TagString: Untagged
@@ -486,6 +501,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1174580072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1174580067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 413674946feeb264898cc3b6059bc970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binType: 0
+  name: Blue
 --- !u!1 &1209119737
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,6 +671,7 @@ GameObject:
   - component: {fileID: 1294111798}
   - component: {fileID: 1294111797}
   - component: {fileID: 1294111796}
+  - component: {fileID: 1294111800}
   m_Layer: 0
   m_Name: GreenPile
   m_TagString: Untagged
@@ -716,6 +745,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1294111800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1294111795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 413674946feeb264898cc3b6059bc970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binType: 1
+  name: Green
 --- !u!1 &1346449348
 GameObject:
   m_ObjectHideFlags: 0
@@ -727,6 +769,7 @@ GameObject:
   - component: {fileID: 1346449351}
   - component: {fileID: 1346449350}
   - component: {fileID: 1346449349}
+  - component: {fileID: 1346449353}
   m_Layer: 0
   m_Name: RedPile
   m_TagString: Untagged
@@ -800,6 +843,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1346449353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1346449348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 413674946feeb264898cc3b6059bc970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  binType: 0
+  name: Red
 --- !u!1 &1400075782
 GameObject:
   m_ObjectHideFlags: 0
@@ -824,7 +880,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1400075782}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -287, y: 183, z: 0}
+  m_LocalPosition: {x: -287.00003, y: 183, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1937107503}
@@ -885,6 +941,7 @@ GameObject:
   - component: {fileID: 1582489451}
   - component: {fileID: 1582489450}
   - component: {fileID: 1582489449}
+  - component: {fileID: 1582489453}
   m_Layer: 0
   m_Name: PileOfItems
   m_TagString: Untagged
@@ -958,6 +1015,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1582489453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1582489448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f37b26f649d133a498185b863933eda2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InventoryBackground: {fileID: 2800000, guid: 8b01a3ceff932fb43b3426e0fa40b0c5, type: 3}
+  EmptySlot: {fileID: 2800000, guid: 7e4053136216154439cfeb424678fb56, type: 3}
+  slotBackground: {fileID: 11400000, guid: a3edb073ca0f68b45a80fd050fc81e5c, type: 2}
 --- !u!1 &1780425359
 GameObject:
   m_ObjectHideFlags: 0
@@ -1072,7 +1143,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1780425359}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.52, z: -10}
+  m_LocalPosition: {x: 0.02, y: 2.74, z: -9.64}
   m_LocalScale: {x: 1, y: 2.486558, z: 1}
   m_Children:
   - {fileID: 342439918}
@@ -1161,8 +1232,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1937107499}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 587.5, y: 314.5, z: 0}
-  m_LocalScale: {x: 1.46875, y: 1.46875, z: 1.46875}
+  m_LocalPosition: {x: 430, y: 231, z: 0}
+  m_LocalScale: {x: 1.075, y: 1.075, z: 1.075}
   m_Children:
   - {fileID: 1400075783}
   m_Father: {fileID: 0}
