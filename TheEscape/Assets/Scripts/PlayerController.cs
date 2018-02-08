@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour {
                 {                    
                     if (x * slotX + y + 1 <= inventory.Count)
                     {
-                        Rect slot = new Rect(10 + y * 60, 50 + x * 60, 50, 50);
+                        Rect slot = new Rect(Screen.width/100 + y * 60, Screen.height / 10 + x * 60, 50, 50);
                         GUI.Box(slot, inventory[x * slotX + y].icon);
                         if (slot.Contains(Event.current.mousePosition))
                         {
@@ -106,7 +106,7 @@ public class PlayerController : MonoBehaviour {
                     }
                     else
                     {
-                        Rect slot = new Rect(10 + y * 60, 50 + x * 60, 50, 50);
+                        Rect slot = new Rect(Screen.width/100 + y * 60, Screen.height/10 + x * 60, 50, 50);
                         GUI.Box(slot, EmptySlot);
                     }                  
                 }
@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour {
                 {
                     if (x * slotX + y + 1 <= Pickup.Count)
                     {
-                        Rect slot = new Rect(500 + y * 60, 20 + x * 60, 50, 50);
+                        Rect slot = new Rect((Screen.width)/2 + y * 60, Screen.height / 100 + x * 60, 50, 50);
                         GUI.Box(slot, Pickup[x * slotX + y].icon);
                         if (slot.Contains(Event.current.mousePosition))
                         {
