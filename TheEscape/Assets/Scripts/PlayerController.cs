@@ -30,11 +30,6 @@ public class PlayerController : MonoBehaviour {
     private int itemnum;
     private int quantity;
     private bool showPickup = false;
-    
-    private bool redpickup = false;
-    private bool bluepickup = false;
-    private bool yellowpickup = false;
-    private bool greenpickup = false;
 
     // Use this for initialization
     void Start () {
@@ -76,6 +71,11 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.I))
         {
             showInventory = !showInventory;
+        }
+
+        if (quantity == 0)
+        {
+            onPickup = false;
         }
     }
 
@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour {
                 {
                     if (x * slotX + y + 1 <= Pickup.Count)
                     {
-                        Rect slot = new Rect(900 + y * 60, 20 + x * 60, 50, 50);
+                        Rect slot = new Rect(500 + y * 60, 20 + x * 60, 50, 50);
                         GUI.Box(slot, Pickup[x * slotX + y].icon);
                         if (slot.Contains(Event.current.mousePosition))
                         {
@@ -137,11 +137,6 @@ public class PlayerController : MonoBehaviour {
 
                         if (ItemDetails == "")
                             showPickup = false;
-                    }
-                    else
-                    {
-                        Rect slot = new Rect(10 + y * 60, 50 + x * 60, 50, 50);
-                        GUI.Box(slot, EmptySlot);
                     }
                 }
             }
@@ -158,59 +153,68 @@ public class PlayerController : MonoBehaviour {
         if (other.gameObject.name == "PileOfItems" && !onPickup)
         {
 
-            itemnum = Random.Range(0, 3);
-            quantity = Random.Range(1, 4);
+            quantity = Random.Range(3, 6);
             onPickup = true;
 
-            if(itemnum == 0)
-            {
-                redpickup = true;
-            }
-
-            else if (itemnum == 1)
-            {
-                yellowpickup = true;
-            }
-
-            else if (itemnum == 2)
-            {
-                greenpickup = true;
-            }
-
-            else if (itemnum == 3)
-            {
-                bluepickup = true;
-            }
 
             for (int i = 0;i <= quantity; i++)
             {
+                itemnum = Random.Range(0, 3);
                 Pickup.Add(database.Items[itemnum]);
             }
 
         }
 
-        if(other.gameObject.name == "RedPile" && onPickup && redpickup)
+        if(other.gameObject.name == "RedPile" && onPickup)
         {
-            Pickup.Clear();
-            onPickup = false;
+            for(int i = 0;i < quantity; i++)
+            {
+                if(Pickup[i].name == "Red")
+                {
+                    Pickup.RemoveAt(i);
+                    i -= 1;
+                    quantity--;
+                }
+            }
         }
 
-        if (other.gameObject.name == "BluePile" && onPickup && bluepickup)
+        if (other.gameObject.name == "BluePile" && onPickup)
         {
-            Pickup.Clear();
-            onPickup = false;
+            for (int i = 0; i < quantity; i++)
+            {
+                if (Pickup[i].name == "Blue")
+                {
+                    Pickup.RemoveAt(i);
+                    i -= 1;
+                    quantity--;
+                }
+            }
         }
 
-        if (other.gameObject.name == "YellowPile" && onPickup && yellowpickup)
+        if (other.gameObject.name == "YellowPile" && onPickup)
         {
-            Pickup.Clear();
-            onPickup = false;
+            for (int i = 0; i < quantity; i++)
+            {
+                if (Pickup[i].name == "Yellow")
+                {
+                    Pickup.RemoveAt(i);
+                    i -= 1;
+                    quantity--;
+                }
+            }
         }
 
-        if (other.gameObject.name == "GreenPile" && onPickup && greenpickup)
+        if (other.gameObject.name == "GreenPile" && onPickup)
         {
-            Pickup.Clear();
-            onPickup = false;
+            for (int i = 0; i < quantity; i++)
+            {
+                if (Pickup[i].name == "Green")
+                {
+                    Pickup.RemoveAt(i);
+                    i -= 1;
+                    quantity--;
+                }
+            }
         }
     }
 
