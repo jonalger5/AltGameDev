@@ -31,6 +31,9 @@ public class PlayerController : MonoBehaviour {
     private int quantity;
     private bool showPickup = false;
 
+    private int deleteloc;
+    private bool del = false;
+
     // Use this for initialization
     void Start () {
         healthUI = GameObject.Find("/HealthUI/Health").GetComponent<Text>();
@@ -40,19 +43,7 @@ public class PlayerController : MonoBehaviour {
         database = GameObject.Find("Item Database").GetComponent<ItemDatabase>();
 
         Pickup = new List<Item>();
-
-        //Used for testing inventory
-        inventory.Add(database.Items[0]);
-        inventory.Add(database.Items[1]);
-        inventory.Add(database.Items[2]);
-        inventory.Add(database.Items[3]);
-        inventory.Add(database.Items[0]);
-        inventory.Add(database.Items[1]);
-        inventory.Add(database.Items[2]);
-        inventory.Add(database.Items[3]);
-        inventory.Add(database.Items[0]);
-        inventory.Add(database.Items[1]);
-        inventory.Add(database.Items[2]);
+        
     }
 	
 	// Update is called once per frame
@@ -76,7 +67,16 @@ public class PlayerController : MonoBehaviour {
         if (quantity == 0)
         {
             onPickup = false;
+            showPickup = false;
         }
+        if (del)
+        {
+            inventory.Add(Pickup[deleteloc]);
+            Pickup.RemoveAt(deleteloc);
+            quantity--;
+            del = false;
+        }
+        
     }
 
     void OnGUI()
@@ -121,30 +121,36 @@ public class PlayerController : MonoBehaviour {
         if (onPickup)
         {
             //GUI.Box(new Rect(10, 50, 240, 240), InventoryBackground);
-            for (int x = 0; x < 1; x++)
-            {
-                for (int y = 0; y < quantity; y++)
-                {
-                    if (x * slotX + y + 1 <= Pickup.Count)
-                    {
-                        Rect slot = new Rect((Screen.width)/2 + y * 60, Screen.height / 100 + x * 60, 50, 50);
-                        GUI.Box(slot, Pickup[x * slotX + y].icon);
-                        if (slot.Contains(Event.current.mousePosition))
-                        {
-                            ItemDetails = ShowItem(Pickup[x * slotX + y]);
-                            showPickup = true;
-                        }
 
-                        if (ItemDetails == "")
-                            showPickup = false;
+            for (int y = 0; y < quantity; y++)
+            {
+                if (y < quantity)
+                {
+                    Rect slot = new Rect((Screen.width) / 2 + y * 60, Screen.height / 100, 50, 50);
+                    GUI.Box(slot, Pickup[y].icon);
+                    if (slot.Contains(Event.current.mousePosition))
+                    {
+                        ItemDetails = ShowItem(Pickup[y]);
+                        showPickup = true;
+                        if (Input.GetButtonUp("space") && inventory.Count <= 16)
+                        {
+                            deleteloc = y;
+                            del = true;
+
+                        }
                     }
+
+                    if (ItemDetails == "")
+                        showPickup = false;
                 }
             }
+
         }
 
         if (showPickup)
         {
             GUI.Box(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 150, 50), ItemDetails);
+            
         }
     }
 
@@ -159,7 +165,7 @@ public class PlayerController : MonoBehaviour {
 
             for (int i = 0;i <= quantity; i++)
             {
-                itemnum = Random.Range(0, 3);
+                itemnum = Random.Range(0, 4);
                 Pickup.Add(database.Items[itemnum]);
             }
 
