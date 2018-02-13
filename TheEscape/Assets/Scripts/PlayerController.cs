@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour {
     public float health;
     private Text healthUI;
 
-    private new Renderer renderer;
+    private Renderer renderer;
 
     public List<Item> inventory;
     private int slotX = 4, slotY = 4;
