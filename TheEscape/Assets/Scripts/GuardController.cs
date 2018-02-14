@@ -43,7 +43,7 @@ public class GuardController : MonoBehaviour {
     public float edgeDistanceThreshold;
 
     private PlayerController _player;
-    private Renderer renderer;
+    private new Renderer renderer;
     private Rigidbody rb;
 
 	// Use this for initialization

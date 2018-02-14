@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class PlayerController : MonoBehaviour {
 
@@ -12,8 +16,9 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     public float health;
     private Text healthUI;
+    private Canvas deathScreenUI;
 
-    private Renderer renderer;
+    private new Renderer renderer;
 
     public List<Item> inventory;
     private int slotX = 4, slotY = 4;
@@ -41,6 +46,8 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         healthUI = GameObject.Find("/HealthUI/Health").GetComponent<Text>();
+        deathScreenUI = GameObject.Find("DeathScreenUI").GetComponent<Canvas>();
+        deathScreenUI.gameObject.SetActive(false);
         renderer = GetComponent<Renderer>();
         renderer.material.color = Color.yellow;
         inventory = new List<Item>();
@@ -53,15 +60,23 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+        //Activate Death Screen
+        if (health <= 0)
+        {
+            healthUI.text = "0";
+            deathScreenUI.gameObject.SetActive(true);
+            Time.timeScale = 0;
+        }
+        //Updating HealthUI
+        else
+            healthUI.text = health.ToString();
+
         //Used for Movement
         transform.Translate(Vector3.forward * Time.deltaTime * Input.GetAxis("Vertical") * speed);
         transform.Translate(Vector3.right * Time.deltaTime * Input.GetAxis("Horizontal") * speed);
 
         if (!showInventory)
             transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
-
-        //Updating HealthUI
-        healthUI.text = health.ToString();
 
         if (Input.GetKeyDown(KeyCode.I))
         {
@@ -114,6 +129,13 @@ public class PlayerController : MonoBehaviour {
                         {
                             ItemDetails = ShowItem(inventory[x * slotX + y]);
                             showItem = true;
+
+                            if(Input.GetButtonUp("space") && inventory[x * slotX + y].type == Item.ItemType.Consumable && health < 100)
+                            {
+                                health += inventory[x * slotX + y].value;
+                                inventory.RemoveAt(x * slotX + y);
+                                showItem = false;
+                            }
                         }
 
                         if (ItemDetails == "")
@@ -257,5 +279,23 @@ public class PlayerController : MonoBehaviour {
             ItemDetails = item.name + "\n" + "Type: Consumable\n Health: " + item.value;
 
         return ItemDetails;
+    }
+
+    public void OnRestart()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.buildIndex);
+    }
+
+    public void OnQuit()
+    {
+#if UNITY_EDITOR
+        if (Application.isEditor)
+        {
+            EditorApplication.isPlaying = false;
+            return;
+        }
+#endif
+        Application.Quit();
     }
 }

@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
 
 [CustomEditor(typeof(GuardController))]
 public class GuardViewEditor : Editor
 {
+
+
 
     void OnSceneGUI()
     {
@@ -19,3 +22,4 @@ public class GuardViewEditor : Editor
         Handles.DrawLine(guard.transform.position, guard.transform.position + viewAngleB * guard.viewRadius);
     }
 }
+#endif
