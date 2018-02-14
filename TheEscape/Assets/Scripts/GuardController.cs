@@ -1,15 +1,28 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class GuardController : MonoBehaviour {
 
     [SerializeField]
     private float speed;
     [SerializeField]
-    private float sensitivity;
+    private float dampling;
     [SerializeField]
-    public List<Vector3> patrolRoute = new List<Vector3>();
+    private bool canPatrol;
+    [SerializeField]
+    public List<PatrolPoint> patrolRoute = new List<PatrolPoint>();
+    private int index = 0;
+    private bool atPoint = false;
+    private float _waitTimer = 0f;
+    private bool canMove = false;
+    [SerializeField]
+    private float _rotateTimeout;
+    private float _rotateTimer = 0;
+    private Quaternion lookRotation;
+    private bool rotateFlag = false;
+    private Quaternion oldRotation;
 
     private float targetDistance;
     [SerializeField]
@@ -26,7 +39,6 @@ public class GuardController : MonoBehaviour {
     public int edgeResolveIterations;
     public float edgeDistanceThreshold;
 
-    private GameObject _player;
     private Renderer renderer;
 
     private bool canSeePlayer = false;
@@ -35,22 +47,99 @@ public class GuardController : MonoBehaviour {
         mesh = new Mesh();
         mesh.name = "Mesh";
         meshFilter.mesh = mesh;
-        _player = GameObject.Find("MainCharacter");
+
         renderer = GetComponent<Renderer>();
         renderer.material.color = Color.red;
+
+        foreach(PatrolPoint p in patrolRoute)
+        {
+            p.waitTimeOut = Random.Range(1f, 3f);
+        }
+        lookRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y + 90f, transform.rotation.z);
     }
 
     // Update is called once per frame
-    // https://answers.unity.com/questions/1409467/enemy-line-of-sight-1.html
-    void Update () {
+    // https://docs.unity3d.com/Manual/nav-MoveToClickPoint.html
+    void FixedUpdate () {
 
         FindPlayer();
-        //transform.position = Vector3.MoveTowards(transform.position, patrolRoute[0], speed * Time.deltaTime);
+
+        if (canPatrol)
+        {            
+            if (atPoint)
+            {
+                _waitTimer += Time.deltaTime;
+
+                if (_waitTimer >= patrolRoute[index].waitTimeOut)
+                {
+                    canMove = true;
+                    _waitTimer = 0;
+                }
+
+                if (canMove)
+                {
+                    canMove = false;
+                    atPoint = false;
+
+                    if (index != patrolRoute.Count - 1)
+                        index++;
+                    else
+                    {
+                        patrolRoute.Reverse();
+                        index = 1;
+                    }
+
+                    Move(patrolRoute[index]);
+                }
+            }
+            else
+                Move(patrolRoute[index]);
+        }
+        //Needs to be better
+        else
+        {
+            if (transform.rotation != oldRotation)
+            {
+                oldRotation = transform.rotation;
+                transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * dampling);
+            }
+            else
+            {
+                _rotateTimer += Time.deltaTime;
+
+                if (_rotateTimer >= _rotateTimeout)
+                {
+                    _rotateTimer = 0;
+                    oldRotation = Quaternion.Euler(Vector3.zero);
+                    rotateFlag = !rotateFlag;
+                    if (rotateFlag)
+                        lookRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, transform.rotation.z);
+                    else
+                        lookRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y + 90f, transform.rotation.z);
+                }
+                
+            }
+        }      
     }
 
     void LateUpdate()
     {
         DrawGuardView();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Point"))
+        {
+            atPoint = true;
+        }
+    }
+
+    private void Move(PatrolPoint point)
+    {
+        transform.position = Vector3.MoveTowards(transform.position, point.position, speed * Time.deltaTime);
+        Quaternion rotation = Quaternion.LookRotation(point.position - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * dampling);
     }
 
     void FindPlayer()
