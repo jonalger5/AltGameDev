@@ -33,6 +33,10 @@ public class PlayerController : MonoBehaviour {
 
     private int deleteloc;
     private bool del = false;
+    [SerializeField]
+    private float _stealTimeout;
+    public float stealTimer = 0;
+    public bool isStealing = false;
 
     // Use this for initialization
     void Start () {
@@ -75,8 +79,19 @@ public class PlayerController : MonoBehaviour {
             Pickup.RemoveAt(deleteloc);
             quantity--;
             del = false;
+            isStealing = true;
+            stealTimer = 0;
         }
-        
+
+        if (isStealing)
+        {
+            stealTimer += Time.deltaTime;
+            if (stealTimer >= _stealTimeout)
+            {
+                isStealing = false;
+                stealTimer = 0;
+            }
+        }        
     }
 
     void OnGUI()
@@ -132,6 +147,7 @@ public class PlayerController : MonoBehaviour {
                     {
                         ItemDetails = ShowItem(Pickup[y]);
                         showPickup = true;
+
                         if (Input.GetButtonUp("space") && inventory.Count <= 16)
                         {
                             deleteloc = y;

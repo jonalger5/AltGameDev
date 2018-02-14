@@ -9,6 +9,10 @@ public class GuardController : MonoBehaviour {
     private float speed;
     [SerializeField]
     private float dampling;
+
+    [SerializeField]
+    private float stealingDamage;
+
     [SerializeField]
     private bool canPatrol;
     [SerializeField]
@@ -24,7 +28,6 @@ public class GuardController : MonoBehaviour {
     private bool rotateFlag = false;
     private Quaternion oldRotation;
 
-    private float targetDistance;
     [SerializeField]
     public float viewRadius;
     [Range(0, 360)]
@@ -39,6 +42,7 @@ public class GuardController : MonoBehaviour {
     public int edgeResolveIterations;
     public float edgeDistanceThreshold;
 
+    private PlayerController _player;
     private Renderer renderer;
 
     private bool canSeePlayer = false;
@@ -48,14 +52,18 @@ public class GuardController : MonoBehaviour {
         mesh.name = "Mesh";
         meshFilter.mesh = mesh;
 
+        _player = GameObject.Find("MainCharacter").GetComponent<PlayerController>();
         renderer = GetComponent<Renderer>();
         renderer.material.color = Color.red;
 
-        foreach(PatrolPoint p in patrolRoute)
+        if (patrolRoute.Count > 0 && canPatrol)
         {
-            p.waitTimeOut = Random.Range(1f, 3f);
-        }
-        lookRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y + 90f, transform.rotation.z);
+            foreach (PatrolPoint p in patrolRoute)
+            {
+                p.waitTimeOut = Random.Range(1f, 3f);
+            }
+        }       
+        lookRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y + 180f, transform.rotation.z);
     }
 
     // Update is called once per frame
@@ -113,9 +121,9 @@ public class GuardController : MonoBehaviour {
                     oldRotation = Quaternion.Euler(Vector3.zero);
                     rotateFlag = !rotateFlag;
                     if (rotateFlag)
-                        lookRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, transform.rotation.z);
+                        lookRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y + 270f, transform.rotation.z);
                     else
-                        lookRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y + 90f, transform.rotation.z);
+                        lookRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y + 180f, transform.rotation.z);
                 }
                 
             }
@@ -152,11 +160,16 @@ public class GuardController : MonoBehaviour {
 
             if (Vector3.Angle(transform.forward, dirToPlayer) < viewAngle / 2)
             {
-                targetDistance = Vector3.Distance(transform.position, targets[0].transform.position);
+                float targetDistance = Vector3.Distance(transform.position, targets[0].transform.position);
 
                 if (!Physics.Raycast(transform.position, dirToPlayer, targetDistance, obstacleMask))
                 {
-                    canSeePlayer = true;
+                    if (_player.isStealing)
+                    {
+                        _player.health -= stealingDamage;
+                        _player.isStealing = false;
+                        _player.stealTimer = 0;
+                    }
                 }
                 else
                     canSeePlayer = false;
