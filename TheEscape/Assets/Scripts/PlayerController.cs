@@ -240,6 +240,14 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Guard"))
+        {
+            health = 0;
+        }
+    }
+
     private string ShowItem(Item item)
     {
         if (item.type == Item.ItemType.Valuable)

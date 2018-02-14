@@ -44,8 +44,8 @@ public class GuardController : MonoBehaviour {
 
     private PlayerController _player;
     private Renderer renderer;
+    private Rigidbody rb;
 
-    private bool canSeePlayer = false;
 	// Use this for initialization
 	void Start () {
         mesh = new Mesh();
@@ -55,6 +55,7 @@ public class GuardController : MonoBehaviour {
         _player = GameObject.Find("MainCharacter").GetComponent<PlayerController>();
         renderer = GetComponent<Renderer>();
         renderer.material.color = Color.red;
+        rb = GetComponent<Rigidbody>();
 
         if (patrolRoute.Count > 0 && canPatrol)
         {
@@ -106,6 +107,7 @@ public class GuardController : MonoBehaviour {
         //Needs to be better
         else
         {
+            rb.velocity = Vector3.zero;
             if (transform.rotation != oldRotation)
             {
                 oldRotation = transform.rotation;
@@ -171,14 +173,8 @@ public class GuardController : MonoBehaviour {
                         _player.stealTimer = 0;
                     }
                 }
-                else
-                    canSeePlayer = false;
             }
-            else
-                canSeePlayer = false;
         }
-        else
-            canSeePlayer = false;
     }
 
     void DrawGuardView()
