@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour {
         database = GameObject.Find("Item Database").GetComponent<ItemDatabase>();
 
         Pickup = new List<Item>();
-        
+        Time.timeScale = 1;
     }
 	
 	// Update is called once per frame
