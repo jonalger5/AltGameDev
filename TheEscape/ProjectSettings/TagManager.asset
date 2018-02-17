@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Point
   - Guard
+  - Interactable
   layers:
   - Default
   - TransparentFX
