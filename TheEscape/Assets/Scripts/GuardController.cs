@@ -21,9 +21,14 @@ public class GuardController : MonoBehaviour {
     private bool atPoint = false;
     private float _waitTimer = 0f;
     private bool canMove = false;
+
+    //Fields for stationary Guards
     [SerializeField]
     private float _rotateTimeout;
     private float _rotateTimer = 0;
+    private float lookFrom;
+    [SerializeField]
+    private float lookAt; //In degrees
     private Quaternion lookRotation;
     private bool rotateFlag = false;
     private Quaternion oldRotation;
@@ -63,8 +68,9 @@ public class GuardController : MonoBehaviour {
             {
                 p.waitTimeOut = Random.Range(1f, 3f);
             }
-        }       
-        lookRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y + 180f, transform.rotation.z);
+        }
+        lookFrom = transform.rotation.y;      
+        lookRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y + lookAt, transform.rotation.z);
     }
 
     // Update is called once per frame
@@ -104,7 +110,6 @@ public class GuardController : MonoBehaviour {
             else
                 Move(patrolRoute[index]);
         }
-        //Needs to be better
         else
         {
             rb.velocity = Vector3.zero;
@@ -123,9 +128,9 @@ public class GuardController : MonoBehaviour {
                     oldRotation = Quaternion.Euler(Vector3.zero);
                     rotateFlag = !rotateFlag;
                     if (rotateFlag)
-                        lookRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y + 270f, transform.rotation.z);
+                        lookRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y + lookFrom, transform.rotation.z);
                     else
-                        lookRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y + 180f, transform.rotation.z);
+                        lookRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y + lookAt, transform.rotation.z);
                 }
                 
             }
