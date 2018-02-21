@@ -23,7 +23,6 @@ public class GuardController : MonoBehaviour {
     private bool canMove = false;
 
     //Fields for stationary Guards
-    [SerializeField]
     private float _rotateTimeout;
     private float _rotateTimer = 0;
     private float lookFrom;
@@ -69,6 +68,7 @@ public class GuardController : MonoBehaviour {
                 p.waitTimeOut = Random.Range(1f, 3f);
             }
         }
+        _rotateTimeout = Random.Range(1f, 3f);
         lookFrom = transform.rotation.y;      
         lookRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y + lookAt, transform.rotation.z);
     }
@@ -125,6 +125,7 @@ public class GuardController : MonoBehaviour {
                 if (_rotateTimer >= _rotateTimeout)
                 {
                     _rotateTimer = 0;
+                    _rotateTimeout = Random.Range(1f, 3f);
                     oldRotation = Quaternion.Euler(Vector3.zero);
                     rotateFlag = !rotateFlag;
                     if (rotateFlag)
