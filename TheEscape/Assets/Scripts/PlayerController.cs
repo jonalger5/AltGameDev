@@ -75,6 +75,10 @@ public class PlayerController : MonoBehaviour {
     void UpdateQuotaText()
     {
         depositQuota--;
+        if (depositQuota > 0)
+        {
+            depositQuota = 0;
+        }
         quotaText.text = "Remaining Items: " + depositQuota.ToString();
     }
     // Update is called once per frame
