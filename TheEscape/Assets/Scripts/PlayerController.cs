@@ -43,6 +43,11 @@ public class PlayerController : MonoBehaviour {
     public float stealTimer = 0;
     public bool isStealing = false;
 
+    public int depositQuota;
+    public float timer;
+    public Text timerText;
+    public Text quotaText;
+
     // Use this for initialization
     void Start () {
         healthUI = GameObject.Find("/HealthUI/Health").GetComponent<Text>();
@@ -55,11 +60,35 @@ public class PlayerController : MonoBehaviour {
 
         Pickup = new List<Item>();
         Time.timeScale = 1;
-    }
-	
-	// Update is called once per frame
-	void Update () {
 
+        timer = 60;
+        depositQuota = 51;
+        UpdateTimerText();
+        UpdateQuotaText();
+    }
+
+    void UpdateTimerText()
+    {
+        timerText.text = "Time Left: " + timer.ToString("F2");
+    }
+
+    void UpdateQuotaText()
+    {
+        depositQuota--;
+        quotaText.text = "Remaining Items: " + depositQuota.ToString();
+    }
+    // Update is called once per frame
+    void Update ()
+    {
+        if (timer > 0.0f)
+        {
+            timer -= Time.fixedUnscaledDeltaTime;
+            if (timer < 0.0f)
+            {
+                timer = 0.0f;
+            }
+            UpdateTimerText();
+        }
         //Activate Death Screen
         if (health <= 0)
         {
@@ -218,6 +247,7 @@ public class PlayerController : MonoBehaviour {
                     Pickup.RemoveAt(i);
                     i -= 1;
                     quantity--;
+                    UpdateQuotaText();
                 }
             }
         }
@@ -231,6 +261,7 @@ public class PlayerController : MonoBehaviour {
                     Pickup.RemoveAt(i);
                     i -= 1;
                     quantity--;
+                    UpdateQuotaText();
                 }
             }
         }
@@ -244,6 +275,7 @@ public class PlayerController : MonoBehaviour {
                     Pickup.RemoveAt(i);
                     i -= 1;
                     quantity--;
+                    UpdateQuotaText();
                 }
             }
         }
@@ -257,6 +289,7 @@ public class PlayerController : MonoBehaviour {
                     Pickup.RemoveAt(i);
                     i -= 1;
                     quantity--;
+                    UpdateQuotaText();
                 }
             }
         }
