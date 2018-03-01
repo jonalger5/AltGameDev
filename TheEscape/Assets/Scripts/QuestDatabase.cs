@@ -4,7 +4,5 @@ using UnityEngine;
 
 public class QuestDatabase : MonoBehaviour {
 
-    //Key is Prisoner ID
-    //Quests for that Prisoner
-    public Dictionary<int, List<Quest>> Quests = new Dictionary<int, List<Quest>>();
+    public List<Quest> Quests = new List<Quest>();
 }

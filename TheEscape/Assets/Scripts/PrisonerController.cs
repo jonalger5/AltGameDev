@@ -11,7 +11,11 @@ public class PrisonerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		QuestDatabase qd = GameObject.Find("Quest Database").GetComponent<QuestDatabase>();
-        Quests = qd.Quests[id];
+        foreach(Quest q in qd.Quests)
+        {
+            if (q.prisonerID == id)
+                Quests.Add(q);
+        }
     }
 	
 	// Update is called once per frame
