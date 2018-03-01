@@ -524,6 +524,10 @@ MonoBehaviour:
   _stealTimeout: 0
   stealTimer: 0
   isStealing: 0
+  depositQuota: 0
+  timer: 0
+  timerText: {fileID: 0}
+  quotaText: {fileID: 0}
 --- !u!54 &791640455
 Rigidbody:
   m_ObjectHideFlags: 0

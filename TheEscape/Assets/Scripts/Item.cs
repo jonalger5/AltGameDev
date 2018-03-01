@@ -16,14 +16,4 @@ public class Item {
     public ItemType type;
     public float value;
     public Texture2D icon;
-
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }
