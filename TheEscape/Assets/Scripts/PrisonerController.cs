@@ -7,10 +7,14 @@ public class PrisonerController : MonoBehaviour {
     [SerializeField]
     public int id;
     public List<Quest> Quests = new List<Quest>();
+    public Quest activeQuest;
+    public bool questInProgress = false;
+    private QuestDatabase qd;
     
 	// Use this for initialization
-	void Start () {
-		QuestDatabase qd = GameObject.Find("Quest Database").GetComponent<QuestDatabase>();
+	void Start ()
+    {
+		qd = GameObject.Find("Quest Database").GetComponent<QuestDatabase>();
         foreach(Quest q in qd.Quests)
         {
             if (q.prisonerID == id)
@@ -19,7 +23,30 @@ public class PrisonerController : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
 		
 	}
+
+    public Quest GetNextQuest()
+    {
+        foreach(Quest q in Quests)
+        {
+            if (!q.complete)
+            {
+                activeQuest = q;
+                questInProgress = true;
+                return q;
+            }
+        }
+        return null;
+    }
+
+    public void ReturnQuest()
+    {
+        qd.Quests[activeQuest.questID].complete = true;
+        Quests[activeQuest.questID].complete = true;
+        activeQuest = null;
+        questInProgress = false;
+    }
 }

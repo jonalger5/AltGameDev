@@ -48,11 +48,14 @@ public class PlayerController : MonoBehaviour {
     public Text timerText;
     public Text quotaText;
 
+    //Quest Variables
+    public List<int> currentQuests = new List<int>();
+
     // Use this for initialization
     void Start () {
         healthUI = GameObject.Find("/HealthUI/Health").GetComponent<Text>();
-        deathScreenUI = GameObject.Find("DeathScreenUI").GetComponent<Canvas>();
-        deathScreenUI.gameObject.SetActive(false);
+        //deathScreenUI = GameObject.Find("DeathScreenUI").GetComponent<Canvas>();
+        //deathScreenUI.gameObject.SetActive(false);
         renderer = GetComponent<Renderer>();
         renderer.material.color = Color.yellow;
         inventory = new List<Item>();
@@ -61,10 +64,10 @@ public class PlayerController : MonoBehaviour {
         Pickup = new List<Item>();
         Time.timeScale = 1;
 
-        timer = 60;
-        depositQuota = 51;
-        UpdateTimerText();
-        UpdateQuotaText();
+        //timer = 60;
+        //depositQuota = 51;
+        //UpdateTimerText();
+        //UpdateQuotaText();
     }
 
     void UpdateTimerText()
@@ -297,6 +300,25 @@ public class PlayerController : MonoBehaviour {
                 }
             }
         }
+
+        if (other.gameObject.CompareTag("Prisoner"))
+        {
+            PrisonerController prisoner = other.gameObject.GetComponent<PrisonerController>();
+
+            if (!prisoner.questInProgress)
+            {
+                Quest q = prisoner.GetNextQuest();
+
+                if (q != null)
+                    currentQuests.Add(q.questID);
+            }
+            else if (CheckQuest(prisoner.activeQuest))
+            {
+                currentQuests.Remove(prisoner.activeQuest.questID);
+                RemoveQuestItem(prisoner.activeQuest.questItem);
+                prisoner.ReturnQuest();
+            }
+        }
     }
 
     void OnCollisionEnter(Collision other)
@@ -304,7 +326,7 @@ public class PlayerController : MonoBehaviour {
         if (other.gameObject.CompareTag("Guard"))
         {
             health = 0;
-        }
+        } 
     }
 
     private string ShowItem(Item item)
@@ -316,6 +338,33 @@ public class PlayerController : MonoBehaviour {
             ItemDetails = item.name + "\n" + "Type: Consumable\n Health: " + item.value;
 
         return ItemDetails;
+    }
+
+    private bool CheckQuest(Quest quest)
+    {
+        if (currentQuests.Contains(quest.questID) && CheckInventory(quest.questItem))
+            return true;
+        else
+            return false;
+    }
+
+    private void RemoveQuestItem(Item item)
+    {
+        for(int i = 0; i < inventory.Count; i++)
+        {
+            if (inventory[i].name == item.name)
+                inventory.RemoveAt(i);
+        }
+    }
+
+    private bool CheckInventory(Item item)
+    {
+        foreach(Item i in inventory)
+        {
+            if (i.name == item.name)
+                return true;
+        }
+        return false;
     }
 
     public void OnRestart()

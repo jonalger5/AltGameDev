@@ -139,6 +139,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 128131a29e389e54aba2fddec7584511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Quests:
+  - prisonerID: 0
+    questID: 0
+    questItem:
+      name: Test
+      type: 0
+      value: 0
+      icon: {fileID: 0}
+    desc: 
+    complete: 0
 --- !u!4 &96369038
 Transform:
   m_ObjectHideFlags: 0
@@ -568,6 +578,7 @@ MonoBehaviour:
   timer: 0
   timerText: {fileID: 0}
   quotaText: {fileID: 0}
+  currentQuests: []
 --- !u!54 &791640455
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1019,9 +1030,10 @@ GameObject:
   - component: {fileID: 1868406411}
   - component: {fileID: 1868406410}
   - component: {fileID: 1868406409}
+  - component: {fileID: 1868406415}
   m_Layer: 0
   m_Name: Prisoner
-  m_TagString: Untagged
+  m_TagString: Prisoner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1038,6 +1050,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  Quests: []
+  activeQuest:
+    prisonerID: 0
+    questID: 0
+    questItem:
+      name: 
+      type: 0
+      value: 0
+      icon: {fileID: 0}
+    desc: 
+    complete: 0
 --- !u!54 &1868406410
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1119,6 +1142,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1868406415
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1868406408}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.11
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1964655204
 GameObject:
   m_ObjectHideFlags: 0
