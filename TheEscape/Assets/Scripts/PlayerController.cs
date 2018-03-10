@@ -55,11 +55,14 @@ public class PlayerController : MonoBehaviour {
     //Quest Variables
     public List<int> currentQuests = new List<int>();
 
-    private int NumOfItems = 0;
+    private int NumOfItems = 6;
+    private int Position;
+    private int Position1;
+    private bool CanAccess = true;
 
     // Use this for initialization
     void Start () {
-
+        health = 80;
 
         healthUI = GameObject.Find("/HealthUI/Health").GetComponent<Text>();
         deathScreenUI = GameObject.Find("DeathScreenUI").GetComponent<Canvas>();
@@ -84,7 +87,8 @@ public class PlayerController : MonoBehaviour {
         UpdateQuotaText();
 
         Cursor.visible = false;
-        timerdecrement = Time.fixedUnscaledDeltaTime;
+        timerdecrement = 0;
+        //timerdecrement = Time.fixedUnscaledDeltaTime;
     }
 
     void UpdateTimerText()
@@ -157,22 +161,12 @@ public class PlayerController : MonoBehaviour {
             
             PauseScreenUI.gameObject.SetActive(isPaused);
         }
-        /*
+        
         if (quantity == 0)
         {
             onPickup = false;
             showPickup = false;
         }
-        if (del)
-        {
-            inventory.Add(Pickup[deleteloc]);
-            Pickup.RemoveAt(deleteloc);
-            quantity--;
-            del = false;
-            isStealing = true;
-            stealTimer = 0;
-        }
-        */
         if (isStealing)
         {
             stealTimer += Time.deltaTime;
@@ -183,7 +177,22 @@ public class PlayerController : MonoBehaviour {
             }
         }        
     }
+    public IEnumerator LetsWait(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        CanAccess = !CanAccess;
+    }
 
+    private void Remove(int position)
+    {
+        inventory.RemoveAt(position);
+        StartCoroutine(LetsWait((float)0.1));
+    }
+    public void RemoveSteal(int position)
+    {
+        StealItems.RemoveAt(position);
+        StartCoroutine(LetsWait((float)0.1));
+    }
     void OnGUI()
     {
         //GUI.skin = slotBackground;
@@ -191,27 +200,46 @@ public class PlayerController : MonoBehaviour {
         
         if (showInventory)
         {
+            
             //GUI.Box(new Rect(10, 50, 240, 240), InventoryBackground);
             for (int x = 0; x < slotX; x++)
             {
                 for (int y = 0; y < slotY; y++)
-                {                    
-                    if (x * slotX + y + 1 <= inventory.Count)
+                {
+                    Position = x*slotY + y;
+                    if (Position < inventory.Count)
                     {
                         Rect slot = new Rect(Screen.width/100 + y * 60, Screen.height / 10 + x * 60, 50, 50);
-                        GUI.Box(slot, inventory[x * slotX + y].icon);
+                        GUI.Box(slot, inventory[Position].icon);
                         if (slot.Contains(Event.current.mousePosition))
                         {
-                            ItemDetails = ShowItem(inventory[x * slotX + y]);
+                            int temp =  x * slotY + y;
+                            
+                            ItemDetails = ShowItem(inventory[Position]);
                             showItem = true;
                             
-                            if(Input.GetButtonUp("space") && inventory[x * slotX + y].type == Item.ItemType.Consumable && health < 100)
+
+                            if(Input.GetButtonUp("space") && inventory[Position].type == Item.ItemType.Consumable && health < 100 && CanAccess)
                             {
-                                health += inventory[x * slotX + y].value;
-                                inventory.RemoveAt(x * slotX + y);
+                                CanAccess = !CanAccess;
+                                health += inventory[Position].value;
+                                Remove(Position);
+                                quantity--;
                                 showItem = false;
                             }
-                            
+
+
+                            if (Input.GetMouseButtonDown(0) && CanAccess)
+                            {
+                                CanAccess = !CanAccess;
+                                isStealing = true;
+                                StealItems.Add(inventory[Position]);
+                                Remove(Position);
+                                quantity--;
+                                NumOfItems--;
+                                showItem = false;
+
+                            }
                         }
 
                         if (ItemDetails == "")
@@ -224,26 +252,31 @@ public class PlayerController : MonoBehaviour {
                     }                  
                 }
             }
-            for (int x = 0; x < slotX; x++)
+            for (int i = 0; i < slotX; i++)
             {
-                for (int y = 0; y < slotY; y++)
+                for (int j = 0; j < slotY; j++)
                 {
-                    if (x * slotX + y + 1 <= 5)
+
+                    Position1 = i * slotY + j;
+                    if (Position1 < StealItems.Count)
                     {
-                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 2 + x * 60, 50, 50);
-                        GUI.Box(slot, StealItems[x * slotX + y].icon);
+                        Rect slot = new Rect(Screen.width / 100 + j * 60, Screen.height / 3 + i * 60, 50, 50);
+                        GUI.Box(slot, StealItems[Position1].icon);
                         if (slot.Contains(Event.current.mousePosition))
                         {
-                            ItemDetails = ShowItem(StealItems[x * slotX + y]);
+                            ItemDetails = ShowItem(StealItems[Position1]);
                             showItem = true;
 
-                            if (Input.GetButtonUp("space") && inventory[x * slotX + y].type == Item.ItemType.Consumable && health < 100)
+                            if (Input.GetMouseButtonDown(0) && CanAccess)
                             {
-                                health += inventory[x * slotX + y].value;
-                                inventory.RemoveAt(x * slotX + y);
+                                CanAccess = !CanAccess;
+                                inventory.Add(StealItems[Position1]);
+                                RemoveSteal(Position1);
+                                quantity++;
+                                NumOfItems++;
                                 showItem = false;
-                            }
 
+                            }
                         }
 
                         if (ItemDetails == "")
@@ -251,7 +284,7 @@ public class PlayerController : MonoBehaviour {
                     }
                     else
                     {
-                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 10 + x * 60, 50, 50);
+                        Rect slot = new Rect(Screen.width / 100 + j * 60, Screen.height / 3 + i * 60, 50, 50);
                         GUI.Box(slot, EmptySlot);
                     }
                 }
@@ -262,43 +295,6 @@ public class PlayerController : MonoBehaviour {
         {
             GUI.Box(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 150, 50), ItemDetails);
         }
-        /*
-        if (onPickup)
-        {
-            //GUI.Box(new Rect(10, 50, 240, 240), InventoryBackground);
-
-            for (int y = 0; y < quantity; y++)
-            {
-                if (y < quantity)
-                {
-                    Rect slot = new Rect((Screen.width) / 2 + y * 60, Screen.height / 100, 50, 50);
-                    GUI.Box(slot, Pickup[y].icon);
-                    if (slot.Contains(Event.current.mousePosition))
-                    {
-                        ItemDetails = ShowItem(Pickup[y]);
-                        showPickup = true;
-
-                        if (Input.GetButtonUp("space") && inventory.Count <= 16)
-                        {
-                            deleteloc = y;
-                            del = true;
-
-                        }
-                    }
-
-                    if (ItemDetails == "")
-                        showPickup = false;
-                }
-            }
-
-        }
-
-        if (showPickup)
-        {
-            GUI.Box(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 150, 50), ItemDetails);
-            
-        }
-        */
     }
 
     void OnTriggerEnter(Collider other)
@@ -310,17 +306,18 @@ public class PlayerController : MonoBehaviour {
             onPickup = true;
 
 
-            for (int i = quantity;i <= 5; i++)
+            for (int i = 0;i < NumOfItems; i++)
             {
                 itemnum = Random.Range(0, 4);
                 inventory.Add(database.Items[itemnum]);
+                
             }
 
         }
 
         if(other.gameObject.name == "RedPile" && onPickup)
         {
-            for(int i = 0;i < quantity; i++)
+            for(int i = 0;i < inventory.Count; i++)
             {
                 if(inventory[i].name == "Red")
                 {
@@ -334,7 +331,7 @@ public class PlayerController : MonoBehaviour {
 
         if (other.gameObject.name == "BluePile" && onPickup)
         {
-            for (int i = 0; i < quantity; i++)
+            for (int i = 0; i < inventory.Count; i++)
             {
                 if (inventory[i].name == "Blue")
                 {
@@ -348,7 +345,7 @@ public class PlayerController : MonoBehaviour {
 
         if (other.gameObject.name == "YellowPile" && onPickup)
         {
-            for (int i = 0; i < quantity; i++)
+            for (int i = 0; i < inventory.Count; i++)
             {
                 if (inventory[i].name == "Yellow")
                 {
@@ -362,7 +359,7 @@ public class PlayerController : MonoBehaviour {
 
         if (other.gameObject.name == "GreenPile" && onPickup)
         {
-            for (int i = 0; i < quantity; i++)
+            for (int i = 0; i < inventory.Count; i++)
             {
                 if (inventory[i].name == "Green")
                 {
@@ -449,6 +446,19 @@ public class PlayerController : MonoBehaviour {
     public void OnMainMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    public void OnContinue()
+    {
+        isPaused = !isPaused;
+        showInventory = !showInventory;
+        timerdecrement = Time.fixedUnscaledDeltaTime;
+        Time.timeScale = 1;
+        transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
+        
+        Cursor.visible = !Cursor.visible;
+
+        PauseScreenUI.gameObject.SetActive(isPaused);
     }
 
     public void OnQuit()
