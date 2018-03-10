@@ -32,10 +32,7 @@ public class PlayerController : MonoBehaviour {
     public GUISkin slotBackground;
 
     public List<Item> StealItems;
-    private bool onPickup = false;
     private int itemnum;
-    private int quantity;
-    private bool showPickup = false;
 
     private int deleteloc;
     private bool del = false;
@@ -55,14 +52,19 @@ public class PlayerController : MonoBehaviour {
     //Quest Variables
     public List<int> currentQuests = new List<int>();
 
-    private int NumOfItems = 6;
+    private int NumOfItems ;
     private int Position;
     private int Position1;
     private bool CanAccess = true;
 
+    private Canvas VictoryScreenUI;
+    private Canvas EndScreen;
+    private Canvas EndScreen1;
+
+    private Dictionary<int, double> percentages;
+
     // Use this for initialization
     void Start () {
-        health = 80;
 
         healthUI = GameObject.Find("/HealthUI/Health").GetComponent<Text>();
         deathScreenUI = GameObject.Find("DeathScreenUI").GetComponent<Canvas>();
@@ -72,6 +74,15 @@ public class PlayerController : MonoBehaviour {
         PauseScreenUI.gameObject.SetActive(false);
         isPaused = false;
 
+        VictoryScreenUI = GameObject.Find("VictoryScreen").GetComponent<Canvas>();
+        VictoryScreenUI.gameObject.SetActive(false);
+
+        EndScreen = GameObject.Find("LoseScreen1").GetComponent<Canvas>();
+        EndScreen.gameObject.SetActive(false);
+
+        EndScreen1 = GameObject.Find("LoseScreen2").GetComponent<Canvas>();
+        EndScreen1.gameObject.SetActive(false);
+
         renderer = GetComponent<Renderer>();
         renderer.material.color = Color.yellow;
         inventory = new List<Item>();
@@ -80,7 +91,12 @@ public class PlayerController : MonoBehaviour {
         StealItems = new List<Item>();
         Time.timeScale = 1;
 
-        //deathScreenUI.gameObject.SetActive(false);
+        deathScreenUI.gameObject.SetActive(false);
+        PauseScreenUI.gameObject.SetActive(false);
+        VictoryScreenUI.gameObject.SetActive(false);
+        EndScreen.gameObject.SetActive(false);
+        EndScreen1.gameObject.SetActive(false);
+
         timer = 60;
         depositQuota = 51;
         UpdateTimerText();
@@ -88,7 +104,18 @@ public class PlayerController : MonoBehaviour {
 
         Cursor.visible = false;
         timerdecrement = 0;
-        //timerdecrement = Time.fixedUnscaledDeltaTime;
+        timerdecrement = Time.fixedUnscaledDeltaTime;
+
+
+        NumOfItems = 6;
+        percentages = new Dictionary<int, double>();
+        percentages.Add(0, 0);
+        percentages.Add(1, .05);
+        percentages.Add(2, .10);
+        percentages.Add(3, .25);
+        percentages.Add(4, .50);
+        percentages.Add(5, .75);
+        percentages.Add(6, .95);
     }
 
     void UpdateTimerText()
@@ -99,7 +126,7 @@ public class PlayerController : MonoBehaviour {
     void UpdateQuotaText()
     {
         depositQuota--;
-        if (depositQuota > 0)
+        if (depositQuota < 0)
         {
             depositQuota = 0;
         }
@@ -113,10 +140,13 @@ public class PlayerController : MonoBehaviour {
             timer -= timerdecrement;
             if (timer < 0.0f)
             {
+                DisplayEndScreen();
                 timer = 0.0f;
             }
             UpdateTimerText();
         }
+
+        
         //Activate Death Screen
         if (health <= 0)
         {
@@ -161,12 +191,7 @@ public class PlayerController : MonoBehaviour {
             
             PauseScreenUI.gameObject.SetActive(isPaused);
         }
-        
-        if (quantity == 0)
-        {
-            onPickup = false;
-            showPickup = false;
-        }
+
         if (isStealing)
         {
             stealTimer += Time.deltaTime;
@@ -193,6 +218,7 @@ public class PlayerController : MonoBehaviour {
         StealItems.RemoveAt(position);
         StartCoroutine(LetsWait((float)0.1));
     }
+    
     void OnGUI()
     {
         //GUI.skin = slotBackground;
@@ -213,8 +239,6 @@ public class PlayerController : MonoBehaviour {
                         GUI.Box(slot, inventory[Position].icon);
                         if (slot.Contains(Event.current.mousePosition))
                         {
-                            int temp =  x * slotY + y;
-                            
                             ItemDetails = ShowItem(inventory[Position]);
                             showItem = true;
                             
@@ -224,7 +248,6 @@ public class PlayerController : MonoBehaviour {
                                 CanAccess = !CanAccess;
                                 health += inventory[Position].value;
                                 Remove(Position);
-                                quantity--;
                                 showItem = false;
                             }
 
@@ -235,7 +258,6 @@ public class PlayerController : MonoBehaviour {
                                 isStealing = true;
                                 StealItems.Add(inventory[Position]);
                                 Remove(Position);
-                                quantity--;
                                 NumOfItems--;
                                 showItem = false;
 
@@ -272,7 +294,6 @@ public class PlayerController : MonoBehaviour {
                                 CanAccess = !CanAccess;
                                 inventory.Add(StealItems[Position1]);
                                 RemoveSteal(Position1);
-                                quantity++;
                                 NumOfItems++;
                                 showItem = false;
 
@@ -299,14 +320,10 @@ public class PlayerController : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name == "PileOfItems" && !onPickup)
+        if (other.gameObject.name == "PileOfItems")
         {
-
-            quantity = NumOfItems;
-            onPickup = true;
-
-
-            for (int i = 0;i < NumOfItems; i++)
+            int PickupNum = NumOfItems - inventory.Count;
+            for (int i = 0;i < PickupNum; i++)
             {
                 itemnum = Random.Range(0, 4);
                 inventory.Add(database.Items[itemnum]);
@@ -315,7 +332,7 @@ public class PlayerController : MonoBehaviour {
 
         }
 
-        if(other.gameObject.name == "RedPile" && onPickup)
+        if(other.gameObject.name == "RedPile")
         {
             for(int i = 0;i < inventory.Count; i++)
             {
@@ -323,13 +340,12 @@ public class PlayerController : MonoBehaviour {
                 {
                     inventory.RemoveAt(i);
                     i -= 1;
-                    quantity--;
                     UpdateQuotaText();
                 }
             }
         }
 
-        if (other.gameObject.name == "BluePile" && onPickup)
+        if (other.gameObject.name == "BluePile")
         {
             for (int i = 0; i < inventory.Count; i++)
             {
@@ -337,13 +353,12 @@ public class PlayerController : MonoBehaviour {
                 {
                     inventory.RemoveAt(i);
                     i -= 1;
-                    quantity--;
                     UpdateQuotaText();
                 }
             }
         }
 
-        if (other.gameObject.name == "YellowPile" && onPickup)
+        if (other.gameObject.name == "YellowPile" )
         {
             for (int i = 0; i < inventory.Count; i++)
             {
@@ -351,13 +366,12 @@ public class PlayerController : MonoBehaviour {
                 {
                     inventory.RemoveAt(i);
                     i -= 1;
-                    quantity--;
                     UpdateQuotaText();
                 }
             }
         }
 
-        if (other.gameObject.name == "GreenPile" && onPickup)
+        if (other.gameObject.name == "GreenPile" )
         {
             for (int i = 0; i < inventory.Count; i++)
             {
@@ -365,7 +379,6 @@ public class PlayerController : MonoBehaviour {
                 {
                     inventory.RemoveAt(i);
                     i -= 1;
-                    quantity--;
                     UpdateQuotaText();
                 }
             }
@@ -436,7 +449,31 @@ public class PlayerController : MonoBehaviour {
         }
         return false;
     }
+    public void DisplayEndScreen()
+    {
+        showInventory = !showInventory;
+        timerdecrement = 0;
+        Time.timeScale = 0;
+        transform.Rotate(0, 0, 0);
+        Cursor.visible = true;
+        
 
+        if (depositQuota == 0)
+        {
+            if(Random.value > percentages[StealItems.Count])
+            {
+                VictoryScreenUI.gameObject.SetActive(true);
+            }
+            else
+            {
+                EndScreen1.gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            EndScreen.gameObject.SetActive(true);
+        }
+    }
     public void OnRestart()
     {
         Scene scene = SceneManager.GetActiveScene();
@@ -460,6 +497,7 @@ public class PlayerController : MonoBehaviour {
 
         PauseScreenUI.gameObject.SetActive(isPaused);
     }
+
 
     public void OnQuit()
     {
