@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour {
         Pickup = new List<Item>();
         Time.timeScale = 1;
 
+        deathScreenUI.gameObject.SetActive(false);
         //timer = 60;
         //depositQuota = 51;
         //UpdateTimerText();
