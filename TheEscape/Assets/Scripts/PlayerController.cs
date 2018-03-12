@@ -9,6 +9,14 @@ using UnityEditor;
 
 public class PlayerController : MonoBehaviour {
 
+
+    private enum DialogueType
+    {
+        accepting,
+        returning, 
+        standby
+    }
+
     [SerializeField]
     public float speed;
     [SerializeField]
@@ -18,6 +26,19 @@ public class PlayerController : MonoBehaviour {
     private Text healthUI;
     private Canvas deathScreenUI;
     private Canvas PauseScreenUI;
+
+    //Dialogue Variables
+    private Canvas dialogueUI;
+    private Text dialogueText;
+    private int dialogueIndex;
+    private bool isTalking;
+    private DialogueType dialogueType;
+
+    //Quest Variables
+    private QuestDatabase qd;
+    public List<int> currentQuests = new List<int>();
+    private int currentQuestIndex = 0;
+    private Canvas questUI;
 
     private new Renderer renderer;
 
@@ -29,7 +50,7 @@ public class PlayerController : MonoBehaviour {
     private string ItemDetails;
     public Texture2D InventoryBackground;
     public Texture2D EmptySlot;
-    public GUISkin slotBackground;
+    public GUISkin guiSkin;
 
     public List<Item> StealItems;
     private int itemnum;
@@ -49,9 +70,6 @@ public class PlayerController : MonoBehaviour {
     private bool isPaused;
     private float timerdecrement;
 
-    //Quest Variables
-    public List<int> currentQuests = new List<int>();
-
     private int NumOfItems ;
     private int Position;
     private int Position1;
@@ -67,6 +85,12 @@ public class PlayerController : MonoBehaviour {
     void Start () {
 
         healthUI = GameObject.Find("/HealthUI/Health").GetComponent<Text>();
+        dialogueUI = GameObject.Find("DialogueUI").GetComponent<Canvas>();
+        dialogueText = GameObject.Find("/DialogueUI/DialogueText").GetComponent<Text>();
+        dialogueUI.gameObject.SetActive(false);
+        questUI = GameObject.Find("QuestUI").GetComponent<Canvas>();
+        questUI.gameObject.SetActive(false);
+
         deathScreenUI = GameObject.Find("DeathScreenUI").GetComponent<Canvas>();
         deathScreenUI.gameObject.SetActive(false);
 
@@ -87,6 +111,7 @@ public class PlayerController : MonoBehaviour {
         renderer.material.color = Color.yellow;
         inventory = new List<Item>();
         database = GameObject.Find("Item Database").GetComponent<ItemDatabase>();
+        qd = GameObject.Find("Quest Database").GetComponent<QuestDatabase>();
 
         StealItems = new List<Item>();
         Time.timeScale = 1;
@@ -159,16 +184,21 @@ public class PlayerController : MonoBehaviour {
             healthUI.text = health.ToString();
 
         //Used for Movement
-        transform.Translate(Vector3.forward * Time.deltaTime * Input.GetAxis("Vertical") * speed);
-        transform.Translate(Vector3.right * Time.deltaTime * Input.GetAxis("Horizontal") * speed);
+        if (!isTalking)
+        {
+            transform.Translate(Vector3.forward * Time.deltaTime * Input.GetAxis("Vertical") * speed);
+            transform.Translate(Vector3.right * Time.deltaTime * Input.GetAxis("Horizontal") * speed);
+        }
 
-        if (!showInventory)
+        if (!showInventory && !isTalking)
             transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
 
         if (Input.GetKeyDown(KeyCode.I))
         {
             showInventory = !showInventory;
             Cursor.visible = !Cursor.visible;
+            if (!showInventory)
+                questUI.gameObject.SetActive(false);
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -190,6 +220,58 @@ public class PlayerController : MonoBehaviour {
             Cursor.visible = !Cursor.visible;
             
             PauseScreenUI.gameObject.SetActive(isPaused);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && isTalking)
+        {
+            switch (dialogueType)
+            {
+                case DialogueType.accepting:
+                    
+                    if (dialogueIndex != qd.Quests[currentQuestIndex].acceptDialogue.Count - 1)
+                    {
+                        dialogueIndex++;
+                        dialogueText.text = qd.Quests[currentQuestIndex].acceptDialogue[dialogueIndex];
+                    }
+                    else
+                    {
+                        dialogueUI.gameObject.SetActive(false);
+                        isTalking = false;
+                    }
+                        
+                    break;
+
+                case DialogueType.returning:
+                    if (dialogueIndex != qd.Quests[currentQuestIndex].returnDialogue.Count - 1)
+                    {
+                        dialogueIndex++;
+                        dialogueText.text = qd.Quests[currentQuestIndex].returnDialogue[dialogueIndex];
+                    }
+                    else
+                    {
+                        dialogueUI.gameObject.SetActive(false);
+                        isTalking = false;
+                    }
+
+                    break;
+
+                case DialogueType.standby:
+                    if (dialogueIndex != qd.Quests[currentQuestIndex].standbyDialogue.Count - 1)
+                    {
+                        dialogueIndex++;
+                        dialogueText.text = qd.Quests[currentQuestIndex].standbyDialogue[dialogueIndex];
+                    }
+                    else
+                    {
+                        dialogueUI.gameObject.SetActive(false);
+                        isTalking = false;
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         if (isStealing)
@@ -221,7 +303,7 @@ public class PlayerController : MonoBehaviour {
     
     void OnGUI()
     {
-        //GUI.skin = slotBackground;
+        GUI.skin = guiSkin;
         ItemDetails = "";
         
         if (showInventory)
@@ -310,12 +392,22 @@ public class PlayerController : MonoBehaviour {
                     }
                 }
             }
+            questUI.gameObject.SetActive(true);
+            for(int i = 0; i < currentQuests.Count; i++)
+            {
+                if(CheckQuest(qd.Quests[currentQuests[i]]))
+                    GUI.Label(new Rect(4 * Screen.width / 5, Screen.height / 5 + i * 20, 150, 50), qd.Quests[currentQuests[i]].desc, GUI.skin.customStyles[1]);
+
+                else
+                    GUI.Label(new Rect(4 * Screen.width / 5, Screen.height / 5 + i * 20, 150, 50), qd.Quests[currentQuests[i]].desc, GUI.skin.customStyles[2]);
+            } 
         }
 
         if (showItem)
         {
             GUI.Box(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 150, 50), ItemDetails);
         }
+        
     }
 
     void OnTriggerEnter(Collider other)
@@ -393,13 +485,36 @@ public class PlayerController : MonoBehaviour {
                 Quest q = prisoner.GetNextQuest();
 
                 if (q != null)
+                {
                     currentQuests.Add(q.questID);
+                    dialogueUI.gameObject.SetActive(true);
+                    dialogueText.text = q.acceptDialogue[0];
+                    dialogueIndex = 0;
+                    isTalking = true;
+                    dialogueType = DialogueType.accepting;
+                    currentQuestIndex = q.questID;
+                }
+                    
             }
             else if (CheckQuest(prisoner.activeQuest))
             {
+                dialogueUI.gameObject.SetActive(true);
+                dialogueText.text = prisoner.activeQuest.returnDialogue[0];
+                dialogueIndex = 0;
+                isTalking = true;
+                dialogueType = DialogueType.returning;
+                currentQuestIndex = prisoner.activeQuest.questID;
                 currentQuests.Remove(prisoner.activeQuest.questID);
                 RemoveQuestItem(prisoner.activeQuest.questItem);
                 prisoner.ReturnQuest();
+            }
+            else if (!CheckQuest(prisoner.activeQuest))
+            {
+                dialogueUI.gameObject.SetActive(true);
+                dialogueText.text = prisoner.activeQuest.standbyDialogue[0];
+                dialogueIndex = 0;
+                isTalking = true;
+                dialogueType = DialogueType.standby;
             }
         }
     }
@@ -436,7 +551,10 @@ public class PlayerController : MonoBehaviour {
         for(int i = 0; i < inventory.Count; i++)
         {
             if (inventory[i].name == item.name)
+            {
                 inventory.RemoveAt(i);
+                break;
+            }   
         }
     }
 
