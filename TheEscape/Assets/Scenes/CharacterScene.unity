@@ -1534,7 +1534,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   lookDistance: 10
-  dampling: 5
+  dampling: 4
   Quests: []
   activeQuest:
     prisonerID: 0
