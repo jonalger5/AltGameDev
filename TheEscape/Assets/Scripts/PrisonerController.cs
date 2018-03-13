@@ -15,7 +15,6 @@ public class PrisonerController : MonoBehaviour {
     public List<Quest> Quests = new List<Quest>();
     public Quest activeQuest;
     public bool questInProgress = false;
-    private QuestDatabase qd;
 
     private PlayerController _player;
 
@@ -23,8 +22,8 @@ public class PrisonerController : MonoBehaviour {
 	void Start ()
     {
         forwardRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, transform.rotation.z);
-		qd = GameObject.Find("Quest Database").GetComponent<QuestDatabase>();
-        foreach(Quest q in qd.Quests)
+        
+        foreach(Quest q in GameManager.gm.questDatabase.Quests)
         {
             if (q.prisonerID == id)
                 Quests.Add(q);
@@ -60,11 +59,11 @@ public class PrisonerController : MonoBehaviour {
 
     public void ReturnQuest()
     {
-        qd.Quests[activeQuest.questID].complete = true;
+        GameManager.gm.questDatabase.Quests[activeQuest.questID].complete = true;
 
         //Update Quests
         Quests = new List<Quest>();
-        foreach (Quest q in qd.Quests)
+        foreach (Quest q in GameManager.gm.questDatabase.Quests)
         {
             if (q.prisonerID == id)
                 Quests.Add(q);

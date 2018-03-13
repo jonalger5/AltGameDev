@@ -21,8 +21,6 @@ public class PlayerController : MonoBehaviour {
     public float speed;
     [SerializeField]
     public float sensitivity;
-    [SerializeField]
-    public float health;
     private Text healthUI;
     private Canvas deathScreenUI;
     private Canvas PauseScreenUI;
@@ -35,8 +33,6 @@ public class PlayerController : MonoBehaviour {
     private DialogueType dialogueType;
 
     //Quest Variables
-    private QuestDatabase qd;
-    public List<int> currentQuests = new List<int>();
     private int currentQuestIndex = 0;
     private Canvas questUI;
 
@@ -44,7 +40,6 @@ public class PlayerController : MonoBehaviour {
 
     public List<Item> inventory;
     private int slotX = 2, slotY = 3;
-    private ItemDatabase database;
     private bool showInventory = false;
     private bool showItem = false;
     private string ItemDetails;
@@ -110,8 +105,6 @@ public class PlayerController : MonoBehaviour {
         renderer = GetComponent<Renderer>();
         renderer.material.color = Color.yellow;
         inventory = new List<Item>();
-        database = GameObject.Find("Item Database").GetComponent<ItemDatabase>();
-        qd = GameObject.Find("Quest Database").GetComponent<QuestDatabase>();
 
         StealItems = new List<Item>();
         Time.timeScale = 1;
@@ -173,7 +166,7 @@ public class PlayerController : MonoBehaviour {
 
         
         //Activate Death Screen
-        if (health <= 0)
+        if (GameManager.gm.playerHealth <= 0)
         {
             healthUI.text = "0";
             deathScreenUI.gameObject.SetActive(true);
@@ -181,7 +174,7 @@ public class PlayerController : MonoBehaviour {
         }
         //Updating HealthUI
         else
-            healthUI.text = health.ToString();
+            healthUI.text = GameManager.gm.playerHealth.ToString();
 
         //Used for Movement
         if (!isTalking)
@@ -228,24 +221,25 @@ public class PlayerController : MonoBehaviour {
             {
                 case DialogueType.accepting:
                     
-                    if (dialogueIndex != qd.Quests[currentQuestIndex].acceptDialogue.Count - 1)
+                    if (dialogueIndex != GameManager.gm.questDatabase.Quests[currentQuestIndex].acceptDialogue.Count - 1)
                     {
                         dialogueIndex++;
-                        dialogueText.text = qd.Quests[currentQuestIndex].acceptDialogue[dialogueIndex];
+                        dialogueText.text = GameManager.gm.questDatabase.Quests[currentQuestIndex].acceptDialogue[dialogueIndex];
                     }
                     else
                     {
                         dialogueUI.gameObject.SetActive(false);
                         isTalking = false;
+                        GameManager.gm.AdvanceScene();
                     }
                         
                     break;
 
                 case DialogueType.returning:
-                    if (dialogueIndex != qd.Quests[currentQuestIndex].returnDialogue.Count - 1)
+                    if (dialogueIndex != GameManager.gm.questDatabase.Quests[currentQuestIndex].returnDialogue.Count - 1)
                     {
                         dialogueIndex++;
-                        dialogueText.text = qd.Quests[currentQuestIndex].returnDialogue[dialogueIndex];
+                        dialogueText.text = GameManager.gm.questDatabase.Quests[currentQuestIndex].returnDialogue[dialogueIndex];
                     }
                     else
                     {
@@ -256,10 +250,10 @@ public class PlayerController : MonoBehaviour {
                     break;
 
                 case DialogueType.standby:
-                    if (dialogueIndex != qd.Quests[currentQuestIndex].standbyDialogue.Count - 1)
+                    if (dialogueIndex != GameManager.gm.questDatabase.Quests[currentQuestIndex].standbyDialogue.Count - 1)
                     {
                         dialogueIndex++;
-                        dialogueText.text = qd.Quests[currentQuestIndex].standbyDialogue[dialogueIndex];
+                        dialogueText.text = GameManager.gm.questDatabase.Quests[currentQuestIndex].standbyDialogue[dialogueIndex];
                     }
                     else
                     {
@@ -325,10 +319,10 @@ public class PlayerController : MonoBehaviour {
                             showItem = true;
                             
 
-                            if(Input.GetButtonUp("space") && inventory[Position].type == Item.ItemType.Consumable && health < 100 && CanAccess)
+                            if(Input.GetButtonUp("space") && inventory[Position].type == Item.ItemType.Consumable && GameManager.gm.playerHealth < 100 && CanAccess)
                             {
                                 CanAccess = !CanAccess;
-                                health += inventory[Position].value;
+                                GameManager.gm.playerHealth += inventory[Position].value;
                                 Remove(Position);
                                 showItem = false;
                             }
@@ -394,17 +388,17 @@ public class PlayerController : MonoBehaviour {
             }
             questUI.gameObject.SetActive(true);
             GUILayout.BeginArea(new Rect(4 * Screen.width / 5, Screen.height / 5, 170, 300));
-            for (int i = 0; i < currentQuests.Count; i++)
+            for (int i = 0; i < GameManager.gm.currentQuests.Count; i++)
             {
                 
-                if (CheckQuest(qd.Quests[currentQuests[i]]))
+                if (CheckQuest(GameManager.gm.questDatabase.Quests[GameManager.gm.currentQuests[i]]))
                 {
-                    GUILayout.Label(qd.Quests[currentQuests[i]].desc, GUI.skin.customStyles[1], GUILayout.MaxWidth(170));
+                    GUILayout.Label(GameManager.gm.questDatabase.Quests[GameManager.gm.currentQuests[i]].desc, GUI.skin.customStyles[1], GUILayout.MaxWidth(170));
                 }
 
                 else
                 {                    
-                    GUILayout.Label(qd.Quests[currentQuests[i]].desc, GUI.skin.customStyles[2], GUILayout.MaxWidth(170));                    
+                    GUILayout.Label(GameManager.gm.questDatabase.Quests[GameManager.gm.currentQuests[i]].desc, GUI.skin.customStyles[2], GUILayout.MaxWidth(170));                    
                 }
             }
             GUILayout.EndArea();
@@ -425,7 +419,7 @@ public class PlayerController : MonoBehaviour {
             for (int i = 0;i < PickupNum; i++)
             {
                 itemnum = Random.Range(0, 4);
-                inventory.Add(database.Items[itemnum]);
+                inventory.Add(GameManager.gm.itemDatabase.Items[itemnum]);
                 
             }
 
@@ -493,7 +487,7 @@ public class PlayerController : MonoBehaviour {
 
                 if (q != null)
                 {
-                    currentQuests.Add(q.questID);
+                    GameManager.gm.currentQuests.Add(q.questID);
                     dialogueUI.gameObject.SetActive(true);
                     dialogueText.text = q.acceptDialogue[0];
                     dialogueIndex = 0;
@@ -511,7 +505,7 @@ public class PlayerController : MonoBehaviour {
                 isTalking = true;
                 dialogueType = DialogueType.returning;
                 currentQuestIndex = prisoner.activeQuest.questID;
-                currentQuests.Remove(prisoner.activeQuest.questID);
+                GameManager.gm.currentQuests.Remove(prisoner.activeQuest.questID);
                 RemoveQuestItem(prisoner.activeQuest.questItem);
                 prisoner.ReturnQuest();
             }
@@ -530,7 +524,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("Guard"))
         {
-            health = 0;
+            GameManager.gm.playerHealth = 0;
         } 
     }
 
@@ -547,7 +541,7 @@ public class PlayerController : MonoBehaviour {
 
     private bool CheckQuest(Quest quest)
     {
-        if (currentQuests.Contains(quest.questID) && CheckInventory(quest.questItem))
+        if (GameManager.gm.currentQuests.Contains(quest.questID) && CheckInventory(quest.questItem))
             return true;
         else
             return false;

@@ -174,7 +174,7 @@ public class GuardController : MonoBehaviour {
                 {
                     if (_player.isStealing)
                     {
-                        _player.health -= stealingDamage;
+                        GameManager.gm.playerHealth -= stealingDamage;
                         _player.isStealing = false;
                         _player.stealTimer = 0;
                     }
