@@ -211,20 +211,50 @@ MonoBehaviour:
   - prisonerID: 0
     questID: 0
     questItem:
-      name: Test
+      name: Vodka
       type: 0
       value: 0
       icon: {fileID: 0}
     acceptDialogue:
-    - 'Prisoner: Sup'
-    - 'You: Oh Hey'
+    - 'Prisoner: I need you to do something for me.'
+    - 'You: Ok, what is it?'
+    - 'Prisoner: Yesterday, one of the Kapos punished my brother after evening roll
+      call and his condition is worsening '
+    - 'Prisoner: If you find any Vodka today, can you bring it to me so I can help
+      him ease his pain?'
+    - 'You: Of course, I''ll see what I can do.'
+    - 'Prisoner: Thank you!'
     returnDialogue:
-    - 'Prinsoner: Welcome Back'
-    - 'You: Me Again'
+    - 'Prisoner: Did you find any Vodka for my brother?'
+    - 'You: Yes I did! Here you go.'
+    - 'Prisoner: Thank you so much! My Brother will be so grateful for this!'
     standbyDialogue:
-    - 'Prisoner: Did you get the goods?'
+    - 'Prisoner: Did you find any Vodka for my brother?'
     - 'You: No, not yet'
-    desc: Get Test for Prisoner
+    desc: Get Vodka for the Prisoner's Brother
+    complete: 0
+  - prisonerID: 1
+    questID: 0
+    questItem:
+      name: Ammunition
+      type: 2
+      value: 0
+      icon: {fileID: 0}
+    acceptDialogue:
+    - 'Prisoner: Oh Hey, I''ve been looking for.'
+    - 'You: Ok, what''s up?'
+    - 'Prisoner: The Escape plan is starting to come together.'
+    - 'Prisoner: Sneak into Garrison Area tonight and bring me some ammunition.'
+    - 'You: Ok, I''ll go get the ammunition tonight.'
+    - 'Prisoner: Great! Be careful...'
+    returnDialogue:
+    - 'Prisoner: Do you have the ammunition?'
+    - 'You: Yes, I was able to find some. '
+    - 'Prisoner: Thank you so much! I''ll let you know if there''s anything else we''ll
+      need for the Escape Plan.'
+    standbyDialogue:
+    - 'Prisoner: Come back when you have the ammunition.'
+    desc: Get Ammunition for the Escape Plan
     complete: 0
 --- !u!4 &96369038
 Transform:
@@ -662,7 +692,7 @@ RectTransform:
   m_GameObject: {fileID: 698954538}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -164.06248, z: 0}
-  m_LocalScale: {x: 3.2226565, y: 0.6328098, z: 0.9375}
+  m_LocalScale: {x: 3.8268845, y: 1.0031916, z: 0.9375}
   m_Children: []
   m_Father: {fileID: 665566472}
   m_RootOrder: 0
@@ -1083,7 +1113,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1090852687}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -163.12498, z: 0}
+  m_LocalPosition: {x: 1.699997, y: -164.06006, z: 0}
   m_LocalScale: {x: 0.9375, y: 0.9375, z: 0.9375}
   m_Children: []
   m_Father: {fileID: 665566472}
@@ -1091,8 +1121,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -163.12498}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 1.7, y: -164.06006}
+  m_SizeDelta: {x: 350.4, y: 106.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1090852689
 MonoBehaviour:
@@ -1123,7 +1153,7 @@ MonoBehaviour:
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 1
+    m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: New Text
@@ -1532,7 +1562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b802a66cac2bbc849b88fdd4f1bb4f0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
+  id: 1
   lookDistance: 10
   dampling: 4
   Quests: []

@@ -61,7 +61,14 @@ public class PrisonerController : MonoBehaviour {
     public void ReturnQuest()
     {
         qd.Quests[activeQuest.questID].complete = true;
-        Quests[activeQuest.questID].complete = true;
+
+        //Update Quests
+        Quests = new List<Quest>();
+        foreach (Quest q in qd.Quests)
+        {
+            if (q.prisonerID == id)
+                Quests.Add(q);
+        }
         activeQuest = null;
         questInProgress = false;
     }

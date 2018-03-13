@@ -393,14 +393,21 @@ public class PlayerController : MonoBehaviour {
                 }
             }
             questUI.gameObject.SetActive(true);
-            for(int i = 0; i < currentQuests.Count; i++)
+            GUILayout.BeginArea(new Rect(4 * Screen.width / 5, Screen.height / 5, 170, 300));
+            for (int i = 0; i < currentQuests.Count; i++)
             {
-                if(CheckQuest(qd.Quests[currentQuests[i]]))
-                    GUI.Label(new Rect(4 * Screen.width / 5, Screen.height / 5 + i * 20, 150, 50), qd.Quests[currentQuests[i]].desc, GUI.skin.customStyles[1]);
+                
+                if (CheckQuest(qd.Quests[currentQuests[i]]))
+                {
+                    GUILayout.Label(qd.Quests[currentQuests[i]].desc, GUI.skin.customStyles[1], GUILayout.MaxWidth(170));
+                }
 
                 else
-                    GUI.Label(new Rect(4 * Screen.width / 5, Screen.height / 5 + i * 20, 150, 50), qd.Quests[currentQuests[i]].desc, GUI.skin.customStyles[2]);
-            } 
+                {                    
+                    GUILayout.Label(qd.Quests[currentQuests[i]].desc, GUI.skin.customStyles[2], GUILayout.MaxWidth(170));                    
+                }
+            }
+            GUILayout.EndArea();
         }
 
         if (showItem)
@@ -508,7 +515,7 @@ public class PlayerController : MonoBehaviour {
                 RemoveQuestItem(prisoner.activeQuest.questItem);
                 prisoner.ReturnQuest();
             }
-            else if (!CheckQuest(prisoner.activeQuest))
+            else if (!CheckQuest(prisoner.activeQuest) && !prisoner.activeQuest.complete)
             {
                 dialogueUI.gameObject.SetActive(true);
                 dialogueText.text = prisoner.activeQuest.standbyDialogue[0];
@@ -567,6 +574,7 @@ public class PlayerController : MonoBehaviour {
         }
         return false;
     }
+
     public void DisplayEndScreen()
     {
         showInventory = !showInventory;
