@@ -91,21 +91,21 @@ public class PlayerController : MonoBehaviour {
         questUI = GameObject.Find("QuestUI").GetComponent<Canvas>();
         questUI.gameObject.SetActive(false);
 
-        //deathScreenUI = GameObject.Find("DeathScreenUI").GetComponent<Canvas>();
-        //deathScreenUI.gameObject.SetActive(false);
+        deathScreenUI = GameObject.Find("DeathScreenUI").GetComponent<Canvas>();
+        deathScreenUI.gameObject.SetActive(false);
 
-        //PauseScreenUI = GameObject.Find("PauseScreen").GetComponent<Canvas>();
-        //PauseScreenUI.gameObject.SetActive(false);
-        //isPaused = false;
+        PauseScreenUI = GameObject.Find("PauseScreen").GetComponent<Canvas>();
+        PauseScreenUI.gameObject.SetActive(false);
+        isPaused = false;
 
-        //VictoryScreenUI = GameObject.Find("VictoryScreen").GetComponent<Canvas>();
-        //VictoryScreenUI.gameObject.SetActive(false);
+        VictoryScreenUI = GameObject.Find("VictoryScreen").GetComponent<Canvas>();
+        VictoryScreenUI.gameObject.SetActive(false);
 
-        //EndScreen = GameObject.Find("LoseScreen1").GetComponent<Canvas>();
-        //EndScreen.gameObject.SetActive(false);
+        EndScreen = GameObject.Find("LoseScreen1").GetComponent<Canvas>();
+        EndScreen.gameObject.SetActive(false);
 
-        //EndScreen1 = GameObject.Find("LoseScreen2").GetComponent<Canvas>();
-        //EndScreen1.gameObject.SetActive(false);
+        EndScreen1 = GameObject.Find("LoseScreen2").GetComponent<Canvas>();
+        EndScreen1.gameObject.SetActive(false);
 
         renderer = GetComponent<Renderer>();
         renderer.material.color = Color.yellow;
@@ -116,20 +116,20 @@ public class PlayerController : MonoBehaviour {
         StealItems = new List<Item>();
         Time.timeScale = 1;
 
-        //deathScreenUI.gameObject.SetActive(false);
-        //PauseScreenUI.gameObject.SetActive(false);
-        //VictoryScreenUI.gameObject.SetActive(false);
-        //EndScreen.gameObject.SetActive(false);
-        //EndScreen1.gameObject.SetActive(false);
+        deathScreenUI.gameObject.SetActive(false);
+        PauseScreenUI.gameObject.SetActive(false);
+        VictoryScreenUI.gameObject.SetActive(false);
+        EndScreen.gameObject.SetActive(false);
+        EndScreen1.gameObject.SetActive(false);
 
-        //timer = 60;
-        //depositQuota = 51;
-        //UpdateTimerText();
-        //UpdateQuotaText();
+        timer = 60;
+        depositQuota = 51;
+        UpdateTimerText();
+        UpdateQuotaText();
 
-        //Cursor.visible = false;
-        //timerdecrement = 0;
-        //timerdecrement = Time.fixedUnscaledDeltaTime;
+        Cursor.visible = false;
+        timerdecrement = 0;
+        timerdecrement = Time.fixedUnscaledDeltaTime;
 
 
         NumOfItems = 6;

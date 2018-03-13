@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1295888063616152}
+  m_IsPrefabParent: 1
+--- !u!1 &1295888063616152
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4477599601592152}
+  - component: {fileID: 114061576361174074}
+  m_Layer: 0
+  m_Name: Quest Database
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4477599601592152
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1295888063616152}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.1552877, y: 1.7282138, z: -17.165295}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114061576361174074
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1295888063616152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 128131a29e389e54aba2fddec7584511, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Quests:
+  - prisonerID: 0
+    questID: 0
+    questItem:
+      name: Vodka
+      type: 0
+      value: 0
+      icon: {fileID: 0}
+    acceptDialogue:
+    - 'Prisoner: I need you to do something for me.'
+    - 'You: Ok, what is it?'
+    - 'Prisoner: Yesterday, one of the Kapos punished my brother after evening roll
+      call and his condition is worsening '
+    - 'Prisoner: If you find any Vodka today, can you bring it to me so I can help
+      him ease his pain?'
+    - 'You: Of course, I''ll see what I can do.'
+    - 'Prisoner: Thank you!'
+    returnDialogue:
+    - 'Prisoner: Did you find any Vodka for my brother?'
+    - 'You: Yes I did! Here you go.'
+    - 'Prisoner: Thank you so much! My Brother will be so grateful for this!'
+    standbyDialogue:
+    - 'Prisoner: Did you find any Vodka for my brother?'
+    - 'You: No, not yet'
+    desc: Get Vodka for the Prisoner's Brother
+    complete: 0
+  - prisonerID: 1
+    questID: 0
+    questItem:
+      name: Ammunition
+      type: 2
+      value: 0
+      icon: {fileID: 0}
+    acceptDialogue:
+    - 'Prisoner: Oh Hey, I''ve been looking for.'
+    - 'You: Ok, what''s up?'
+    - 'Prisoner: The Escape plan is starting to come together.'
+    - 'Prisoner: Sneak into Garrison Area tonight and bring me some ammunition.'
+    - 'You: Ok, I''ll go get the ammunition tonight.'
+    - 'Prisoner: Great! Be careful...'
+    returnDialogue:
+    - 'Prisoner: Do you have the ammunition?'
+    - 'You: Yes, I was able to find some. '
+    - 'Prisoner: Thank you so much! I''ll let you know if there''s anything else we''ll
+      need for the Escape Plan.'
+    standbyDialogue:
+    - 'Prisoner: Come back when you have the ammunition.'
+    desc: Get Ammunition for the Escape Plan
+    complete: 0
