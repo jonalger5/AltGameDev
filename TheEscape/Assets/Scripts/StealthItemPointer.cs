@@ -30,9 +30,6 @@ public class StealthItemPointer : MonoBehaviour {
         forward.y = 0;
         float headingAngle = Quaternion.LookRotation(forward).eulerAngles.y;
         headingAngle = headingAngle - 270;
-        print("headingAngle: " + headingAngle);
-        print("prevAngle: " + prevHeadAngle);
-        print("angle: " + angle);
         float angleToRotate = (angle - prevAngle);
         if (angle <= 180)
         {
