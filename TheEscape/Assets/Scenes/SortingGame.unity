@@ -2619,6 +2619,21 @@ Prefab:
       propertyPath: quotaText
       value: 
       objectReference: {fileID: 2049936321}
+    - target: {fileID: 114824495819328602, guid: d2fdbaca32df55d40adbe293841617d5,
+        type: 2}
+      propertyPath: isSortingGame
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114824495819328602, guid: d2fdbaca32df55d40adbe293841617d5,
+        type: 2}
+      propertyPath: depositQuota
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114824495819328602, guid: d2fdbaca32df55d40adbe293841617d5,
+        type: 2}
+      propertyPath: timer
+      value: 60
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d2fdbaca32df55d40adbe293841617d5, type: 2}
   m_IsPrefabParent: 0

@@ -85,7 +85,7 @@ MonoBehaviour:
       value: 0
       icon: {fileID: 0}
     acceptDialogue:
-    - 'Prisoner: Oh Hey, I''ve been looking for.'
+    - 'Prisoner: Oh Hey, I''ve been looking for you.'
     - 'You: Ok, what''s up?'
     - 'Prisoner: The Escape plan is starting to come together.'
     - 'Prisoner: Sneak into Garrison Area tonight and bring me some ammunition.'

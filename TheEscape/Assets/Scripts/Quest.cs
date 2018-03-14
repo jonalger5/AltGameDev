@@ -12,5 +12,6 @@ public class Quest{
     public List<string> returnDialogue;
     public List<string> standbyDialogue;
     public string desc;
+    public bool inProgress;
     public bool complete;
 }

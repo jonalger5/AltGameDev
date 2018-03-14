@@ -8,7 +8,11 @@ TagManager:
   - Guard
   - Interactable
   - Prisoner
+<<<<<<< HEAD
   - StealthItem
+=======
+  - RollCallPoint
+>>>>>>> f1138b74f7303399804657b4126ecf2ccc6ee192
   layers:
   - Default
   - TransparentFX

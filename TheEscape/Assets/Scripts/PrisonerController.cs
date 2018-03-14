@@ -14,7 +14,7 @@ public class PrisonerController : MonoBehaviour {
 
     public List<Quest> Quests = new List<Quest>();
     public Quest activeQuest;
-    public bool questInProgress = false;
+    public bool hasReturnedQuest = false;
 
     private PlayerController _player;
 
@@ -23,12 +23,20 @@ public class PrisonerController : MonoBehaviour {
     {
         forwardRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, transform.rotation.z);
         
-        foreach(Quest q in GameManager.gm.questDatabase.Quests)
+        foreach(Quest q in GameManager.gm.qdInstance.Quests)
         {
             if (q.prisonerID == id)
                 Quests.Add(q);
         }
 
+        foreach(Quest q in Quests)
+        {
+            if (q.inProgress)
+            {
+                activeQuest = q;
+                break;
+            }
+        }
         _player = GameObject.Find("MainCharacter").GetComponent<PlayerController>();
     }
 	
@@ -47,10 +55,10 @@ public class PrisonerController : MonoBehaviour {
     {
         foreach(Quest q in Quests)
         {
-            if (!q.complete)
+            if (!q.complete && !q.inProgress)
             {
                 activeQuest = q;
-                questInProgress = true;
+                GameManager.gm.qdInstance.Quests[q.questID].inProgress = true;
                 return q;
             }
         }
@@ -59,17 +67,18 @@ public class PrisonerController : MonoBehaviour {
 
     public void ReturnQuest()
     {
-        GameManager.gm.questDatabase.Quests[activeQuest.questID].complete = true;
+        GameManager.gm.qdInstance.Quests[activeQuest.questID].complete = true;
+        GameManager.gm.qdInstance.Quests[activeQuest.questID].inProgress = false;
 
         //Update Quests
         Quests = new List<Quest>();
-        foreach (Quest q in GameManager.gm.questDatabase.Quests)
+        foreach (Quest q in GameManager.gm.qdInstance.Quests)
         {
             if (q.prisonerID == id)
                 Quests.Add(q);
         }
         activeQuest = null;
-        questInProgress = false;
+        hasReturnedQuest = true;
     }
 
     private void LookAtPlayer()
