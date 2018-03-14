@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
     public int sceneIndex;
     public float playerHealth;
     public List<int> currentQuests;
+    public ItemDatabase itemDatabase;
     public QuestDatabase questDatabase;
     public QuestDatabaseInstance qdInstance;
 
@@ -21,6 +22,7 @@ public class GameManager : MonoBehaviour {
             InitializeValues();
             DontDestroyOnLoad(gameObject);
         }
+        itemDatabase = GameObject.Find("Item Database").GetComponent<ItemDatabase>();
     }
 	
     void InitializeValues()
@@ -36,6 +38,6 @@ public class GameManager : MonoBehaviour {
     public void AdvanceScene()
     {
         sceneIndex++;
-        SceneManager.LoadScene(sceneIndex);
+        SceneManager.LoadScene("CharacterScene");
     }
 }

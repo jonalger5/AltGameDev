@@ -9,12 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: aeda3bd799c504e43a62f29c39fae9aa
   - enabled: 1
-    path: Assets/Scenes/Day1-Morning.unity
-    guid: b709afc3e3799794b99c923d384b510e
-  - enabled: 1
-    path: Assets/Scenes/Day1-Evening.unity
-    guid: c98769f5cce2d3e47a8a822aa66a4969
-  - enabled: 0
     path: Assets/Scenes/CharacterScene.unity
     guid: ba7d3712b0b886546be41ab4ed282da3
   - enabled: 1
