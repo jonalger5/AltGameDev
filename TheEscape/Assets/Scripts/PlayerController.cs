@@ -471,33 +471,18 @@ public class PlayerController : MonoBehaviour {
             int PickupNum = NumOfItems - inventory.Count;
             for (int i = 0;i < PickupNum; i++)
             {
-                itemnum = UnityEngine.Random.Range(0, 4);
-                inventory.Add(itemDatabase.Items[itemnum]);
-                itemnum = UnityEngine.Random.Range(0, 4);
-                inventory.Add(itemDatabase.Items[itemnum]);
+                itemnum = UnityEngine.Random.Range(0, 5);
                 inventory.Add(itemDatabase.Items[itemnum]);
             }
 
         }
-
-        if(other.gameObject.name == "RedPile")
-        {
-            for(int i = 0;i < inventory.Count; i++)
-            {
-                if(inventory[i].name == "Red")
-                {
-                    inventory.RemoveAt(i);
-                    i -= 1;
-                    UpdateQuotaText();
-                }
-            }
-        }
+        
 
         if (other.gameObject.name == "BluePile")
         {
             for (int i = 0; i < inventory.Count; i++)
             {
-                if (inventory[i].name == "Blue")
+                if (inventory[i].type.ToString() == "Consumable")
                 {
                     inventory.RemoveAt(i);
                     i -= 1;
@@ -510,7 +495,7 @@ public class PlayerController : MonoBehaviour {
         {
             for (int i = 0; i < inventory.Count; i++)
             {
-                if (inventory[i].name == "Yellow")
+                if (inventory[i].type.ToString() == "Valuable")
                 {
                     inventory.RemoveAt(i);
                     i -= 1;
@@ -523,7 +508,7 @@ public class PlayerController : MonoBehaviour {
         {
             for (int i = 0; i < inventory.Count; i++)
             {
-                if (inventory[i].name == "Green")
+                if (inventory[i].type.ToString() == "Other")
                 {
                     inventory.RemoveAt(i);
                     i -= 1;
@@ -603,6 +588,9 @@ public class PlayerController : MonoBehaviour {
 
         if (item.type == Item.ItemType.Consumable)
             ItemDetails = item.name + "\n" + "Type: Consumable\n Health: " + item.value;
+
+        if (item.type == Item.ItemType.Other)
+            ItemDetails = item.name + "\n" + "Type: Other";
 
         return ItemDetails;
     }
