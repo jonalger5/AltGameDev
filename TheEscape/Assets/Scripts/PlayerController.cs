@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -22,6 +23,12 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     public float sensitivity;
     private Text healthUI;
+
+    internal static void PickUpStealthItem(Item item)
+    {
+        inventory.Add(item);
+    }
+
     private Canvas deathScreenUI;
     private Canvas PauseScreenUI;
 
@@ -38,7 +45,7 @@ public class PlayerController : MonoBehaviour {
 
     private new Renderer renderer;
 
-    public List<Item> inventory;
+    public static List<Item> inventory;
     private int slotX = 2, slotY = 3;
     private bool showInventory = false;
     private bool showItem = false;
@@ -138,17 +145,31 @@ public class PlayerController : MonoBehaviour {
 
     void UpdateTimerText()
     {
-        timerText.text = "Time Left: " + timer.ToString("F2");
+        if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("StealthMiniGame"))
+        {
+            timerText.text = "Time Left: " + timer.ToString("F2");
+        }
+        else
+        {
+            timerText.text = "";
+        }
     }
 
     void UpdateQuotaText()
     {
-        depositQuota--;
-        if (depositQuota < 0)
+        if (SceneManager.GetActiveScene() != SceneManager.GetSceneByName("StealthMiniGame"))
         {
-            depositQuota = 0;
+            depositQuota--;
+            if (depositQuota < 0)
+            {
+                depositQuota = 0;
+            }
+            quotaText.text = "Remaining Items: " + depositQuota.ToString();
         }
-        quotaText.text = "Remaining Items: " + depositQuota.ToString();
+        else
+        {
+            quotaText.text = "";
+        }
     }
     // Update is called once per frame
     void Update ()
@@ -418,7 +439,7 @@ public class PlayerController : MonoBehaviour {
             int PickupNum = NumOfItems - inventory.Count;
             for (int i = 0;i < PickupNum; i++)
             {
-                itemnum = Random.Range(0, 4);
+                itemnum = UnityEngine.Random.Range(0, 4);
                 inventory.Add(GameManager.gm.itemDatabase.Items[itemnum]);
                 
             }
@@ -526,6 +547,12 @@ public class PlayerController : MonoBehaviour {
         {
             GameManager.gm.playerHealth = 0;
         } 
+
+        if (other.gameObject.CompareTag("StealthItem"))
+        {
+            Destroy(other.collider.gameObject);
+            
+        }
     }
 
     private string ShowItem(Item item)
@@ -580,7 +607,7 @@ public class PlayerController : MonoBehaviour {
 
         if (depositQuota == 0)
         {
-            if(Random.value > percentages[StealItems.Count])
+            if(UnityEngine.Random.value > percentages[StealItems.Count])
             {
                 VictoryScreenUI.gameObject.SetActive(true);
             }
