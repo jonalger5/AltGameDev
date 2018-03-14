@@ -35,9 +35,11 @@ public class PlayerController : MonoBehaviour {
     //Quest Variables
     private int currentQuestIndex = 0;
     private Canvas questUI;
+    private GameObject rollCallPoint;
 
     private new Renderer renderer;
 
+    private ItemDatabase itemDatabase;
     public List<Item> inventory;
     private int slotX = 2, slotY = 3;
     private bool showInventory = false;
@@ -83,8 +85,11 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
+        itemDatabase = GameObject.Find("Item Database").GetComponent<ItemDatabase>();
+
         healthUI = GameObject.Find("/HealthUI/Health").GetComponent<Text>();
-        
+        timerText = GameObject.Find("/HealthUI/Timer").GetComponent<Text>();
+        quotaText = GameObject.Find("/HealthUI/Quota").GetComponent<Text>();
         dialogueUI = GameObject.Find("DialogueUI").GetComponent<Canvas>();
         dialogueText = GameObject.Find("/DialogueUI/DialogueText").GetComponent<Text>();
         dialogueUI.gameObject.SetActive(false);
@@ -121,13 +126,18 @@ public class PlayerController : MonoBehaviour {
         EndScreen1.gameObject.SetActive(false);
 
         if (isSortingGame)
-        {
-            timerText = GameObject.Find("/HealthUI/Timer").GetComponent<Text>();
-            quotaText = GameObject.Find("/HealthUI/Quota").GetComponent<Text>();
+        {            
             UpdateTimerText();
             UpdateQuotaText();
             timerdecrement = 0;
             timerdecrement = Time.fixedUnscaledDeltaTime;
+        }
+        else
+        {
+            timerText.gameObject.SetActive(false);
+            quotaText.gameObject.SetActive(false);
+            rollCallPoint = GameObject.Find("RollCallPoint");
+            rollCallPoint.gameObject.SetActive(false);
         }
         
 
@@ -240,7 +250,7 @@ public class PlayerController : MonoBehaviour {
                     {
                         dialogueUI.gameObject.SetActive(false);
                         isTalking = false;
-                        GameManager.gm.AdvanceScene();
+                        rollCallPoint.gameObject.SetActive(true); 
                     }
                         
                     break;
@@ -429,7 +439,7 @@ public class PlayerController : MonoBehaviour {
             for (int i = 0;i < PickupNum; i++)
             {
                 itemnum = Random.Range(0, 4);
-                inventory.Add(GameManager.gm.itemDatabase.Items[itemnum]);
+                inventory.Add(itemDatabase.Items[itemnum]);
                 
             }
 
@@ -538,7 +548,11 @@ public class PlayerController : MonoBehaviour {
         if (other.gameObject.CompareTag("Guard"))
         {
             GameManager.gm.playerHealth = 0;
-        } 
+        }
+        if (other.gameObject.CompareTag("RollCallPoint"))
+        {
+            GameManager.gm.AdvanceScene();
+        }
     }
 
     private string ShowItem(Item item)
