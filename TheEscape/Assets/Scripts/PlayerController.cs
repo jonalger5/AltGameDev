@@ -37,8 +37,6 @@ public class PlayerController : MonoBehaviour {
     private Canvas questUI;
     private GameObject rollCallPoint;
 
-    private new Renderer renderer;
-
     private ItemDatabase itemDatabase;
     public List<Item> inventory;
     private int slotX = 2, slotY = 3;
@@ -82,6 +80,8 @@ public class PlayerController : MonoBehaviour {
 
     private Dictionary<int, double> percentages;
 
+    private Animator _anim;
+
     // Use this for initialization
     void Start () {
 
@@ -112,8 +112,6 @@ public class PlayerController : MonoBehaviour {
         EndScreen1 = GameObject.Find("LoseScreen2").GetComponent<Canvas>();
         EndScreen1.gameObject.SetActive(false);
 
-        renderer = GetComponent<Renderer>();
-        renderer.material.color = Color.yellow;
         inventory = new List<Item>();
 
         StealItems = new List<Item>();
@@ -152,6 +150,8 @@ public class PlayerController : MonoBehaviour {
         percentages.Add(4, .50);
         percentages.Add(5, .75);
         percentages.Add(6, .95);
+
+        _anim = GetComponent<Animator>();
     }
 
     void UpdateTimerText()
@@ -199,8 +199,12 @@ public class PlayerController : MonoBehaviour {
         //Used for Movement
         if (!isTalking)
         {
-            transform.Translate(Vector3.forward * Time.deltaTime * Input.GetAxis("Vertical") * speed);
-            transform.Translate(Vector3.right * Time.deltaTime * Input.GetAxis("Horizontal") * speed);
+            float h = Input.GetAxis("Horizontal");
+            float v = Input.GetAxis("Vertical");
+            transform.Translate(Vector3.forward * Time.deltaTime * v * speed);
+            transform.Translate(Vector3.right * Time.deltaTime * h * speed);
+            Debug.Log(v);
+            _anim.SetFloat("Walk", v);
         }
 
         if (!showInventory && !isTalking)
