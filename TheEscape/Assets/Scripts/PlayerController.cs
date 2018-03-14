@@ -44,16 +44,8 @@ public class PlayerController : MonoBehaviour {
     private Canvas questUI;
 
     private new Renderer renderer;
-
-<<<<<<< HEAD
-<<<<<<< HEAD
     public static List<Item> inventory;
-=======
     private ItemDatabase itemDatabase;
-=======
->>>>>>> parent of f1138b7... Added Roll Call Point to Advance the Scene
-    public List<Item> inventory;
->>>>>>> f1138b74f7303399804657b4126ecf2ccc6ee192
     private int slotX = 2, slotY = 3;
     private bool showInventory = false;
     private bool showItem = false;
@@ -457,18 +449,11 @@ public class PlayerController : MonoBehaviour {
             int PickupNum = NumOfItems - inventory.Count;
             for (int i = 0;i < PickupNum; i++)
             {
-<<<<<<< HEAD
                 itemnum = UnityEngine.Random.Range(0, 4);
                 inventory.Add(GameManager.gm.itemDatabase.Items[itemnum]);
-=======
-                itemnum = Random.Range(0, 4);
-<<<<<<< HEAD
+                itemnum = UnityEngine.Random.Range(0, 4);
                 inventory.Add(itemDatabase.Items[itemnum]);
->>>>>>> f1138b74f7303399804657b4126ecf2ccc6ee192
-=======
                 inventory.Add(GameManager.gm.itemDatabase.Items[itemnum]);
->>>>>>> parent of f1138b7... Added Roll Call Point to Advance the Scene
-                
             }
 
         }
@@ -576,24 +561,17 @@ public class PlayerController : MonoBehaviour {
         if (other.gameObject.CompareTag("Guard"))
         {
             GameManager.gm.playerHealth = 0;
-<<<<<<< HEAD
-<<<<<<< HEAD
         } 
 
         if (other.gameObject.CompareTag("StealthItem"))
         {
             Destroy(other.collider.gameObject);
-            
-=======
         }
         if (other.gameObject.CompareTag("RollCallPoint"))
         {
             GameManager.gm.AdvanceScene();
->>>>>>> f1138b74f7303399804657b4126ecf2ccc6ee192
+
         }
-=======
-        } 
->>>>>>> parent of f1138b7... Added Roll Call Point to Advance the Scene
     }
 
     private string ShowItem(Item item)
