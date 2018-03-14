@@ -42,14 +42,16 @@ public class PlayerController : MonoBehaviour {
     //Quest Variables
     private int currentQuestIndex = 0;
     private Canvas questUI;
-    private GameObject rollCallPoint;
 
     private new Renderer renderer;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public static List<Item> inventory;
 =======
     private ItemDatabase itemDatabase;
+=======
+>>>>>>> parent of f1138b7... Added Roll Call Point to Advance the Scene
     public List<Item> inventory;
 >>>>>>> f1138b74f7303399804657b4126ecf2ccc6ee192
     private int slotX = 2, slotY = 3;
@@ -96,11 +98,8 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        itemDatabase = GameObject.Find("Item Database").GetComponent<ItemDatabase>();
-
         healthUI = GameObject.Find("/HealthUI/Health").GetComponent<Text>();
-        timerText = GameObject.Find("/HealthUI/Timer").GetComponent<Text>();
-        quotaText = GameObject.Find("/HealthUI/Quota").GetComponent<Text>();
+        
         dialogueUI = GameObject.Find("DialogueUI").GetComponent<Canvas>();
         dialogueText = GameObject.Find("/DialogueUI/DialogueText").GetComponent<Text>();
         dialogueUI.gameObject.SetActive(false);
@@ -137,18 +136,13 @@ public class PlayerController : MonoBehaviour {
         EndScreen1.gameObject.SetActive(false);
 
         if (isSortingGame)
-        {            
+        {
+            timerText = GameObject.Find("/HealthUI/Timer").GetComponent<Text>();
+            quotaText = GameObject.Find("/HealthUI/Quota").GetComponent<Text>();
             UpdateTimerText();
             UpdateQuotaText();
             timerdecrement = 0;
             timerdecrement = Time.fixedUnscaledDeltaTime;
-        }
-        else
-        {
-            timerText.gameObject.SetActive(false);
-            quotaText.gameObject.SetActive(false);
-            rollCallPoint = GameObject.Find("RollCallPoint");
-            rollCallPoint.gameObject.SetActive(false);
         }
         
 
@@ -275,7 +269,7 @@ public class PlayerController : MonoBehaviour {
                     {
                         dialogueUI.gameObject.SetActive(false);
                         isTalking = false;
-                        rollCallPoint.gameObject.SetActive(true); 
+                        GameManager.gm.AdvanceScene();
                     }
                         
                     break;
@@ -468,8 +462,12 @@ public class PlayerController : MonoBehaviour {
                 inventory.Add(GameManager.gm.itemDatabase.Items[itemnum]);
 =======
                 itemnum = Random.Range(0, 4);
+<<<<<<< HEAD
                 inventory.Add(itemDatabase.Items[itemnum]);
 >>>>>>> f1138b74f7303399804657b4126ecf2ccc6ee192
+=======
+                inventory.Add(GameManager.gm.itemDatabase.Items[itemnum]);
+>>>>>>> parent of f1138b7... Added Roll Call Point to Advance the Scene
                 
             }
 
@@ -579,6 +577,7 @@ public class PlayerController : MonoBehaviour {
         {
             GameManager.gm.playerHealth = 0;
 <<<<<<< HEAD
+<<<<<<< HEAD
         } 
 
         if (other.gameObject.CompareTag("StealthItem"))
@@ -592,6 +591,9 @@ public class PlayerController : MonoBehaviour {
             GameManager.gm.AdvanceScene();
 >>>>>>> f1138b74f7303399804657b4126ecf2ccc6ee192
         }
+=======
+        } 
+>>>>>>> parent of f1138b7... Added Roll Call Point to Advance the Scene
     }
 
     private string ShowItem(Item item)
