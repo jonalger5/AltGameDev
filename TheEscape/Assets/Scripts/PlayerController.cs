@@ -42,12 +42,10 @@ public class PlayerController : MonoBehaviour {
     //Quest Variables
     private int currentQuestIndex = 0;
     private Canvas questUI;
+    private GameObject rollCallPoint;
 
-<<<<<<< HEAD
-=======
     private new Renderer renderer;
     public static List<Item> inventory;
->>>>>>> df731ba8c4f0eda0b8e0180cc72a8330cb62fcdd
     private ItemDatabase itemDatabase;
     private int slotX = 2, slotY = 3;
     private bool showInventory = false;
@@ -94,9 +92,10 @@ public class PlayerController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-
+        itemDatabase = GameObject.Find("Item Database").GetComponent<ItemDatabase>();
         healthUI = GameObject.Find("/HealthUI/Health").GetComponent<Text>();
-        
+        timerText = GameObject.Find("/HealthUI/Timer").GetComponent<Text>();
+        quotaText = GameObject.Find("/HealthUI/Quota").GetComponent<Text>();
         dialogueUI = GameObject.Find("DialogueUI").GetComponent<Canvas>();
         dialogueText = GameObject.Find("/DialogueUI/DialogueText").GetComponent<Text>();
         dialogueUI.gameObject.SetActive(false);
@@ -131,15 +130,19 @@ public class PlayerController : MonoBehaviour {
         EndScreen1.gameObject.SetActive(false);
 
         if (isSortingGame)
-        {
-            timerText = GameObject.Find("/HealthUI/Timer").GetComponent<Text>();
-            quotaText = GameObject.Find("/HealthUI/Quota").GetComponent<Text>();
+        {            
             UpdateTimerText();
             UpdateQuotaText();
             timerdecrement = 0;
             timerdecrement = Time.fixedUnscaledDeltaTime;
         }
-        
+        else
+        {
+            timerText.gameObject.SetActive(false);
+            quotaText.gameObject.SetActive(false);
+            rollCallPoint = GameObject.Find("RollCallPoint");
+            rollCallPoint.gameObject.SetActive(false);
+        }
 
         Cursor.visible = false;
 
@@ -219,9 +222,11 @@ public class PlayerController : MonoBehaviour {
             float v = Input.GetAxis("Vertical");
             transform.Translate(Vector3.forward * Time.deltaTime * v * speed);
             transform.Translate(Vector3.right * Time.deltaTime * h * speed);
-            Debug.Log(v);
+            
             _anim.SetFloat("Walk", v);
         }
+        else
+            _anim.SetFloat("Walk", 0);
 
         if (!showInventory && !isTalking)
             transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
@@ -270,7 +275,7 @@ public class PlayerController : MonoBehaviour {
                     {
                         dialogueUI.gameObject.SetActive(false);
                         isTalking = false;
-                        GameManager.gm.AdvanceScene();
+                        rollCallPoint.gameObject.SetActive(true);
                     }
                         
                     break;
@@ -459,10 +464,10 @@ public class PlayerController : MonoBehaviour {
             for (int i = 0;i < PickupNum; i++)
             {
                 itemnum = UnityEngine.Random.Range(0, 4);
-                inventory.Add(GameManager.gm.itemDatabase.Items[itemnum]);
+                inventory.Add(itemDatabase.Items[itemnum]);
                 itemnum = UnityEngine.Random.Range(0, 4);
                 inventory.Add(itemDatabase.Items[itemnum]);
-                inventory.Add(GameManager.gm.itemDatabase.Items[itemnum]);
+                inventory.Add(itemDatabase.Items[itemnum]);
             }
 
         }
