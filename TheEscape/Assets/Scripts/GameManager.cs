@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour {
     public List<int> currentQuests;
     public ItemDatabase itemDatabase;
     public QuestDatabase questDatabase;
-    public bool isSortingGame;
+    public QuestDatabaseInstance qdInstance;
 
     public static GameManager gm;
 
@@ -31,11 +31,13 @@ public class GameManager : MonoBehaviour {
         playerHealth = 100f;
         currentQuests = new List<int>();        
         questDatabase = GameObject.Find("Quest Database").GetComponent<QuestDatabase>();
+        qdInstance = new QuestDatabaseInstance();
+        qdInstance.Quests = questDatabase.Quests;
     }
 
     public void AdvanceScene()
     {
         sceneIndex++;
-        SceneManager.LoadScene(sceneIndex);
+        SceneManager.LoadScene("CharacterScene");
     }
 }
