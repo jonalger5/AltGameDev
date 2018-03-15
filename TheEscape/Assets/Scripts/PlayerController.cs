@@ -163,9 +163,10 @@ public class PlayerController : MonoBehaviour {
     {
         if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("SortingGame"))
         {
+            Debug.Log("we did it");
             timerText.text = "Time Left: " + timer.ToString("F2");
         }
-        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("StealthMiniGame"))
+        else if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("StealthMiniGame"))
         {
             timerText.text = "Find Item";
         }
@@ -186,7 +187,7 @@ public class PlayerController : MonoBehaviour {
             }
             quotaText.text = "Remaining Items: " + depositQuota.ToString();
         }
-        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("StealthMiniGame"))
+        else if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("StealthMiniGame"))
         {
             quotaText.text = "Don't Get Caught";
         }
@@ -205,7 +206,8 @@ public class PlayerController : MonoBehaviour {
                 timer -= timerdecrement;
                 if (timer < 0.0f)
                 {
-                    DisplayEndScreen();
+                    // DisplayEndScreen();
+                    GameManager.gm.AdvanceScene();
                     timer = 0.0f;
                 }
                 UpdateTimerText();
