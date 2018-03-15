@@ -17,3 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Day1-Evening.unity
     guid: ebf1e9dd087c81e4ab9d545757f32b84
+  - enabled: 1
+    path: Assets/Scenes/StealthMiniGame.unity
+    guid: 371e1828791cd6b478d543d959ab8c87

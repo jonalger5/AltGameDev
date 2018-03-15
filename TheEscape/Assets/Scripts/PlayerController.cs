@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour {
     public bool isStealing = false;
 
     [SerializeField]
-    private bool isSortingGame;
+    public bool isSortingGame;
     [SerializeField]
     private int depositQuota;
     [SerializeField]
@@ -102,32 +102,32 @@ public class PlayerController : MonoBehaviour {
         questUI = GameObject.Find("QuestUI").GetComponent<Canvas>();
         questUI.gameObject.SetActive(false);
 
-        deathScreenUI = GameObject.Find("DeathScreenUI").GetComponent<Canvas>();
-        deathScreenUI.gameObject.SetActive(false);
+        //deathScreenUI = GameObject.Find("DeathScreenUI").GetComponent<Canvas>();
+        //deathScreenUI.gameObject.SetActive(false);
 
-        PauseScreenUI = GameObject.Find("PauseScreen").GetComponent<Canvas>();
-        PauseScreenUI.gameObject.SetActive(false);
-        isPaused = false;
+        //PauseScreenUI = GameObject.Find("PauseScreen").GetComponent<Canvas>();
+        //PauseScreenUI.gameObject.SetActive(false);
+        //isPaused = false;
 
-        VictoryScreenUI = GameObject.Find("VictoryScreen").GetComponent<Canvas>();
-        VictoryScreenUI.gameObject.SetActive(false);
+        //VictoryScreenUI = GameObject.Find("VictoryScreen").GetComponent<Canvas>();
+        //VictoryScreenUI.gameObject.SetActive(false);
 
-        EndScreen = GameObject.Find("LoseScreen1").GetComponent<Canvas>();
-        EndScreen.gameObject.SetActive(false);
+        //EndScreen = GameObject.Find("LoseScreen1").GetComponent<Canvas>();
+        //EndScreen.gameObject.SetActive(false);
 
-        EndScreen1 = GameObject.Find("LoseScreen2").GetComponent<Canvas>();
-        EndScreen1.gameObject.SetActive(false);
+        //EndScreen1 = GameObject.Find("LoseScreen2").GetComponent<Canvas>();
+        //EndScreen1.gameObject.SetActive(false);
 
         inventory = new List<Item>();
 
         StealItems = new List<Item>();
         Time.timeScale = 1;
 
-        deathScreenUI.gameObject.SetActive(false);
-        PauseScreenUI.gameObject.SetActive(false);
-        VictoryScreenUI.gameObject.SetActive(false);
-        EndScreen.gameObject.SetActive(false);
-        EndScreen1.gameObject.SetActive(false);
+        //deathScreenUI.gameObject.SetActive(false);
+        //PauseScreenUI.gameObject.SetActive(false);
+        //VictoryScreenUI.gameObject.SetActive(false);
+        //EndScreen.gameObject.SetActive(false);
+        //EndScreen1.gameObject.SetActive(false);
 
         if (isSortingGame)
         {            
@@ -216,8 +216,10 @@ public class PlayerController : MonoBehaviour {
         if (GameManager.gm.playerHealth <= 0)
         {
             healthUI.text = "0";
-            deathScreenUI.gameObject.SetActive(true);
+            //deathScreenUI.gameObject.SetActive(true);
+            SceneManager.LoadScene(0);
             Time.timeScale = 0;
+            Cursor.visible = !Cursor.visible;
         }
         //Updating HealthUI
         else
@@ -247,26 +249,26 @@ public class PlayerController : MonoBehaviour {
                 questUI.gameObject.SetActive(false);
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            isPaused = !isPaused;
-            showInventory = !showInventory;
-            if (isPaused)
-            {
-                timerdecrement = 0;
-                Time.timeScale = 0;
-                transform.Rotate(0, 0, 0);
-            }
-            else if (!isPaused)
-            {
-                timerdecrement = Time.fixedUnscaledDeltaTime;
-                Time.timeScale = 1;
-                transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
-            }
-            Cursor.visible = !Cursor.visible;
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    isPaused = !isPaused;
+        //    showInventory = !showInventory;
+        //    if (isPaused)
+        //    {
+        //        timerdecrement = 0;
+        //        Time.timeScale = 0;
+        //        transform.Rotate(0, 0, 0);
+        //    }
+        //    else if (!isPaused)
+        //    {
+        //        timerdecrement = Time.fixedUnscaledDeltaTime;
+        //        Time.timeScale = 1;
+        //        transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
+        //    }
+        //    Cursor.visible = !Cursor.visible;
             
-            PauseScreenUI.gameObject.SetActive(isPaused);
-        }
+        //    //PauseScreenUI.gameObject.SetActive(isPaused);
+        //}
 
         if (Input.GetKeyDown(KeyCode.Space) && isTalking)
         {
@@ -572,7 +574,8 @@ public class PlayerController : MonoBehaviour {
 
         if (other.gameObject.CompareTag("StealthItem"))
         {
-            Destroy(other.collider.gameObject);
+            GameManager.gm.AdvanceScene();
+            //Destroy(other.collider.gameObject);
         }
         if (other.gameObject.CompareTag("RollCallPoint"))
         {
@@ -653,6 +656,7 @@ public class PlayerController : MonoBehaviour {
     public void OnRestart()
     {
         Scene scene = SceneManager.GetActiveScene();
+        GameManager.gm.playerHealth = 100f;
         SceneManager.LoadScene(scene.buildIndex);
     }
 

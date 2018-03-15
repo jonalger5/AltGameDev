@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class GuardController : MonoBehaviour {
 
@@ -177,6 +178,12 @@ public class GuardController : MonoBehaviour {
                         GameManager.gm.playerHealth -= stealingDamage;
                         _player.isStealing = false;
                         _player.stealTimer = 0;
+                    }
+                    if (!_player.isSortingGame)
+                    {                       
+                        Scene scene = SceneManager.GetActiveScene();
+                        GameManager.gm.playerHealth = 100f;
+                        SceneManager.LoadScene(scene.buildIndex);
                     }
                 }
             }

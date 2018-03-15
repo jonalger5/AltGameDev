@@ -693,26 +693,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 7
       objectReference: {fileID: 0}
-    - target: {fileID: 114808659691326788, guid: 9a5dd62d4e4d9694d90b1579eade9888,
-        type: 2}
-      propertyPath: Items.Array.data[1].name
-      value: Watch
-      objectReference: {fileID: 0}
-    - target: {fileID: 114808659691326788, guid: 9a5dd62d4e4d9694d90b1579eade9888,
-        type: 2}
-      propertyPath: Items.Array.data[2].name
-      value: Ring
-      objectReference: {fileID: 0}
-    - target: {fileID: 114808659691326788, guid: 9a5dd62d4e4d9694d90b1579eade9888,
-        type: 2}
-      propertyPath: Items.Array.data[1].icon
-      value: 
-      objectReference: {fileID: 2800000, guid: 5f9ee2b0eb953124f97ff837a6d7adbd, type: 3}
-    - target: {fileID: 114808659691326788, guid: 9a5dd62d4e4d9694d90b1579eade9888,
-        type: 2}
-      propertyPath: Items.Array.data[2].icon
-      value: 
-      objectReference: {fileID: 2800000, guid: 643c68eb3274e934ea24c875c1cb0441, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9a5dd62d4e4d9694d90b1579eade9888, type: 2}
   m_IsPrefabParent: 0

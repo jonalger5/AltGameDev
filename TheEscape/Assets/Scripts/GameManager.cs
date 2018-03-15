@@ -21,6 +21,11 @@ public class GameManager : MonoBehaviour {
             InitializeValues();
             DontDestroyOnLoad(gameObject);
         }
+        else
+        {
+            if (SceneManager.GetActiveScene().buildIndex == 0)
+                Destroy(gameObject);
+        }
     }
 	
     void InitializeValues()
@@ -36,6 +41,8 @@ public class GameManager : MonoBehaviour {
     public void AdvanceScene()
     {
         sceneIndex++;
+        if (sceneIndex == 5)
+            sceneIndex = 0;
         SceneManager.LoadScene(sceneIndex);
     }
 }
