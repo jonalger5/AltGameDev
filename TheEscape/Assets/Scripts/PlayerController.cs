@@ -207,6 +207,12 @@ public class PlayerController : MonoBehaviour {
                 if (timer < 0.0f)
                 {
                     // DisplayEndScreen();
+                    inventory = StealItems;
+                    foreach (Item i in inventory)
+                    {
+                        if (i.name == "Vodka")
+                            GameManager.gm.hasVodka = true;
+                    }
                     GameManager.gm.AdvanceScene();
                     timer = 0.0f;
                 }
@@ -602,10 +608,16 @@ public class PlayerController : MonoBehaviour {
 
     private bool CheckQuest(Quest quest)
     {
-        if (GameManager.gm.currentQuests.Contains(quest.questID) && CheckInventory(quest.questItem))
+        //if (GameManager.gm.currentQuests.Contains(quest.questID) && CheckInventory(quest.questItem))
+        //    return true;
+        //else
+        //    return false;
+        if (GameManager.gm.hasVodka)
+        {
             return true;
-        else
-            return false;
+        }
+        return false;
+
     }
 
     private void RemoveQuestItem(Item item)

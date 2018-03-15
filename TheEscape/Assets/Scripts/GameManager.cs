@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour {
 
     public static GameManager gm;
 
+    public bool hasVodka = false;
+
 	// Use this for initialization
 	void Awake () {
 		if(gm == null)
