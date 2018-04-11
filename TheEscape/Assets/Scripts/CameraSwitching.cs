@@ -8,6 +8,11 @@ public class CameraSwitching : MonoBehaviour
     public Camera mainCamera;
     public Camera alternateCamera;
 
+    void Start()
+    {
+        alternateCamera.enabled = false;
+        mainCamera.enabled = true;
+    }
     public void OnTriggerEnter(Collider other)
     {
         mainCamera.enabled = false;
