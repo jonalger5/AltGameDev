@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-
+//quick comment
 public class PlayerController : MonoBehaviour {
 
     [SerializeField]
