@@ -4,10 +4,12 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Point
+  - RollCallPoint
   - Guard
-  - Interactable
+  - StealthItem
+  - Point
   - Prisoner
+  - Interactable
   layers:
   - Default
   - TransparentFX

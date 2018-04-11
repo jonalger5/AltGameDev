@@ -3,33 +3,57 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 //quick comment
 public class PlayerController : MonoBehaviour {
 
+
+    private enum DialogueType
+    {
+        accepting,
+        returning, 
+        standby
+    }
+
     [SerializeField]
     public float speed;
     [SerializeField]
     public float sensitivity;
-    [SerializeField]
-    public float health;
     private Text healthUI;
+
+    internal static void PickUpStealthItem(Item item)
+    {
+        GameManager.gm.inventory.Add(item);
+    }
+
     private Canvas deathScreenUI;
     private Canvas PauseScreenUI;
 
-    private new Renderer renderer;
+    //Dialogue Variables
+    private Canvas dialogueUI;
+    private Text dialogueText;
+    private int dialogueIndex;
+    private bool isTalking;
+    private DialogueType dialogueType;
 
-    public List<Item> inventory;
+    //Quest Variables
+    private int currentQuestIndex = 0;
+    private Canvas questUI;
+    private GameObject rollCallPoint;
+
+    private new Renderer renderer;
+    //public static List<Item> inventory;
+    private ItemDatabase itemDatabase;
     private int slotX = 2, slotY = 3;
-    private ItemDatabase database;
     private bool showInventory = false;
     private bool showItem = false;
     private string ItemDetails;
     public Texture2D InventoryBackground;
     public Texture2D EmptySlot;
-    public GUISkin slotBackground;
+    public GUISkin guiSkin;
 
     public List<Item> StealItems;
     private int itemnum;
@@ -41,16 +65,17 @@ public class PlayerController : MonoBehaviour {
     public float stealTimer = 0;
     public bool isStealing = false;
 
-    public int depositQuota;
-    public float timer;
-    public Text timerText;
-    public Text quotaText;
+    [SerializeField]
+    public bool isSortingGame;
+    [SerializeField]
+    private int depositQuota;
+    [SerializeField]
+    private float timer;
+    private Text timerText;
+    private Text quotaText;
 
     private bool isPaused;
     private float timerdecrement;
-
-    //Quest Variables
-    public List<int> currentQuests = new List<int>();
 
     private int NumOfItems ;
     private int Position;
@@ -63,49 +88,63 @@ public class PlayerController : MonoBehaviour {
 
     private Dictionary<int, double> percentages;
 
+    private Animator _anim;
+
     // Use this for initialization
     void Start () {
-
+        itemDatabase = GameObject.Find("Item Database").GetComponent<ItemDatabase>();
         healthUI = GameObject.Find("/HealthUI/Health").GetComponent<Text>();
-        deathScreenUI = GameObject.Find("DeathScreenUI").GetComponent<Canvas>();
-        deathScreenUI.gameObject.SetActive(false);
+        timerText = GameObject.Find("/HealthUI/Timer").GetComponent<Text>();
+        quotaText = GameObject.Find("/HealthUI/Quota").GetComponent<Text>();
+        dialogueUI = GameObject.Find("DialogueUI").GetComponent<Canvas>();
+        dialogueText = GameObject.Find("/DialogueUI/DialogueText").GetComponent<Text>();
+        dialogueUI.gameObject.SetActive(false);
+        questUI = GameObject.Find("QuestUI").GetComponent<Canvas>();
+        questUI.gameObject.SetActive(false);
 
-        PauseScreenUI = GameObject.Find("PauseScreen").GetComponent<Canvas>();
-        PauseScreenUI.gameObject.SetActive(false);
-        isPaused = false;
+        //deathScreenUI = GameObject.Find("DeathScreenUI").GetComponent<Canvas>();
+        //deathScreenUI.gameObject.SetActive(false);
 
-        VictoryScreenUI = GameObject.Find("VictoryScreen").GetComponent<Canvas>();
-        VictoryScreenUI.gameObject.SetActive(false);
+        //PauseScreenUI = GameObject.Find("PauseScreen").GetComponent<Canvas>();
+        //PauseScreenUI.gameObject.SetActive(false);
+        //isPaused = false;
 
-        EndScreen = GameObject.Find("LoseScreen1").GetComponent<Canvas>();
-        EndScreen.gameObject.SetActive(false);
+        //VictoryScreenUI = GameObject.Find("VictoryScreen").GetComponent<Canvas>();
+        //VictoryScreenUI.gameObject.SetActive(false);
 
-        EndScreen1 = GameObject.Find("LoseScreen2").GetComponent<Canvas>();
-        EndScreen1.gameObject.SetActive(false);
+        //EndScreen = GameObject.Find("LoseScreen1").GetComponent<Canvas>();
+        //EndScreen.gameObject.SetActive(false);
 
-        renderer = GetComponent<Renderer>();
-        renderer.material.color = Color.yellow;
-        inventory = new List<Item>();
-        database = GameObject.Find("Item Database").GetComponent<ItemDatabase>();
+        //EndScreen1 = GameObject.Find("LoseScreen2").GetComponent<Canvas>();
+        //EndScreen1.gameObject.SetActive(false);
+
+        //inventory = new List<Item>();
 
         StealItems = new List<Item>();
         Time.timeScale = 1;
 
-        deathScreenUI.gameObject.SetActive(false);
-        PauseScreenUI.gameObject.SetActive(false);
-        VictoryScreenUI.gameObject.SetActive(false);
-        EndScreen.gameObject.SetActive(false);
-        EndScreen1.gameObject.SetActive(false);
+        //deathScreenUI.gameObject.SetActive(false);
+        //PauseScreenUI.gameObject.SetActive(false);
+        //VictoryScreenUI.gameObject.SetActive(false);
+        //EndScreen.gameObject.SetActive(false);
+        //EndScreen1.gameObject.SetActive(false);
 
-        timer = 60;
-        depositQuota = 51;
-        UpdateTimerText();
-        UpdateQuotaText();
+        if (isSortingGame)
+        {            
+            UpdateTimerText();
+            UpdateQuotaText();
+            timerdecrement = 0;
+            timerdecrement = Time.fixedUnscaledDeltaTime;
+        }
+        else
+        {
+            timerText.gameObject.SetActive(false);
+            quotaText.gameObject.SetActive(false);
+            rollCallPoint = GameObject.Find("RollCallPoint");
+            rollCallPoint.gameObject.SetActive(false);
+        }
 
         Cursor.visible = false;
-        timerdecrement = 0;
-        timerdecrement = Time.fixedUnscaledDeltaTime;
-
 
         NumOfItems = 6;
         percentages = new Dictionary<int, double>();
@@ -116,80 +155,175 @@ public class PlayerController : MonoBehaviour {
         percentages.Add(4, .50);
         percentages.Add(5, .75);
         percentages.Add(6, .95);
+
+        _anim = GetComponent<Animator>();
     }
 
     void UpdateTimerText()
     {
-        timerText.text = "Time Left: " + timer.ToString("F2");
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("SortingGame"))
+        {
+            Debug.Log("we did it");
+            timerText.text = "Time Left: " + timer.ToString("F2");
+        }
+        else if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("StealthMiniGame"))
+        {
+            timerText.text = "Find Item";
+        }
+        else
+        {
+            timerText.text = "";
+        }
     }
 
     void UpdateQuotaText()
     {
-        depositQuota--;
-        if (depositQuota < 0)
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("SortingGame"))
         {
-            depositQuota = 0;
+            depositQuota--;
+            if (depositQuota < 0)
+            {
+                depositQuota = 0;
+            }
+            quotaText.text = "Remaining Items: " + depositQuota.ToString();
         }
-        quotaText.text = "Remaining Items: " + depositQuota.ToString();
+        else if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("StealthMiniGame"))
+        {
+            quotaText.text = "Don't Get Caught";
+        }
+        else
+        {
+            quotaText.text = "";
+        }
     }
     // Update is called once per frame
     void Update ()
     {
-        if (timer > 0.0f)
+        if (isSortingGame)
         {
-            timer -= timerdecrement;
-            if (timer < 0.0f)
+            if (timer > 0.0f)
             {
-                DisplayEndScreen();
-                timer = 0.0f;
+                timer -= timerdecrement;
+                if (timer < 0.0f)
+                {
+                    // DisplayEndScreen();
+                    GameManager.gm.inventory.AddRange(StealItems);
+                    GameManager.gm.AdvanceScene();
+                    timer = 0.0f;
+                }
+                UpdateTimerText();
             }
-            UpdateTimerText();
         }
-
-        
+     
         //Activate Death Screen
-        if (health <= 0)
+        if (GameManager.gm.playerHealth <= 0)
         {
             healthUI.text = "0";
-            deathScreenUI.gameObject.SetActive(true);
+            //deathScreenUI.gameObject.SetActive(true);
+            SceneManager.LoadScene(0);
             Time.timeScale = 0;
+            Cursor.visible = !Cursor.visible;
         }
         //Updating HealthUI
         else
-            healthUI.text = health.ToString();
+            healthUI.text = GameManager.gm.playerHealth.ToString();
 
         //Used for Movement
-        transform.Translate(Vector3.forward * Time.deltaTime * Input.GetAxis("Vertical") * speed);
-        transform.Translate(Vector3.right * Time.deltaTime * Input.GetAxis("Horizontal") * speed);
+        if (!isTalking)
+        {
+            float h = Input.GetAxis("Horizontal");
+            float v = Input.GetAxis("Vertical");
+            transform.Translate(Vector3.forward * Time.deltaTime * v * speed);
+            transform.Translate(Vector3.right * Time.deltaTime * h * speed);
+            
+            _anim.SetFloat("Walk", v);
+        }
+        else
+            _anim.SetFloat("Walk", 0);
 
-        if (!showInventory)
+        if (!showInventory && !isTalking)
             transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
 
         if (Input.GetKeyDown(KeyCode.I))
         {
             showInventory = !showInventory;
             Cursor.visible = !Cursor.visible;
+            if (!showInventory)
+                questUI.gameObject.SetActive(false);
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            isPaused = !isPaused;
-            showInventory = !showInventory;
-            if (isPaused)
-            {
-                timerdecrement = 0;
-                Time.timeScale = 0;
-                transform.Rotate(0, 0, 0);
-            }
-            else if (!isPaused)
-            {
-                timerdecrement = Time.fixedUnscaledDeltaTime;
-                Time.timeScale = 1;
-                transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
-            }
-            Cursor.visible = !Cursor.visible;
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    isPaused = !isPaused;
+        //    showInventory = !showInventory;
+        //    if (isPaused)
+        //    {
+        //        timerdecrement = 0;
+        //        Time.timeScale = 0;
+        //        transform.Rotate(0, 0, 0);
+        //    }
+        //    else if (!isPaused)
+        //    {
+        //        timerdecrement = Time.fixedUnscaledDeltaTime;
+        //        Time.timeScale = 1;
+        //        transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
+        //    }
+        //    Cursor.visible = !Cursor.visible;
             
-            PauseScreenUI.gameObject.SetActive(isPaused);
+        //    //PauseScreenUI.gameObject.SetActive(isPaused);
+        //}
+
+        if (Input.GetKeyDown(KeyCode.Space) && isTalking)
+        {
+            switch (dialogueType)
+            {
+                case DialogueType.accepting:
+                    
+                    if (dialogueIndex != GameManager.gm.qdInstance.Quests[currentQuestIndex].acceptDialogue.Count - 1)
+                    {
+                        dialogueIndex++;
+                        dialogueText.text = GameManager.gm.qdInstance.Quests[currentQuestIndex].acceptDialogue[dialogueIndex];
+                    }
+                    else
+                    {
+                        dialogueUI.gameObject.SetActive(false);
+                        isTalking = false;
+                        rollCallPoint.gameObject.SetActive(true);
+                    }
+                        
+                    break;
+
+                case DialogueType.returning:
+                    if (dialogueIndex != GameManager.gm.qdInstance.Quests[currentQuestIndex].returnDialogue.Count - 1)
+                    {
+                        dialogueIndex++;
+                        dialogueText.text = GameManager.gm.qdInstance.Quests[currentQuestIndex].returnDialogue[dialogueIndex];
+                    }
+                    else
+                    {
+                        dialogueUI.gameObject.SetActive(false);
+                        isTalking = false;
+                    }
+
+                    break;
+
+                case DialogueType.standby:
+                    if (dialogueIndex != GameManager.gm.qdInstance.Quests[currentQuestIndex].standbyDialogue.Count - 1)
+                    {
+                        dialogueIndex++;
+                        dialogueText.text = GameManager.gm.qdInstance.Quests[currentQuestIndex].standbyDialogue[dialogueIndex];
+                    }
+                    else
+                    {
+                        dialogueUI.gameObject.SetActive(false);
+                        isTalking = false;
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
         }
 
         if (isStealing)
@@ -210,7 +344,7 @@ public class PlayerController : MonoBehaviour {
 
     private void Remove(int position)
     {
-        inventory.RemoveAt(position);
+        GameManager.gm.inventory.RemoveAt(position);
         StartCoroutine(LetsWait((float)0.1));
     }
     public void RemoveSteal(int position)
@@ -221,7 +355,7 @@ public class PlayerController : MonoBehaviour {
     
     void OnGUI()
     {
-        //GUI.skin = slotBackground;
+        GUI.skin = guiSkin;
         ItemDetails = "";
         
         if (showInventory)
@@ -233,20 +367,20 @@ public class PlayerController : MonoBehaviour {
                 for (int y = 0; y < slotY; y++)
                 {
                     Position = x*slotY + y;
-                    if (Position < inventory.Count)
+                    if (Position < GameManager.gm.inventory.Count)
                     {
                         Rect slot = new Rect(Screen.width/100 + y * 60, Screen.height / 10 + x * 60, 50, 50);
-                        GUI.Box(slot, inventory[Position].icon);
+                        GUI.Box(slot, GameManager.gm.inventory[Position].icon);
                         if (slot.Contains(Event.current.mousePosition))
                         {
-                            ItemDetails = ShowItem(inventory[Position]);
+                            ItemDetails = ShowItem(GameManager.gm.inventory[Position]);
                             showItem = true;
                             
 
-                            if(Input.GetButtonUp("space") && inventory[Position].type == Item.ItemType.Consumable && health < 100 && CanAccess)
+                            if(Input.GetButtonUp("space") && GameManager.gm.inventory[Position].type == Item.ItemType.Consumable && GameManager.gm.playerHealth < 100 && CanAccess)
                             {
                                 CanAccess = !CanAccess;
-                                health += inventory[Position].value;
+                                GameManager.gm.playerHealth += GameManager.gm.inventory[Position].value;
                                 Remove(Position);
                                 showItem = false;
                             }
@@ -256,7 +390,7 @@ public class PlayerController : MonoBehaviour {
                             {
                                 CanAccess = !CanAccess;
                                 isStealing = true;
-                                StealItems.Add(inventory[Position]);
+                                StealItems.Add(GameManager.gm.inventory[Position]);
                                 Remove(Position);
                                 NumOfItems--;
                                 showItem = false;
@@ -292,7 +426,7 @@ public class PlayerController : MonoBehaviour {
                             if (Input.GetMouseButtonDown(0) && CanAccess)
                             {
                                 CanAccess = !CanAccess;
-                                inventory.Add(StealItems[Position1]);
+                                GameManager.gm.inventory.Add(StealItems[Position1]);
                                 RemoveSteal(Position1);
                                 NumOfItems++;
                                 showItem = false;
@@ -310,48 +444,52 @@ public class PlayerController : MonoBehaviour {
                     }
                 }
             }
+            questUI.gameObject.SetActive(true);
+            GUILayout.BeginArea(new Rect(4 * Screen.width / 5, Screen.height / 5, 170, 300));
+            for (int i = 0; i < GameManager.gm.currentQuests.Count; i++)
+            {
+                
+                if (CheckQuest(GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]]))
+                {
+                    GUILayout.Label(GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]].desc, GUI.skin.customStyles[1], GUILayout.MaxWidth(170));
+                }
+
+                else
+                {                    
+                    GUILayout.Label(GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]].desc, GUI.skin.customStyles[2], GUILayout.MaxWidth(170));                    
+                }
+            }
+            GUILayout.EndArea();
         }
 
         if (showItem)
         {
             GUI.Box(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 150, 50), ItemDetails);
         }
+        
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name == "PileOfItems")
         {
-            int PickupNum = NumOfItems - inventory.Count;
+            int PickupNum = NumOfItems - GameManager.gm.inventory.Count;
             for (int i = 0;i < PickupNum; i++)
             {
-                itemnum = Random.Range(0, 4);
-                inventory.Add(database.Items[itemnum]);
-                
+                itemnum = UnityEngine.Random.Range(0, 5);
+                GameManager.gm.inventory.Add(itemDatabase.Items[itemnum]);
             }
 
         }
-
-        if(other.gameObject.name == "RedPile")
-        {
-            for(int i = 0;i < inventory.Count; i++)
-            {
-                if(inventory[i].name == "Red")
-                {
-                    inventory.RemoveAt(i);
-                    i -= 1;
-                    UpdateQuotaText();
-                }
-            }
-        }
+        
 
         if (other.gameObject.name == "BluePile")
         {
-            for (int i = 0; i < inventory.Count; i++)
+            for (int i = 0; i < GameManager.gm.inventory.Count; i++)
             {
-                if (inventory[i].name == "Blue")
+                if (GameManager.gm.inventory[i].type.ToString() == "Consumable")
                 {
-                    inventory.RemoveAt(i);
+                    GameManager.gm.inventory.RemoveAt(i);
                     i -= 1;
                     UpdateQuotaText();
                 }
@@ -360,11 +498,11 @@ public class PlayerController : MonoBehaviour {
 
         if (other.gameObject.name == "YellowPile" )
         {
-            for (int i = 0; i < inventory.Count; i++)
+            for (int i = 0; i < GameManager.gm.inventory.Count; i++)
             {
-                if (inventory[i].name == "Yellow")
+                if (GameManager.gm.inventory[i].type.ToString() == "Valuable")
                 {
-                    inventory.RemoveAt(i);
+                    GameManager.gm.inventory.RemoveAt(i);
                     i -= 1;
                     UpdateQuotaText();
                 }
@@ -373,11 +511,11 @@ public class PlayerController : MonoBehaviour {
 
         if (other.gameObject.name == "GreenPile" )
         {
-            for (int i = 0; i < inventory.Count; i++)
+            for (int i = 0; i < GameManager.gm.inventory.Count; i++)
             {
-                if (inventory[i].name == "Green")
+                if (GameManager.gm.inventory[i].type.ToString() == "Other")
                 {
-                    inventory.RemoveAt(i);
+                    GameManager.gm.inventory.RemoveAt(i);
                     i -= 1;
                     UpdateQuotaText();
                 }
@@ -388,18 +526,44 @@ public class PlayerController : MonoBehaviour {
         {
             PrisonerController prisoner = other.gameObject.GetComponent<PrisonerController>();
 
-            if (!prisoner.questInProgress)
+            if (!prisoner.hasReturnedQuest)
             {
-                Quest q = prisoner.GetNextQuest();
+                if (prisoner.activeQuest.questItem.name == "")
+                {
+                    Quest q = prisoner.GetNextQuest();
 
-                if (q != null)
-                    currentQuests.Add(q.questID);
-            }
-            else if (CheckQuest(prisoner.activeQuest))
-            {
-                currentQuests.Remove(prisoner.activeQuest.questID);
-                RemoveQuestItem(prisoner.activeQuest.questItem);
-                prisoner.ReturnQuest();
+                    if (q != null)
+                    {
+                        GameManager.gm.currentQuests.Add(q.questID);
+                        dialogueUI.gameObject.SetActive(true);
+                        dialogueText.text = q.acceptDialogue[0];
+                        dialogueIndex = 0;
+                        isTalking = true;
+                        dialogueType = DialogueType.accepting;
+                        currentQuestIndex = q.questID;
+                    }
+
+                }
+                else if (CheckQuest(prisoner.activeQuest))
+                {
+                    dialogueUI.gameObject.SetActive(true);
+                    dialogueText.text = prisoner.activeQuest.returnDialogue[0];
+                    dialogueIndex = 0;
+                    isTalking = true;
+                    dialogueType = DialogueType.returning;
+                    currentQuestIndex = prisoner.activeQuest.questID;
+                    GameManager.gm.currentQuests.Remove(prisoner.activeQuest.questID);
+                    RemoveQuestItem(prisoner.activeQuest.questItem);
+                    prisoner.ReturnQuest();
+                }
+                else if (!CheckQuest(prisoner.activeQuest) && !prisoner.activeQuest.complete)
+                {
+                    dialogueUI.gameObject.SetActive(true);
+                    dialogueText.text = prisoner.activeQuest.standbyDialogue[0];
+                    dialogueIndex = 0;
+                    isTalking = true;
+                    dialogueType = DialogueType.standby;
+                }
             }
         }
     }
@@ -408,8 +572,19 @@ public class PlayerController : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("Guard"))
         {
-            health = 0;
+            GameManager.gm.playerHealth = 0;
         } 
+
+        if (other.gameObject.CompareTag("StealthItem"))
+        {
+            GameManager.gm.AdvanceScene();
+            //Destroy(other.collider.gameObject);
+        }
+        if (other.gameObject.CompareTag("RollCallPoint"))
+        {
+            GameManager.gm.AdvanceScene();
+
+        }
     }
 
     private string ShowItem(Item item)
@@ -420,35 +595,43 @@ public class PlayerController : MonoBehaviour {
         if (item.type == Item.ItemType.Consumable)
             ItemDetails = item.name + "\n" + "Type: Consumable\n Health: " + item.value;
 
+        if (item.type == Item.ItemType.Other)
+            ItemDetails = item.name + "\n" + "Type: Other";
+
         return ItemDetails;
     }
 
     private bool CheckQuest(Quest quest)
     {
-        if (currentQuests.Contains(quest.questID) && CheckInventory(quest.questItem))
+        if (GameManager.gm.currentQuests.Contains(quest.questID) && CheckInventory(quest.questItem))
             return true;
         else
             return false;
+
     }
 
     private void RemoveQuestItem(Item item)
     {
-        for(int i = 0; i < inventory.Count; i++)
+        for(int i = 0; i < GameManager.gm.inventory.Count; i++)
         {
-            if (inventory[i].name == item.name)
-                inventory.RemoveAt(i);
+            if (GameManager.gm.inventory[i].name == item.name)
+            {
+                GameManager.gm.inventory.RemoveAt(i);
+                break;
+            }   
         }
     }
 
     private bool CheckInventory(Item item)
     {
-        foreach(Item i in inventory)
+        foreach(Item i in GameManager.gm.inventory)
         {
             if (i.name == item.name)
                 return true;
         }
         return false;
     }
+
     public void DisplayEndScreen()
     {
         showInventory = !showInventory;
@@ -460,7 +643,7 @@ public class PlayerController : MonoBehaviour {
 
         if (depositQuota == 0)
         {
-            if(Random.value > percentages[StealItems.Count])
+            if(UnityEngine.Random.value > percentages[StealItems.Count])
             {
                 VictoryScreenUI.gameObject.SetActive(true);
             }
@@ -477,6 +660,7 @@ public class PlayerController : MonoBehaviour {
     public void OnRestart()
     {
         Scene scene = SceneManager.GetActiveScene();
+        GameManager.gm.playerHealth = 100f;
         SceneManager.LoadScene(scene.buildIndex);
     }
 
