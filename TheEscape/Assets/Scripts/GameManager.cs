@@ -8,12 +8,11 @@ public class GameManager : MonoBehaviour {
     public int sceneIndex;
     public float playerHealth;
     public List<int> currentQuests;
+    public List<Item> inventory;
     public QuestDatabase questDatabase;
     public QuestDatabaseInstance qdInstance;
 
     public static GameManager gm;
-
-    public bool hasVodka = false;
 
 	// Use this for initialization
 	void Awake () {
@@ -34,7 +33,8 @@ public class GameManager : MonoBehaviour {
     {
         sceneIndex = SceneManager.GetActiveScene().buildIndex;
         playerHealth = 100f;
-        currentQuests = new List<int>();        
+        currentQuests = new List<int>();
+        inventory = new List<Item>();     
         questDatabase = GameObject.Find("Quest Database").GetComponent<QuestDatabase>();
         qdInstance = new QuestDatabaseInstance();
         qdInstance.Quests = questDatabase.Quests;

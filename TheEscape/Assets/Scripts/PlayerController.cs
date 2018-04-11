@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour {
 
     internal static void PickUpStealthItem(Item item)
     {
-        inventory.Add(item);
+        GameManager.gm.inventory.Add(item);
     }
 
     private Canvas deathScreenUI;
@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour {
     private GameObject rollCallPoint;
 
     private new Renderer renderer;
-    public static List<Item> inventory;
+    //public static List<Item> inventory;
     private ItemDatabase itemDatabase;
     private int slotX = 2, slotY = 3;
     private bool showInventory = false;
@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour {
         //EndScreen1 = GameObject.Find("LoseScreen2").GetComponent<Canvas>();
         //EndScreen1.gameObject.SetActive(false);
 
-        inventory = new List<Item>();
+        //inventory = new List<Item>();
 
         StealItems = new List<Item>();
         Time.timeScale = 1;
@@ -207,12 +207,7 @@ public class PlayerController : MonoBehaviour {
                 if (timer < 0.0f)
                 {
                     // DisplayEndScreen();
-                    inventory = StealItems;
-                    foreach (Item i in inventory)
-                    {
-                        if (i.name == "Vodka")
-                            GameManager.gm.hasVodka = true;
-                    }
+                    GameManager.gm.inventory.AddRange(StealItems);
                     GameManager.gm.AdvanceScene();
                     timer = 0.0f;
                 }
@@ -349,7 +344,7 @@ public class PlayerController : MonoBehaviour {
 
     private void Remove(int position)
     {
-        inventory.RemoveAt(position);
+        GameManager.gm.inventory.RemoveAt(position);
         StartCoroutine(LetsWait((float)0.1));
     }
     public void RemoveSteal(int position)
@@ -372,20 +367,20 @@ public class PlayerController : MonoBehaviour {
                 for (int y = 0; y < slotY; y++)
                 {
                     Position = x*slotY + y;
-                    if (Position < inventory.Count)
+                    if (Position < GameManager.gm.inventory.Count)
                     {
                         Rect slot = new Rect(Screen.width/100 + y * 60, Screen.height / 10 + x * 60, 50, 50);
-                        GUI.Box(slot, inventory[Position].icon);
+                        GUI.Box(slot, GameManager.gm.inventory[Position].icon);
                         if (slot.Contains(Event.current.mousePosition))
                         {
-                            ItemDetails = ShowItem(inventory[Position]);
+                            ItemDetails = ShowItem(GameManager.gm.inventory[Position]);
                             showItem = true;
                             
 
-                            if(Input.GetButtonUp("space") && inventory[Position].type == Item.ItemType.Consumable && GameManager.gm.playerHealth < 100 && CanAccess)
+                            if(Input.GetButtonUp("space") && GameManager.gm.inventory[Position].type == Item.ItemType.Consumable && GameManager.gm.playerHealth < 100 && CanAccess)
                             {
                                 CanAccess = !CanAccess;
-                                GameManager.gm.playerHealth += inventory[Position].value;
+                                GameManager.gm.playerHealth += GameManager.gm.inventory[Position].value;
                                 Remove(Position);
                                 showItem = false;
                             }
@@ -395,7 +390,7 @@ public class PlayerController : MonoBehaviour {
                             {
                                 CanAccess = !CanAccess;
                                 isStealing = true;
-                                StealItems.Add(inventory[Position]);
+                                StealItems.Add(GameManager.gm.inventory[Position]);
                                 Remove(Position);
                                 NumOfItems--;
                                 showItem = false;
@@ -431,7 +426,7 @@ public class PlayerController : MonoBehaviour {
                             if (Input.GetMouseButtonDown(0) && CanAccess)
                             {
                                 CanAccess = !CanAccess;
-                                inventory.Add(StealItems[Position1]);
+                                GameManager.gm.inventory.Add(StealItems[Position1]);
                                 RemoveSteal(Position1);
                                 NumOfItems++;
                                 showItem = false;
@@ -478,11 +473,11 @@ public class PlayerController : MonoBehaviour {
     {
         if (other.gameObject.name == "PileOfItems")
         {
-            int PickupNum = NumOfItems - inventory.Count;
+            int PickupNum = NumOfItems - GameManager.gm.inventory.Count;
             for (int i = 0;i < PickupNum; i++)
             {
                 itemnum = UnityEngine.Random.Range(0, 5);
-                inventory.Add(itemDatabase.Items[itemnum]);
+                GameManager.gm.inventory.Add(itemDatabase.Items[itemnum]);
             }
 
         }
@@ -490,11 +485,11 @@ public class PlayerController : MonoBehaviour {
 
         if (other.gameObject.name == "BluePile")
         {
-            for (int i = 0; i < inventory.Count; i++)
+            for (int i = 0; i < GameManager.gm.inventory.Count; i++)
             {
-                if (inventory[i].type.ToString() == "Consumable")
+                if (GameManager.gm.inventory[i].type.ToString() == "Consumable")
                 {
-                    inventory.RemoveAt(i);
+                    GameManager.gm.inventory.RemoveAt(i);
                     i -= 1;
                     UpdateQuotaText();
                 }
@@ -503,11 +498,11 @@ public class PlayerController : MonoBehaviour {
 
         if (other.gameObject.name == "YellowPile" )
         {
-            for (int i = 0; i < inventory.Count; i++)
+            for (int i = 0; i < GameManager.gm.inventory.Count; i++)
             {
-                if (inventory[i].type.ToString() == "Valuable")
+                if (GameManager.gm.inventory[i].type.ToString() == "Valuable")
                 {
-                    inventory.RemoveAt(i);
+                    GameManager.gm.inventory.RemoveAt(i);
                     i -= 1;
                     UpdateQuotaText();
                 }
@@ -516,11 +511,11 @@ public class PlayerController : MonoBehaviour {
 
         if (other.gameObject.name == "GreenPile" )
         {
-            for (int i = 0; i < inventory.Count; i++)
+            for (int i = 0; i < GameManager.gm.inventory.Count; i++)
             {
-                if (inventory[i].type.ToString() == "Other")
+                if (GameManager.gm.inventory[i].type.ToString() == "Other")
                 {
-                    inventory.RemoveAt(i);
+                    GameManager.gm.inventory.RemoveAt(i);
                     i -= 1;
                     UpdateQuotaText();
                 }
@@ -608,25 +603,20 @@ public class PlayerController : MonoBehaviour {
 
     private bool CheckQuest(Quest quest)
     {
-        //if (GameManager.gm.currentQuests.Contains(quest.questID) && CheckInventory(quest.questItem))
-        //    return true;
-        //else
-        //    return false;
-        if (GameManager.gm.hasVodka)
-        {
+        if (GameManager.gm.currentQuests.Contains(quest.questID) && CheckInventory(quest.questItem))
             return true;
-        }
-        return false;
+        else
+            return false;
 
     }
 
     private void RemoveQuestItem(Item item)
     {
-        for(int i = 0; i < inventory.Count; i++)
+        for(int i = 0; i < GameManager.gm.inventory.Count; i++)
         {
-            if (inventory[i].name == item.name)
+            if (GameManager.gm.inventory[i].name == item.name)
             {
-                inventory.RemoveAt(i);
+                GameManager.gm.inventory.RemoveAt(i);
                 break;
             }   
         }
@@ -634,7 +624,7 @@ public class PlayerController : MonoBehaviour {
 
     private bool CheckInventory(Item item)
     {
-        foreach(Item i in inventory)
+        foreach(Item i in GameManager.gm.inventory)
         {
             if (i.name == item.name)
                 return true;
