@@ -7,7 +7,10 @@ public class Item {
 
     public enum ItemType
     {
+        Clothing,
         Consumable,
+        Documents,
+        EscapePlan,
         Valuable,
         Other
     }

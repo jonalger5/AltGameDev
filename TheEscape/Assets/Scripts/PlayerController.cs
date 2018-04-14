@@ -632,14 +632,36 @@ public class PlayerController : MonoBehaviour {
 
     private string ShowItem(Item item)
     {
-        if (item.type == Item.ItemType.Valuable)
-            ItemDetails = item.name + "\n" + "Type: Valuable\n Value: " + item.value;   
+        switch (item.type)
+        {
+            case Item.ItemType.Clothing:
+                ItemDetails = item.name + "\n" + "Type: Clothing";
+                break;
 
-        if (item.type == Item.ItemType.Consumable)
-            ItemDetails = item.name + "\n" + "Type: Consumable\n Health: " + item.value;
+            case Item.ItemType.Consumable:
+                ItemDetails = item.name + "\n" + "Type: Consumable\n Health: " + item.value;
+                break;
 
-        if (item.type == Item.ItemType.Other)
-            ItemDetails = item.name + "\n" + "Type: Other";
+            case Item.ItemType.Documents:
+                ItemDetails = item.name + "\n" + "Type: Documents";
+                break;
+
+            case Item.ItemType.EscapePlan:
+                ItemDetails = item.name + "\n" + "Type: Escape Plan";
+                break;
+
+            case Item.ItemType.Valuable:
+                ItemDetails = item.name + "\n" + "Type: Valuable\n Value: " + item.value;
+                break;
+
+            case Item.ItemType.Other:
+                ItemDetails = item.name + "\n" + "Type: Other";
+                break;
+
+            default:
+                break;
+
+        }
 
         return ItemDetails;
     }
@@ -650,7 +672,6 @@ public class PlayerController : MonoBehaviour {
             return true;
         else
             return false;
-
     }
 
     private void RemoveQuestItem(Item item)
