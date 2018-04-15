@@ -246,7 +246,10 @@ public class PlayerController : MonoBehaviour {
             _anim.SetFloat("Walk", 0);
 
         if (!showInventory && !isTalking && !(bluecontact || greencontact || yellowcontact))
+        {
             transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
+            Cursor.visible = false;
+        }
 
         if (Input.GetKeyDown(KeyCode.I))
         {
@@ -279,6 +282,7 @@ public class PlayerController : MonoBehaviour {
         if(bluecontact || greencontact || yellowcontact)
         {
             transform.Rotate(0, 0, 0);
+            Cursor.visible = true;
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && isTalking)
@@ -512,7 +516,41 @@ public class PlayerController : MonoBehaviour {
         }
         
     }
+    void OnTriggerExit(Collider other)
+    {
 
+
+        if (other.gameObject.name == "BluePile")
+        {
+
+            Cursor.visible = false;
+            bluecontact = false;
+            /*
+            for (int i = 0; i < GameManager.gm.inventory.Count; i++)
+            {
+                if (GameManager.gm.inventory[i].type.ToString() == "Consumable")
+                {
+                    GameManager.gm.inventory.RemoveAt(i);
+                    i -= 1;
+                    UpdateQuotaText();
+                }
+            }
+            */
+        }
+
+        if (other.gameObject.name == "YellowPile")
+        {
+            Cursor.visible = false;
+            yellowcontact = false;
+        }
+
+        if (other.gameObject.name == "GreenPile")
+        {
+            Cursor.visible = false;
+            greencontact = false;
+        }
+
+    }
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name == "PileOfItems")
@@ -530,7 +568,7 @@ public class PlayerController : MonoBehaviour {
         if (other.gameObject.name == "BluePile")
         {
 
-            Cursor.visible = !Cursor.visible;
+            Cursor.visible = true;
             bluecontact = true;
             /*
             for (int i = 0; i < GameManager.gm.inventory.Count; i++)
@@ -547,36 +585,14 @@ public class PlayerController : MonoBehaviour {
 
         if (other.gameObject.name == "YellowPile" )
         {
-            Cursor.visible = !Cursor.visible;
+            Cursor.visible = true;
             yellowcontact = true;
-            /*
-            for (int i = 0; i < GameManager.gm.inventory.Count; i++)
-            {
-                if (GameManager.gm.inventory[i].type.ToString() == "Valuable")
-                {
-                    GameManager.gm.inventory.RemoveAt(i);
-                    i -= 1;
-                    UpdateQuotaText();
-                }
-            }
-            */
         }
 
         if (other.gameObject.name == "GreenPile" )
         {
-            Cursor.visible = !Cursor.visible;
+            Cursor.visible = true;
             greencontact = true;
-            /*
-            for (int i = 0; i < GameManager.gm.inventory.Count; i++)
-            {
-                if (GameManager.gm.inventory[i].type.ToString() == "Other")
-                {
-                    GameManager.gm.inventory.RemoveAt(i);
-                    i -= 1;
-                    UpdateQuotaText();
-                }
-            }
-            */
         }
 
         if (other.gameObject.CompareTag("Prisoner"))
