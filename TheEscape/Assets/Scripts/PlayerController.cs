@@ -385,17 +385,45 @@ public class PlayerController : MonoBehaviour {
                         ItemDetails = ShowItem(GameManager.gm.inventory[Position]);
                         showItem = true;
 
-
-                        if (Input.GetButtonUp("space") && GameManager.gm.inventory[Position].type == Item.ItemType.Consumable && GameManager.gm.playerHealth < 100 && CanAccess)
+                        
+                        if (Input.GetMouseButtonDown(0) && CanAccess && bluecontact)
                         {
                             CanAccess = !CanAccess;
-                            GameManager.gm.playerHealth += GameManager.gm.inventory[Position].value;
-                            Remove(Position);
+
+                            if (GameManager.gm.inventory[Position].type.ToString() == "Consumable")
+                            {
+                                Remove(Position);
+                                UpdateQuotaText();
+                            }
                             showItem = false;
+
                         }
+                        if (Input.GetMouseButtonDown(0) && CanAccess && yellowcontact)
+                        {
+                            CanAccess = !CanAccess;
+                            if (GameManager.gm.inventory[Position].type.ToString() == "Valuable")
+                            {
+                                Remove(Position);
+                                UpdateQuotaText();
+                            }
+                            showItem = false;
+
+                        }
+                         if (Input.GetMouseButtonDown(0) && CanAccess && greencontact)
+                        {
+                            CanAccess = !CanAccess;
+                            if (GameManager.gm.inventory[Position].type.ToString() == "Other")
+                            {
+                                Remove(Position);
+                                UpdateQuotaText();
+                            }
+                            showItem = false;
+
+                        }
+                        
 
 
-                        if (Input.GetMouseButtonDown(0) && CanAccess)
+                        if (Input.GetMouseButtonDown(0) && CanAccess && CanAccess && !greencontact && !yellowcontact && !bluecontact)
                         {
                             CanAccess = !CanAccess;
                             isStealing = true;
@@ -404,6 +432,14 @@ public class PlayerController : MonoBehaviour {
                             NumOfItems--;
                             showItem = false;
 
+                        }
+
+                        if (Input.GetButtonUp("space") && GameManager.gm.inventory[Position].type == Item.ItemType.Consumable && GameManager.gm.playerHealth < 100 && CanAccess)
+                        {
+                            CanAccess = !CanAccess;
+                            GameManager.gm.playerHealth += GameManager.gm.inventory[Position].value;
+                            Remove(Position);
+                            showItem = false;
                         }
                     }
 
@@ -432,43 +468,7 @@ public class PlayerController : MonoBehaviour {
                         ItemDetails = ShowItem(StealItems[Position1]);
                         showItem = true;
 
-                        if (Input.GetMouseButtonDown(1) && CanAccess && bluecontact)
-                        {
-                            CanAccess = !CanAccess;
-
-                            if (ItemDetails == "Consumable")
-                            {
-                                RemoveSteal(Position1);
-                                UpdateQuotaText();
-                            }
-                            showItem = false;
-
-                        }
-                        else if (Input.GetMouseButtonDown(1) && CanAccess && yellowcontact)
-                        {
-                            CanAccess = !CanAccess;
-                            if (ItemDetails == "Valuable")
-                            {
-                                RemoveSteal(Position1);
-                                UpdateQuotaText();
-                            }
-                            showItem = false;
-                            showItem = false;
-
-                        }
-                        else if (Input.GetMouseButtonDown(1) && CanAccess && greencontact)
-                        {
-                            CanAccess = !CanAccess;
-                            if (ItemDetails == "Other")
-                            {
-                                RemoveSteal(Position1);
-                                UpdateQuotaText();
-                            }
-                            showItem = false;
-                            showItem = false;
-
-                        }
-                        else if (Input.GetMouseButtonDown(0) && CanAccess && !greencontact && !yellowcontact && !bluecontact)
+                        if (Input.GetMouseButtonDown(0))
                         {
                             CanAccess = !CanAccess;
                             GameManager.gm.inventory.Add(StealItems[Position1]);
