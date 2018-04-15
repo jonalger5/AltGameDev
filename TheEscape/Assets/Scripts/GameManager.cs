@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour {
         else
         {
             if (SceneManager.GetActiveScene().buildIndex == 0)
-                Destroy(gameObject);
+                Destroy(gameObject);   //InitializeValues()
         }
     }
 	
@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour {
     public void AdvanceScene()
     {
         sceneIndex++;
-        if (sceneIndex == 5)
+        if (sceneIndex == SceneManager.sceneCountInBuildSettings)
             sceneIndex = 0;
         SceneManager.LoadScene(sceneIndex);
     }

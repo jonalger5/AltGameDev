@@ -21,6 +21,13 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     public float speed;
     [SerializeField]
+    private float sprint;
+    private bool isSprinting = false;
+    private float sprintTimer;
+    [SerializeField]
+    private float sprintTimeOut;
+    private bool sprintCoolDown = false;
+    [SerializeField]
     public float sensitivity;
     private Text healthUI;
 
@@ -236,11 +243,47 @@ public class PlayerController : MonoBehaviour {
         if (!isTalking)
         {
             float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");
-            transform.Translate(Vector3.forward * Time.deltaTime * v * speed);
-            transform.Translate(Vector3.right * Time.deltaTime * h * speed);
+            float v = Input.GetAxis("Vertical");           
             
-            _anim.SetFloat("Walk", v);
+            if(Input.GetKeyDown(KeyCode.V) && sprintTimer < sprintTimeOut)
+            {
+                isSprinting = true;
+                sprintCoolDown = false;                              
+            }
+            if(Input.GetKeyUp(KeyCode.V))
+            {
+                isSprinting = false;
+                sprintCoolDown = true;
+            }
+
+            if (isSprinting)
+            {
+                sprintTimer += Time.deltaTime;
+
+                if (sprintTimer > sprintTimeOut)
+                {
+                    isSprinting = false;                   
+                }
+
+                transform.Translate(Vector3.forward * Time.deltaTime * v * sprint);
+                transform.Translate(Vector3.right * Time.deltaTime * h * sprint);
+            }
+            else
+            {              
+                if (sprintTimer > 0 && sprintCoolDown)
+                {
+                    sprintTimer -= Time.deltaTime;
+                }                   
+                else if(sprintTimer < 0 && sprintCoolDown) 
+                {
+                    sprintCoolDown = false;
+                    sprintTimer = 0;
+                }
+
+                transform.Translate(Vector3.forward * Time.deltaTime * v * speed);
+                transform.Translate(Vector3.right * Time.deltaTime * h * speed);
+                _anim.SetFloat("Walk", v);
+            }            
         }
         else
             _anim.SetFloat("Walk", 0);
@@ -662,14 +705,36 @@ public class PlayerController : MonoBehaviour {
 
     private string ShowItem(Item item)
     {
-        if (item.type == Item.ItemType.Valuable)
-            ItemDetails = item.name + "\n" + "Type: Valuable\n Value: " + item.value;   
+        switch (item.type)
+        {
+            case Item.ItemType.Clothing:
+                ItemDetails = item.name + "\n" + "Type: Clothing";
+                break;
 
-        if (item.type == Item.ItemType.Consumable)
-            ItemDetails = item.name + "\n" + "Type: Consumable\n Health: " + item.value;
+            case Item.ItemType.Consumable:
+                ItemDetails = item.name + "\n" + "Type: Consumable\n Health: " + item.value;
+                break;
 
-        if (item.type == Item.ItemType.Other)
-            ItemDetails = item.name + "\n" + "Type: Other";
+            case Item.ItemType.Documents:
+                ItemDetails = item.name + "\n" + "Type: Documents";
+                break;
+
+            case Item.ItemType.EscapePlan:
+                ItemDetails = item.name + "\n" + "Type: Escape Plan";
+                break;
+
+            case Item.ItemType.Valuable:
+                ItemDetails = item.name + "\n" + "Type: Valuable\n Value: " + item.value;
+                break;
+
+            case Item.ItemType.Other:
+                ItemDetails = item.name + "\n" + "Type: Other";
+                break;
+
+            default:
+                break;
+
+        }
 
         return ItemDetails;
     }
@@ -680,7 +745,6 @@ public class PlayerController : MonoBehaviour {
             return true;
         else
             return false;
-
     }
 
     private void RemoveQuestItem(Item item)
