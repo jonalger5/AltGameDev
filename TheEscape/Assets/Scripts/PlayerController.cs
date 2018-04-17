@@ -27,9 +27,11 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     private float sprintTimeOut;
     private bool sprintCoolDown = false;
+    private Image sprintMeter;
+    private Image healthMeter;
     [SerializeField]
     public float sensitivity;
-    private Text healthUI;
+    
 
     internal static void PickUpStealthItem(Item item)
     {
@@ -75,6 +77,8 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     public bool isSortingGame;
     [SerializeField]
+    public bool isStealthGame;
+    [SerializeField]
     private int depositQuota;
     [SerializeField]
     private float timer;
@@ -104,9 +108,11 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         itemDatabase = GameObject.Find("Item Database").GetComponent<ItemDatabase>();
-        healthUI = GameObject.Find("/HealthUI/Health").GetComponent<Text>();
+        healthMeter = GameObject.Find("/HealthUI/Health").GetComponent<Image>();
+        sprintMeter = GameObject.Find("/HealthUI/Sprint").GetComponent<Image>();
         timerText = GameObject.Find("/HealthUI/Timer").GetComponent<Text>();
         quotaText = GameObject.Find("/HealthUI/Quota").GetComponent<Text>();
+        
         dialogueUI = GameObject.Find("DialogueUI").GetComponent<Canvas>();
         dialogueText = GameObject.Find("/DialogueUI/DialogueText").GetComponent<Text>();
         dialogueUI.gameObject.SetActive(false);
@@ -230,21 +236,22 @@ public class PlayerController : MonoBehaviour {
         //Activate Death Screen
         if (GameManager.gm.playerHealth <= 0)
         {
-            healthUI.text = "0";
+            GameManager.gm.playerHealth = 0;
             //deathScreenUI.gameObject.SetActive(true);
             SceneManager.LoadScene(0);
             Time.timeScale = 0;
             Cursor.visible = !Cursor.visible;
         }
-        //Updating HealthUI
-        else
-            healthUI.text = GameManager.gm.playerHealth.ToString();
+
+        //Setting Health and Sprint Meter
+        healthMeter.rectTransform.localScale = new Vector3(GameManager.gm.playerHealth / 100, 1, 1);
+        sprintMeter.rectTransform.localScale = new Vector3((sprintTimeOut - sprintTimer) / sprintTimeOut, 1, 1);
 
         //Used for Movement
         if (!isTalking)
         {
             float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");           
+            float v = Input.GetAxis("Vertical");            
             
             if(Input.GetKeyDown(KeyCode.V) && sprintTimer < sprintTimeOut)
             {
@@ -299,11 +306,34 @@ public class PlayerController : MonoBehaviour {
         {
             showInventory = !showInventory;
             Cursor.visible = !Cursor.visible;
-            if (!showInventory)
+
+            //Shows Quest Log
+            if (showInventory)
+            {
+                questUI.gameObject.SetActive(true);
+                ResetQuestUIText();
+
+                for (int i = 0; i < GameManager.gm.currentQuests.Count; i++)
+                {
+
+                    if (CheckQuest(GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]]))
+                    {
+                        questUIText[i].text = GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]].desc;
+                        questUIText[i].color = Color.green;
+                    }
+
+                    else
+                    {
+                        questUIText[i].text = GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]].desc;
+                        questUIText[i].color = Color.red;
+                    }
+                }
+            }
+            else
             {
                 questUI.gameObject.SetActive(false);
                 showItem = false;
-            }               
+            }            
         }
 
         //if (Input.GetKeyDown(KeyCode.Escape))
@@ -334,6 +364,7 @@ public class PlayerController : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Space) && isTalking)
         {
+            sprintTimer = 0;
             switch (dialogueType)
             {
                 case DialogueType.accepting:
@@ -383,29 +414,7 @@ public class PlayerController : MonoBehaviour {
                 default:
                     break;
             }
-        }
-        //Shows Quest Log
-        if (showInventory)
-        {
-            questUI.gameObject.SetActive(true);
-            ResetQuestUIText();
-
-            for (int i = 0; i < GameManager.gm.currentQuests.Count; i++)
-            {
-
-                if (CheckQuest(GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]]))
-                {
-                    questUIText[i].text = GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]].desc;
-                    questUIText[i].color = Color.green;
-                }
-
-                else
-                {
-                    questUIText[i].text = GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]].desc;
-                    questUIText[i].color = Color.red;
-                }
-            }
-        }
+        }        
 
         if (isStealing)
         {

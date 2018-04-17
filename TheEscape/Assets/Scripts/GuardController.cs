@@ -176,7 +176,7 @@ public class GuardController : MonoBehaviour {
                         _player.isStealing = false;
                         _player.stealTimer = 0;
                     }
-                    if (!_player.isSortingGame)
+                    if (_player.isStealthGame)
                     {                       
                         Scene scene = SceneManager.GetActiveScene();
                         GameManager.gm.playerHealth = 100f;
