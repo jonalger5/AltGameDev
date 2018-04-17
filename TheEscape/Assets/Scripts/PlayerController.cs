@@ -120,21 +120,21 @@ public class PlayerController : MonoBehaviour {
         questUIText = GameObject.Find("/QuestUI/Quest Text").GetComponentsInChildren<Text>();
         questUI.gameObject.SetActive(false);
 
-        //deathScreenUI = GameObject.Find("DeathScreenUI").GetComponent<Canvas>();
-        //deathScreenUI.gameObject.SetActive(false);
+        deathScreenUI = GameObject.Find("DeathScreenUI").GetComponent<Canvas>();
+        deathScreenUI.gameObject.SetActive(false);
 
-        //PauseScreenUI = GameObject.Find("PauseScreen").GetComponent<Canvas>();
-        //PauseScreenUI.gameObject.SetActive(false);
-        //isPaused = false;
+        PauseScreenUI = GameObject.Find("PauseScreen").GetComponent<Canvas>();
+        PauseScreenUI.gameObject.SetActive(false);
+        isPaused = false;
 
-        //VictoryScreenUI = GameObject.Find("VictoryScreen").GetComponent<Canvas>();
-        //VictoryScreenUI.gameObject.SetActive(false);
+        VictoryScreenUI = GameObject.Find("VictoryScreen").GetComponent<Canvas>();
+        VictoryScreenUI.gameObject.SetActive(false);
 
-        //EndScreen = GameObject.Find("LoseScreen1").GetComponent<Canvas>();
-        //EndScreen.gameObject.SetActive(false);
+        EndScreen = GameObject.Find("LoseScreen1").GetComponent<Canvas>();
+        EndScreen.gameObject.SetActive(false);
 
-        //EndScreen1 = GameObject.Find("LoseScreen2").GetComponent<Canvas>();
-        //EndScreen1.gameObject.SetActive(false);
+        EndScreen1 = GameObject.Find("LoseScreen2").GetComponent<Canvas>();
+        EndScreen1.gameObject.SetActive(false);
 
         //inventory = new List<Item>();
 
@@ -336,27 +336,27 @@ public class PlayerController : MonoBehaviour {
             }            
         }
 
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    isPaused = !isPaused;
-        //    showInventory = !showInventory;
-        //    if (isPaused)
-        //    {
-        //        timerdecrement = 0;
-        //        Time.timeScale = 0;
-        //        transform.Rotate(0, 0, 0);
-        //    }
-        //    else if (!isPaused)
-        //    {
-        //        timerdecrement = Time.fixedUnscaledDeltaTime;
-        //        Time.timeScale = 1;
-        //        transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
-        //    }
-        //    Cursor.visible = !Cursor.visible;
-            
-        //    //PauseScreenUI.gameObject.SetActive(isPaused);
-        //}
-        if(bluecontact || greencontact || yellowcontact)
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            isPaused = !isPaused;
+            showInventory = !showInventory;
+            if (isPaused)
+            {
+                timerdecrement = 0;
+                Time.timeScale = 0;
+                transform.Rotate(0, 0, 0);
+            }
+            else if (!isPaused)
+            {
+                timerdecrement = Time.fixedUnscaledDeltaTime;
+                Time.timeScale = 1;
+                transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
+            }
+            Cursor.visible = !Cursor.visible;
+
+            PauseScreenUI.gameObject.SetActive(isPaused);
+        }
+        if (bluecontact || greencontact || yellowcontact)
         {
             transform.Rotate(0, 0, 0);
             Cursor.visible = true;
@@ -868,7 +868,13 @@ public class PlayerController : MonoBehaviour {
     {
         SceneManager.LoadScene(0);
     }
+    public void onNextScene()
+    {
 
+        Scene scene = SceneManager.GetActiveScene();
+        GameManager.gm.playerHealth = 100f;
+        SceneManager.LoadScene(scene.buildIndex + 1);
+    }
     public void OnContinue()
     {
         isPaused = !isPaused;
