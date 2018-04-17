@@ -17,6 +17,12 @@ public class PrisonerController : MonoBehaviour {
     public bool hasReturnedQuest = false;
 
     private PlayerController _player;
+    [SerializeField]
+    private GameObject _complete;
+    [SerializeField]
+    private GameObject _standby;
+    [SerializeField]
+    private GameObject _incomplete;
 
 	// Use this for initialization
 	void Start ()
@@ -39,6 +45,9 @@ public class PrisonerController : MonoBehaviour {
             }
         }
         _player = GameObject.Find("MainCharacter").GetComponent<PlayerController>();
+        _complete.SetActive(false);
+        _standby.SetActive(false);
+        _incomplete.SetActive(false);      
     }
 	
 	// Update is called once per frame
@@ -50,6 +59,38 @@ public class PrisonerController : MonoBehaviour {
             LookAtPlayer();
         //else
         //    FaceFoward();
+
+        if (activeQuest.questItem.name == "")
+            activeQuest = GetNextQuest();
+
+        if (activeQuest.questItem.name != "")
+        {
+            if (_player.CheckQuest(activeQuest))
+            {
+                _complete.SetActive(true);
+                _standby.SetActive(false);
+                _incomplete.SetActive(false);
+            }
+            else if (activeQuest.inProgress)
+            {
+                _complete.SetActive(false);
+                _standby.SetActive(true);
+                _incomplete.SetActive(false);
+            }
+            else if (!activeQuest.inProgress)
+            {
+                _complete.SetActive(false);
+                _standby.SetActive(false);
+                _incomplete.SetActive(true);
+            }
+        }
+
+        if(hasReturnedQuest)
+        {
+            _complete.SetActive(false);
+            _standby.SetActive(false);
+            _incomplete.SetActive(false);
+        }
     }
 
     public Quest GetNextQuest()
@@ -59,7 +100,7 @@ public class PrisonerController : MonoBehaviour {
             if (!q.complete && !q.inProgress)
             {
                 activeQuest = q;
-                GameManager.gm.qdInstance.Quests[q.questID].inProgress = true;
+                //GameManager.gm.qdInstance.Quests[q.questID].inProgress = true;
                 return q;
             }
         }

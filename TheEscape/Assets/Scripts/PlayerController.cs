@@ -707,19 +707,18 @@ public class PlayerController : MonoBehaviour {
 
             if (!prisoner.hasReturnedQuest)
             {
-                if (prisoner.activeQuest.questItem.name == "")
+                if (prisoner.activeQuest.questItem.name != "" && !prisoner.activeQuest.inProgress)
                 {
-                    Quest q = prisoner.GetNextQuest();
-
-                    if (q != null && GameManager.gm.currentQuests.Count < 5)
+                    if (prisoner.activeQuest != null && GameManager.gm.currentQuests.Count < 5)
                     {
-                        GameManager.gm.currentQuests.Add(q.questID);
+                        GameManager.gm.currentQuests.Add(prisoner.activeQuest.questID);
                         dialogueUI.gameObject.SetActive(true);
-                        dialogueText.text = q.acceptDialogue[0];
+                        dialogueText.text = prisoner.activeQuest.acceptDialogue[0];
                         dialogueIndex = 0;
                         isTalking = true;
                         dialogueType = DialogueType.accepting;
-                        currentQuestIndex = q.questID;
+                        currentQuestIndex = prisoner.activeQuest.questID;
+                        GameManager.gm.qdInstance.Quests[prisoner.activeQuest.questID].inProgress = true;
                     }
 
                 }
@@ -803,7 +802,7 @@ public class PlayerController : MonoBehaviour {
         return ItemDetails;
     }
 
-    private bool CheckQuest(Quest quest)
+    public bool CheckQuest(Quest quest)
     {
         if (GameManager.gm.currentQuests.Contains(quest.questID) && CheckInventory(quest.questItem))
             return true;
