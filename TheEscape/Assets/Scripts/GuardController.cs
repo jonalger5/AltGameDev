@@ -175,6 +175,7 @@ public class GuardController : MonoBehaviour {
                         GameManager.gm.playerHealth -= stealingDamage;
                         _player.isStealing = false;
                         _player.stealTimer = 0;
+                        _player.actionMeterFull.SetActive(false);
                     }
                     if (_player.isStealthGame)
                     {                       

@@ -73,6 +73,8 @@ public class PlayerController : MonoBehaviour {
     private float _stealTimeout;
     public float stealTimer = 0;
     public bool isStealing = false;
+    public GameObject actionMeterFull;
+    private Image actionMeter;
 
     [SerializeField]
     public bool isSortingGame;
@@ -110,6 +112,9 @@ public class PlayerController : MonoBehaviour {
         itemDatabase = GameObject.Find("Item Database").GetComponent<ItemDatabase>();
         healthMeter = GameObject.Find("/HealthUI/Health").GetComponent<Image>();
         sprintMeter = GameObject.Find("/HealthUI/Sprint").GetComponent<Image>();
+        actionMeterFull = GameObject.Find("/HealthUI/ActionMeter");
+        actionMeter = GameObject.Find("/HealthUI/ActionMeter/Action").GetComponent<Image>();
+        actionMeterFull.SetActive(false);
         timerText = GameObject.Find("/HealthUI/Timer").GetComponent<Text>();
         quotaText = GameObject.Find("/HealthUI/Quota").GetComponent<Text>();
         
@@ -135,8 +140,6 @@ public class PlayerController : MonoBehaviour {
 
         EndScreen1 = GameObject.Find("LoseScreen2").GetComponent<Canvas>();
         EndScreen1.gameObject.SetActive(false);
-
-        //inventory = new List<Item>();
 
         StealItems = new List<Item>();
         Time.timeScale = 1;
@@ -418,9 +421,12 @@ public class PlayerController : MonoBehaviour {
 
         if (isStealing)
         {
+            actionMeterFull.gameObject.SetActive(true);
+            actionMeter.rectTransform.localScale = new Vector3((_stealTimeout - stealTimer) / _stealTimeout, 1, 1);
             stealTimer += Time.deltaTime;
             if (stealTimer >= _stealTimeout)
             {
+                actionMeterFull.gameObject.SetActive(false);
                 isStealing = false;
                 stealTimer = 0;
             }
@@ -508,6 +514,7 @@ public class PlayerController : MonoBehaviour {
                             {
                                 CanAccess = !CanAccess;
                                 isStealing = true;
+                                stealTimer = 0;
                                 StealItems.Add(GameManager.gm.inventory[Position]);
                                 Remove(Position);
                                 NumOfItems--;
