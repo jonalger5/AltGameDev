@@ -48,7 +48,6 @@ public class GuardController : MonoBehaviour {
     public float edgeDistanceThreshold;
 
     private PlayerController _player;
-    private new Renderer renderer;
     private Rigidbody rb;
 
 	// Use this for initialization
@@ -58,8 +57,7 @@ public class GuardController : MonoBehaviour {
         meshFilter.mesh = mesh;
 
         _player = GameObject.Find("MainCharacter").GetComponent<PlayerController>();
-        renderer = GetComponent<Renderer>();
-        renderer.material.color = Color.red;
+
         rb = GetComponent<Rigidbody>();
 
         if (patrolRoute.Count > 0 && canPatrol)
@@ -122,7 +120,6 @@ public class GuardController : MonoBehaviour {
             else
             {
                 _rotateTimer += Time.deltaTime;
-
                 if (_rotateTimer >= _rotateTimeout)
                 {
                     _rotateTimer = 0;

@@ -413,141 +413,145 @@ public class PlayerController : MonoBehaviour {
         GUI.skin = guiSkin;
         ItemDetails = "";
 
-        //GUI.Box(new Rect(10, 50, 240, 240), InventoryBackground);
-        for (int x = 0; x < slotX; x++)
+        
+        if (showInventory || isSortingGame)
         {
-            for (int y = 0; y < slotY; y++)
+            //GUI.Box(new Rect(10, 50, 240, 240), InventoryBackground);
+            for (int x = 0; x < slotX; x++)
             {
-                Position = x * slotY + y;
-                if (Position < GameManager.gm.inventory.Count)
+                for (int y = 0; y < slotY; y++)
                 {
-                    Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 10 + x * 60, 50, 50);
-                    GUI.Box(slot, GameManager.gm.inventory[Position].icon);
-                    if (slot.Contains(Event.current.mousePosition))
+                    Position = x * slotY + y;
+                    if (Position < GameManager.gm.inventory.Count)
                     {
-                        ItemDetails = ShowItem(GameManager.gm.inventory[Position]);
-                        showItem = true;
-
-                        
-                        if (Input.GetMouseButtonDown(0) && CanAccess && bluecontact)
+                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 10 + x * 60, 50, 50);
+                        GUI.Box(slot, GameManager.gm.inventory[Position].icon);
+                        if (slot.Contains(Event.current.mousePosition))
                         {
-                            CanAccess = !CanAccess;
+                            ItemDetails = ShowItem(GameManager.gm.inventory[Position]);
+                            showItem = true;
 
-                            if (GameManager.gm.inventory[Position].type.ToString() == "Consumable")
+
+                            if (Input.GetMouseButtonDown(0) && CanAccess && bluecontact)
                             {
-                                Remove(Position);
-                                UpdateQuotaText();
-                            }
-                            showItem = false;
+                                CanAccess = !CanAccess;
 
-                        }
-                        if (Input.GetMouseButtonDown(0) && CanAccess && yellowcontact)
-                        {
-                            CanAccess = !CanAccess;
-                            if (GameManager.gm.inventory[Position].type.ToString() == "Valuable")
+                                if (GameManager.gm.inventory[Position].type.ToString() == "Consumable")
+                                {
+                                    Remove(Position);
+                                    UpdateQuotaText();
+                                }
+                                showItem = false;
+
+                            }
+                            if (Input.GetMouseButtonDown(0) && CanAccess && yellowcontact)
                             {
-                                Remove(Position);
-                                UpdateQuotaText();
-                            }
-                            showItem = false;
+                                CanAccess = !CanAccess;
+                                if (GameManager.gm.inventory[Position].type.ToString() == "Valuable")
+                                {
+                                    Remove(Position);
+                                    UpdateQuotaText();
+                                }
+                                showItem = false;
 
-                        }
-                         if (Input.GetMouseButtonDown(0) && CanAccess && greencontact)
-                        {
-                            CanAccess = !CanAccess;
-                            if (GameManager.gm.inventory[Position].type.ToString() == "Other")
+                            }
+                            if (Input.GetMouseButtonDown(0) && CanAccess && greencontact)
                             {
-                                Remove(Position);
-                                UpdateQuotaText();
+                                CanAccess = !CanAccess;
+                                if (GameManager.gm.inventory[Position].type.ToString() == "Other")
+                                {
+                                    Remove(Position);
+                                    UpdateQuotaText();
+                                }
+                                showItem = false;
+
                             }
-                            showItem = false;
 
+
+
+                            if (Input.GetMouseButtonDown(0) && CanAccess && CanAccess && !greencontact && !yellowcontact && !bluecontact)
+                            {
+                                CanAccess = !CanAccess;
+                                isStealing = true;
+                                StealItems.Add(GameManager.gm.inventory[Position]);
+                                Remove(Position);
+                                NumOfItems--;
+                                showItem = false;
+
+                            }
+
+                            if (Input.GetButtonUp("space") && GameManager.gm.inventory[Position].type == Item.ItemType.Consumable && GameManager.gm.playerHealth < 100 && CanAccess)
+                            {
+                                CanAccess = !CanAccess;
+                                GameManager.gm.playerHealth += GameManager.gm.inventory[Position].value;
+                                Remove(Position);
+                                showItem = false;
+                            }
                         }
-                        
 
-
-                        if (Input.GetMouseButtonDown(0) && CanAccess && CanAccess && !greencontact && !yellowcontact && !bluecontact)
-                        {
-                            CanAccess = !CanAccess;
-                            isStealing = true;
-                            StealItems.Add(GameManager.gm.inventory[Position]);
-                            Remove(Position);
-                            NumOfItems--;
+                        if (ItemDetails == "")
                             showItem = false;
-
-                        }
-
-                        if (Input.GetButtonUp("space") && GameManager.gm.inventory[Position].type == Item.ItemType.Consumable && GameManager.gm.playerHealth < 100 && CanAccess)
-                        {
-                            CanAccess = !CanAccess;
-                            GameManager.gm.playerHealth += GameManager.gm.inventory[Position].value;
-                            Remove(Position);
-                            showItem = false;
-                        }
                     }
-
-                    if (ItemDetails == "")
-                        showItem = false;
-                }
-                else
-                {
-                    Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 10 + x * 60, 50, 50);
-                    GUI.Box(slot, EmptySlot);
+                    else
+                    {
+                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 10 + x * 60, 50, 50);
+                        GUI.Box(slot, EmptySlot);
+                    }
                 }
             }
-        }
-        for (int i = 0; i < slotX; i++)
-        {
-            for (int j = 0; j < slotY; j++)
+            for (int i = 0; i < slotX; i++)
             {
-
-                Position1 = i * slotY + j;
-                if (Position1 < StealItems.Count)
+                for (int j = 0; j < slotY; j++)
                 {
-                    Rect slot = new Rect(Screen.width / 100 + j * 60, Screen.height / 3 + i * 60, 50, 50);
-                    GUI.Box(slot, StealItems[Position1].icon);
-                    if (slot.Contains(Event.current.mousePosition))
+
+                    Position1 = i * slotY + j;
+                    if (Position1 < StealItems.Count)
                     {
-                        ItemDetails = ShowItem(StealItems[Position1]);
-                        showItem = true;
-
-                        if (Input.GetMouseButtonDown(0))
+                        Rect slot = new Rect(Screen.width / 100 + j * 60, Screen.height / 3 + i * 60, 50, 50);
+                        GUI.Box(slot, StealItems[Position1].icon);
+                        if (slot.Contains(Event.current.mousePosition))
                         {
-                            CanAccess = !CanAccess;
-                            GameManager.gm.inventory.Add(StealItems[Position1]);
-                            RemoveSteal(Position1);
-                            NumOfItems++;
-                            showItem = false;
+                            ItemDetails = ShowItem(StealItems[Position1]);
+                            showItem = true;
 
+                            if (Input.GetMouseButtonDown(0))
+                            {
+                                CanAccess = !CanAccess;
+                                GameManager.gm.inventory.Add(StealItems[Position1]);
+                                RemoveSteal(Position1);
+                                NumOfItems++;
+                                showItem = false;
+
+                            }
                         }
-                    }
 
-                    if (ItemDetails == "")
-                        showItem = false;
+                        if (ItemDetails == "")
+                            showItem = false;
+                    }
+                    else
+                    {
+                        Rect slot = new Rect(Screen.width / 100 + j * 60, Screen.height / 3 + i * 60, 50, 50);
+                        GUI.Box(slot, EmptySlot);
+                    }
                 }
-                else
-                {
-                    Rect slot = new Rect(Screen.width / 100 + j * 60, Screen.height / 3 + i * 60, 50, 50);
-                    GUI.Box(slot, EmptySlot);
-                }
-            }
+            }           
         }
+
         if (showInventory)
         {
-            
             questUI.gameObject.SetActive(true);
             GUILayout.BeginArea(new Rect(4 * Screen.width / 5, Screen.height / 5, 170, 300));
             for (int i = 0; i < GameManager.gm.currentQuests.Count; i++)
             {
-                
+
                 if (CheckQuest(GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]]))
                 {
                     GUILayout.Label(GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]].desc, GUI.skin.customStyles[1], GUILayout.MaxWidth(170));
                 }
 
                 else
-                {                    
-                    GUILayout.Label(GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]].desc, GUI.skin.customStyles[2], GUILayout.MaxWidth(170));                    
+                {
+                    GUILayout.Label(GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]].desc, GUI.skin.customStyles[2], GUILayout.MaxWidth(170));
                 }
             }
             GUILayout.EndArea();
