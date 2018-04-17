@@ -1072,7 +1072,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1563793791010100}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -85.4, y: 41.6, z: 159.9}
+  m_LocalPosition: {x: -31, y: 0, z: 137.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4653818621767570}
@@ -1557,6 +1557,7 @@ MonoBehaviour:
   sprint: 21
   sprintTimeOut: 3
   sensitivity: 5
+  questUIText: []
   InventoryBackground: {fileID: 2800000, guid: 8b01a3ceff932fb43b3426e0fa40b0c5, type: 3}
   EmptySlot: {fileID: 2800000, guid: 7e4053136216154439cfeb424678fb56, type: 3}
   guiSkin: {fileID: 11400000, guid: a3edb073ca0f68b45a80fd050fc81e5c, type: 2}
