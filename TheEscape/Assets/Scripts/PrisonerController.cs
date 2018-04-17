@@ -10,7 +10,7 @@ public class PrisonerController : MonoBehaviour {
     private float lookDistance;
     [SerializeField]
     private float dampling;
-    private Quaternion forwardRotation;
+    private Vector3 forwardRotation;
 
     public List<Quest> Quests = new List<Quest>();
     public Quest activeQuest;
@@ -21,8 +21,9 @@ public class PrisonerController : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        forwardRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, transform.rotation.z);
-        
+        //forwardRotation = new Vector3(transform.rotation.x, transform.rotation.y, transform.rotation.z);
+        //forwardRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, transform.rotation.z);
+
         foreach(Quest q in GameManager.gm.qdInstance.Quests)
         {
             if (q.prisonerID == id)
@@ -47,8 +48,8 @@ public class PrisonerController : MonoBehaviour {
 
         if (targetDistance < lookDistance)
             LookAtPlayer();
-        else
-            FaceFoward();
+        //else
+        //    FaceFoward();
     }
 
     public Quest GetNextQuest()
@@ -89,6 +90,7 @@ public class PrisonerController : MonoBehaviour {
 
     private void FaceFoward()
     {
-        transform.rotation = Quaternion.Slerp(transform.rotation, forwardRotation, Time.deltaTime * dampling);
+        Quaternion rotation = Quaternion.Euler(forwardRotation);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * dampling);
     }
 }

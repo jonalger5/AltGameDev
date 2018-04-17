@@ -111,7 +111,6 @@ GameObject:
   - component: {fileID: 4116400684538938}
   - component: {fileID: 20392501507584614}
   - component: {fileID: 124850825981658036}
-  - component: {fileID: 81307030402860472}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -678,7 +677,6 @@ GameObject:
   - component: {fileID: 4930914005712456}
   - component: {fileID: 20653466704289026}
   - component: {fileID: 124097403076808498}
-  - component: {fileID: 81599895586739788}
   m_Layer: 0
   m_Name: Alternate Camera
   m_TagString: MainCamera
@@ -1511,20 +1509,6 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1807341535294318}
   m_Enabled: 1
---- !u!81 &81307030402860472
-AudioListener:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1300149571564676}
-  m_Enabled: 1
---- !u!81 &81599895586739788
-AudioListener:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1929724487339894}
-  m_Enabled: 1
 --- !u!95 &95153701858179704
 Animator:
   serializedVersion: 3
@@ -1562,10 +1546,12 @@ MonoBehaviour:
   EmptySlot: {fileID: 2800000, guid: 7e4053136216154439cfeb424678fb56, type: 3}
   guiSkin: {fileID: 11400000, guid: a3edb073ca0f68b45a80fd050fc81e5c, type: 2}
   StealItems: []
-  _stealTimeout: 0.1
+  _stealTimeout: 0.5
   stealTimer: 0
   isStealing: 0
+  actionMeterFull: {fileID: 0}
   isSortingGame: 0
+  isStealthGame: 0
   depositQuota: 0
   timer: 0
 --- !u!114 &114925717061136380
