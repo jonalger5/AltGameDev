@@ -49,9 +49,9 @@ public class PlayerController : MonoBehaviour {
     //Quest Variables
     private int currentQuestIndex = 0;
     private Canvas questUI;
+    public Text[] questUIText;
     private GameObject rollCallPoint;
 
-    private new Renderer renderer;
     //public static List<Item> inventory;
     private ItemDatabase itemDatabase;
     private int slotX = 2, slotY = 3;
@@ -111,6 +111,7 @@ public class PlayerController : MonoBehaviour {
         dialogueText = GameObject.Find("/DialogueUI/DialogueText").GetComponent<Text>();
         dialogueUI.gameObject.SetActive(false);
         questUI = GameObject.Find("QuestUI").GetComponent<Canvas>();
+        questUIText = GameObject.Find("/QuestUI/Quest Text").GetComponentsInChildren<Text>();
         questUI.gameObject.SetActive(false);
 
         //deathScreenUI = GameObject.Find("DeathScreenUI").GetComponent<Canvas>();
@@ -299,7 +300,10 @@ public class PlayerController : MonoBehaviour {
             showInventory = !showInventory;
             Cursor.visible = !Cursor.visible;
             if (!showInventory)
+            {
                 questUI.gameObject.SetActive(false);
+                showItem = false;
+            }               
         }
 
         //if (Input.GetKeyDown(KeyCode.Escape))
@@ -380,6 +384,28 @@ public class PlayerController : MonoBehaviour {
                     break;
             }
         }
+        //Shows Quest Log
+        if (showInventory)
+        {
+            questUI.gameObject.SetActive(true);
+            ResetQuestUIText();
+
+            for (int i = 0; i < GameManager.gm.currentQuests.Count; i++)
+            {
+
+                if (CheckQuest(GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]]))
+                {
+                    questUIText[i].text = GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]].desc;
+                    questUIText[i].color = Color.green;
+                }
+
+                else
+                {
+                    questUIText[i].text = GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]].desc;
+                    questUIText[i].color = Color.red;
+                }
+            }
+        }
 
         if (isStealing)
         {
@@ -413,8 +439,8 @@ public class PlayerController : MonoBehaviour {
         GUI.skin = guiSkin;
         ItemDetails = "";
 
-        
-        if (showInventory || isSortingGame)
+        //Shows both Inventory and Sorting Items
+        if (isSortingGame)
         {
             //GUI.Box(new Rect(10, 50, 240, 240), InventoryBackground);
             for (int x = 0; x < slotX; x++)
@@ -539,22 +565,39 @@ public class PlayerController : MonoBehaviour {
 
         if (showInventory)
         {
-            questUI.gameObject.SetActive(true);
-            GUILayout.BeginArea(new Rect(4 * Screen.width / 5, Screen.height / 5, 170, 300));
-            for (int i = 0; i < GameManager.gm.currentQuests.Count; i++)
+            for (int x = 0; x < slotX; x++)
             {
-
-                if (CheckQuest(GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]]))
+                for (int y = 0; y < slotY; y++)
                 {
-                    GUILayout.Label(GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]].desc, GUI.skin.customStyles[1], GUILayout.MaxWidth(170));
-                }
+                    Position = x * slotY + y;
+                    if (Position < GameManager.gm.inventory.Count)
+                    {
+                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 10 + x * 60, 50, 50);
+                        GUI.Box(slot, GameManager.gm.inventory[Position].icon);
+                        if (slot.Contains(Event.current.mousePosition))
+                        {
+                            ItemDetails = ShowItem(GameManager.gm.inventory[Position]);
+                            showItem = true;
 
-                else
-                {
-                    GUILayout.Label(GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]].desc, GUI.skin.customStyles[2], GUILayout.MaxWidth(170));
+                            if (Input.GetButtonUp("space") && GameManager.gm.inventory[Position].type == Item.ItemType.Consumable && GameManager.gm.playerHealth < 100 && CanAccess)
+                            {
+                                CanAccess = !CanAccess;
+                                GameManager.gm.playerHealth += GameManager.gm.inventory[Position].value;
+                                Remove(Position);
+                                showItem = false;
+                            }
+                        }
+
+                        if (ItemDetails == "")
+                            showItem = false;
+                    }
+                    else
+                    {
+                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 10 + x * 60, 50, 50);
+                        GUI.Box(slot, EmptySlot);
+                    }
                 }
             }
-            GUILayout.EndArea();
         }
 
         if (showItem)
@@ -652,7 +695,7 @@ public class PlayerController : MonoBehaviour {
                 {
                     Quest q = prisoner.GetNextQuest();
 
-                    if (q != null)
+                    if (q != null && GameManager.gm.currentQuests.Count < 5)
                     {
                         GameManager.gm.currentQuests.Add(q.questID);
                         dialogueUI.gameObject.SetActive(true);
@@ -675,6 +718,7 @@ public class PlayerController : MonoBehaviour {
                     GameManager.gm.currentQuests.Remove(prisoner.activeQuest.questID);
                     RemoveQuestItem(prisoner.activeQuest.questItem);
                     prisoner.ReturnQuest();
+                    ResetQuestUIText();
                 }
                 else if (!CheckQuest(prisoner.activeQuest) && !prisoner.activeQuest.complete)
                 {
@@ -771,6 +815,12 @@ public class PlayerController : MonoBehaviour {
                 return true;
         }
         return false;
+    }
+
+    private void ResetQuestUIText()
+    {
+        foreach (Text t in questUIText)
+            t.text = "";
     }
 
     public void DisplayEndScreen()
