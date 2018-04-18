@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33865967735099010}
   - component: {fileID: 135456534851379756}
   - component: {fileID: 23372158975183664}
+  - component: {fileID: 122351079015835386}
   m_Layer: 0
   m_Name: RollCallPoint
   m_TagString: RollCallPoint
@@ -36,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1532250225590778}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.5820637, y: 2.97, z: -0.65}
+  m_LocalPosition: {x: 14.884029, y: 0.48957464, z: 121.863976}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -83,6 +84,17 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1532250225590778}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!122 &122351079015835386
+Halo:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1532250225590778}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 4290717650
+  m_Size: 0.88
 --- !u!135 &135456534851379756
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -11855,6 +11855,7 @@ MonoBehaviour:
   speed: 4
   dampling: 2
   PrisonerInteraction: 1
+  drawView: 0
   stealingDamage: 25
   canPatrol: 0
   canRotate: 0

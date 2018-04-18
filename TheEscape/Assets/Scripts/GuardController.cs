@@ -34,7 +34,8 @@ public class GuardController : MonoBehaviour {
     //Fields for stationary Guards
     private float _rotateTimeout;
     private float _rotateTimer = 0;
-    private float lookFrom;
+    [SerializeField]
+    private float lookFrom;   
     [SerializeField]
     private float lookAt; //In degrees
     private Quaternion lookRotation;
@@ -78,7 +79,7 @@ public class GuardController : MonoBehaviour {
             }
         }
         _rotateTimeout = Random.Range(1f, 3f);
-        lookFrom = transform.rotation.y;      
+        //lookFrom = transform.rotation.y;      
         lookRotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y + lookAt, transform.rotation.z);
     }
 
@@ -189,10 +190,10 @@ public class GuardController : MonoBehaviour {
                         _player.actionMeterFull.SetActive(false);
                     }
                     if (_player.isStealthGame)
-                    {                       
-                        Scene scene = SceneManager.GetActiveScene();
-                        GameManager.gm.playerHealth = 100f;
-                        SceneManager.LoadScene(scene.buildIndex);
+                    {
+                        StartCoroutine(ShotPlayer());
+                        //GameManager.gm.playerHealth = 100f;
+                        //GameManager.gm.ReloadScene();
                     }
                     if(drawView && PrisonerInteraction)
                     {
