@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour {
     public QuestDatabase questDatabase;
     public QuestDatabaseInstance qdInstance;
     public GameObject rollCallPoint;
+    public bool hasReceivedQuest;
 
     public static GameManager gm;
 
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour {
         questDatabase = GameObject.Find("Quest Database").GetComponent<QuestDatabase>();
         qdInstance = new QuestDatabaseInstance();
         qdInstance.Quests = questDatabase.Quests;
+        hasReceivedQuest = false;
     }
 
     public void AdvanceScene()

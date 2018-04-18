@@ -163,6 +163,7 @@ public class PlayerController : MonoBehaviour {
             UpdateQuotaText();
             timerdecrement = 0;
             timerdecrement = Time.fixedUnscaledDeltaTime;
+            GameManager.gm.hasReceivedQuest = false;
         }
         else if(isStealthGame)
         {
@@ -170,6 +171,7 @@ public class PlayerController : MonoBehaviour {
             UpdateQuotaText();
             rollCallPoint = GameObject.Find("RollCallPoint");
             rollCallPoint.gameObject.SetActive(false);
+            GameManager.gm.hasReceivedQuest = false;
         }
         else
         {
@@ -180,6 +182,9 @@ public class PlayerController : MonoBehaviour {
             supportUI = GameObject.Find("SupportUI").GetComponent<Canvas>();
             supportText = GameObject.Find("/SupportUI/Support Text").GetComponent<Text>();
             supportUI.gameObject.SetActive(false);
+
+            if (GameManager.gm.hasReceivedQuest)
+                rollCall.SetActive(true);
         }
         Cursor.visible = false;
 
@@ -401,7 +406,7 @@ public class PlayerController : MonoBehaviour {
                         dialogueUI.gameObject.SetActive(false);
                         isTalking = false;
                         rollCall.gameObject.SetActive(true);
-
+                        GameManager.gm.hasReceivedQuest = true;
                         StartCoroutine(GameManager.gm.RollCall(supportUI, supportText));
                     }
                         
