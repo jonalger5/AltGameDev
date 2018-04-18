@@ -930,6 +930,7 @@ public class PlayerController : MonoBehaviour {
             if(UnityEngine.Random.value > percentages[StealItems.Count])
             {
                 VictoryScreenUI.gameObject.SetActive(true);
+                GameManager.gm.inventory.AddRange(StealItems);
             }
             else
             {

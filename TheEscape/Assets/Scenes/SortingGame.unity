@@ -2582,6 +2582,21 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114687573032404714, guid: 4404e484a121ebd468b147692cd97119,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2133665469}
+    - target: {fileID: 114615224148710066, guid: 4404e484a121ebd468b147692cd97119,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2133665469}
+    - target: {fileID: 114245796643972534, guid: 4404e484a121ebd468b147692cd97119,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2133665469}
     - target: {fileID: 224880875060658740, guid: 4404e484a121ebd468b147692cd97119,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -2590,124 +2605,7 @@ Prefab:
     - target: {fileID: 224880875060658740, guid: 4404e484a121ebd468b147692cd97119,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.001121521
-      objectReference: {fileID: 0}
-    - target: {fileID: 114245796643972534, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2133665469}
-    - target: {fileID: 114615224148710066, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2133665469}
-    - target: {fileID: 114687573032404714, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2133665469}
-    - target: {fileID: 1192357176725250, guid: 4404e484a121ebd468b147692cd97119, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114615224148710066, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnMainMenu
-      objectReference: {fileID: 0}
-    - target: {fileID: 114245796643972534, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnQuit
-      objectReference: {fileID: 0}
-    - target: {fileID: 114687573032404714, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnContinue
-      objectReference: {fileID: 0}
-    - target: {fileID: 114924667323542014, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 02206781fed351e41b5ea0be7963323f,
-        type: 3}
-    - target: {fileID: 114924667323542014, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_Type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224049248711416944, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 170.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 224049248711416944, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 57.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 224049248711416944, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0.0011348724
-      objectReference: {fileID: 0}
-    - target: {fileID: 114944840367318848, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_Text
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114088118832033862, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_Text
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114906396661774286, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_Text
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114975237480599454, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 8e6459b8c29a2d54a90437acde1159e3,
-        type: 3}
-    - target: {fileID: 114975237480599454, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_Type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224005234937764182, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 170.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 224005234937764182, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 57.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114074308818549330, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: cb38fb1757e50d047ab1cf1b40f1bb1f,
-        type: 3}
-    - target: {fileID: 114074308818549330, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_Type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224463806125412646, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 170.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 224463806125412646, guid: 4404e484a121ebd468b147692cd97119,
-        type: 2}
-      propertyPath: m_SizeDelta.y
-      value: 57.5
+      value: 0.0010986328
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4404e484a121ebd468b147692cd97119, type: 2}
