@@ -110,7 +110,6 @@ public class PlayerController : MonoBehaviour {
 
     private bool otherContact = false;
     private bool valuableContact = false;
-    private bool stealthContact = false;
     private bool clothingcontact = false;
     private bool Consumablecontact = false;
     private bool Documentcontact = false;
@@ -315,7 +314,7 @@ public class PlayerController : MonoBehaviour {
         else
             _anim.SetFloat("Walk", 0);
 
-        if (!showInventory && !isTalking && !(Consumablecontact || otherContact || valuableContact || clothingcontact || Documentcontact || stealthContact))
+        if (!showInventory && !isTalking && !(Consumablecontact || otherContact || valuableContact || clothingcontact || Documentcontact ))
         {
             transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
             Cursor.visible = false;
@@ -375,7 +374,7 @@ public class PlayerController : MonoBehaviour {
 
             PauseScreenUI.gameObject.SetActive(isPaused);
         }
-        if (Consumablecontact || otherContact || valuableContact || clothingcontact || Documentcontact || stealthContact)
+        if (Consumablecontact || otherContact || valuableContact || clothingcontact || Documentcontact )
         {
             transform.Rotate(0, 0, 0);
             Cursor.visible = true;
@@ -538,17 +537,6 @@ public class PlayerController : MonoBehaviour {
                                 showItem = false;
 
                             }
-                            if (Input.GetMouseButtonDown(0) && CanAccess && stealthContact)
-                            {
-                                CanAccess = !CanAccess;
-                                if (GameManager.gm.inventory[Position].type.ToString() == "Escape Plan")
-                                {
-                                    Remove(Position);
-                                    UpdateQuotaText();
-                                }
-                                showItem = false;
-
-                            }
                             if (Input.GetMouseButtonDown(0) && CanAccess && clothingcontact)
                             {
                                 CanAccess = !CanAccess;
@@ -562,7 +550,7 @@ public class PlayerController : MonoBehaviour {
                             }
 
 
-                            if (Input.GetMouseButtonDown(0) && CanAccess && CanAccess && !Consumablecontact && !otherContact && !valuableContact && !clothingcontact && !Documentcontact &&!stealthContact)
+                            if (Input.GetMouseButtonDown(0) && CanAccess && CanAccess && !Consumablecontact && !otherContact && !valuableContact && !clothingcontact && !Documentcontact )
                             {
                                 CanAccess = !CanAccess;
                                 isStealing = true;
@@ -707,13 +695,7 @@ public class PlayerController : MonoBehaviour {
             Cursor.visible = false;
             Documentcontact = false;
         }
-
-        if (other.gameObject.name == "StealthPile")
-        {
-            Cursor.visible = false;
-            stealthContact = false;
-            
-        }
+        
     }
         void OnTriggerEnter(Collider other)
     {
@@ -722,7 +704,7 @@ public class PlayerController : MonoBehaviour {
             int PickupNum = NumOfItems - GameManager.gm.inventory.Count;
             for (int i = 0;i < PickupNum; i++)
             {
-                itemnum = UnityEngine.Random.Range(0, 5);
+                itemnum = UnityEngine.Random.Range(0, 25);
                 GameManager.gm.inventory.Add(itemDatabase.Items[itemnum]);
             }
 
@@ -760,13 +742,7 @@ public class PlayerController : MonoBehaviour {
             Cursor.visible = true;
             Documentcontact = true;
         }
-
-        if (other.gameObject.name == "StealthPile")
-        {
-            Cursor.visible = true;
-            stealthContact = true;
-
-        }
+        
 
         if (other.gameObject.CompareTag("Prisoner"))
         {
