@@ -15,22 +15,31 @@ public class CameraSwitching : MonoBehaviour
     }
     public void OnTriggerEnter(Collider other)
     {
-        mainCamera.enabled = false;
-        alternateCamera.enabled = true;
+        if(other.gameObject.layer == 9)
+        {
+            mainCamera.enabled = false;
+            alternateCamera.enabled = true;
+        }        
     }
 
     public void OnTriggerExit(Collider other)
     {
-        alternateCamera.enabled = false;
-        mainCamera.enabled = true;
+        if (other.gameObject.layer == 9)
+        {
+            alternateCamera.enabled = false;
+            mainCamera.enabled = true;
+        }          
     }
 
     public void OnTriggerStay(Collider other)
     {
-        if (mainCamera.enabled)
+        if(other.gameObject.layer == 9)
         {
-            mainCamera.enabled = false;
-            alternateCamera.enabled = true;
-        }
+            if (mainCamera.enabled)
+            {
+                mainCamera.enabled = false;
+                alternateCamera.enabled = true;
+            }
+        }        
     }
 }
