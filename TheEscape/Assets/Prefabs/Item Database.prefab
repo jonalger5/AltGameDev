@@ -54,19 +54,19 @@ MonoBehaviour:
   Items:
   - name: bow-tie
     type: 0
-    value: 2
+    value: 0
     icon: {fileID: 2800000, guid: 55f91d00b2ead1c468761cfc4ca8ac5c, type: 3}
   - name: corset
     type: 0
-    value: 2
+    value: 0
     icon: {fileID: 2800000, guid: 8d53f98e5d46ea946afb52be9d6e98e5, type: 3}
   - name: gloves
     type: 1
-    value: 1
+    value: 0
     icon: {fileID: 2800000, guid: a3015b2952d4ccb4dadad8576f7547b6, type: 3}
   - name: polo-shirt
     type: 0
-    value: 1
+    value: 0
     icon: {fileID: 2800000, guid: cae80f6393e64694b8d8e14aa21701a9, type: 3}
   - name: shorts
     type: 0
@@ -82,23 +82,23 @@ MonoBehaviour:
     icon: {fileID: 2800000, guid: 42cabd6770d221d4280510940e7e3fde, type: 3}
   - name: beer-bottle
     type: 1
-    value: 0
+    value: 1
     icon: {fileID: 2800000, guid: 25173785e1ae0974b845d4e3f5052e76, type: 3}
   - name: bread
     type: 1
-    value: 0
+    value: 2
     icon: {fileID: 2800000, guid: 8f85e81ab7555214daca185b6859aa9e, type: 3}
   - name: carrot
     type: 1
-    value: 0
+    value: 2
     icon: {fileID: 2800000, guid: e968495155133be4991e47995004f539, type: 3}
   - name: cookie
     type: 1
-    value: 0
+    value: 1
     icon: {fileID: 2800000, guid: 518447c92e718c74f8d647bf3365c543, type: 3}
   - name: potato
     type: 1
-    value: 0
+    value: 2
     icon: {fileID: 2800000, guid: d6b9d087d33dcc04c9350303999b2650, type: 3}
   - name: files
     type: 2
@@ -141,38 +141,38 @@ MonoBehaviour:
     value: 0
     icon: {fileID: 2800000, guid: e0ce737593f7c734fa720b6d54622524, type: 3}
   - name: butterfly-knife
-    type: 5
+    type: 3
     value: 0
     icon: {fileID: 2800000, guid: bf535962985293f4daa4daf211869f54, type: 3}
   - name: house-keys
-    type: 5
+    type: 3
     value: 0
     icon: {fileID: 2800000, guid: 3ccc7d62d6c2b994896c17bb25972140, type: 3}
   - name: lockpicks
-    type: 5
+    type: 3
     value: 0
     icon: {fileID: 2800000, guid: 41693fb83bc63554cb87b2f6a8445d8f, type: 3}
   - name: rope-coil
-    type: 5
+    type: 3
     value: 0
     icon: {fileID: 2800000, guid: 3270b2de36a08ac4a9c04dbd64f8402b, type: 3}
   - name: diamond-ring
     type: 4
-    value: 0
+    value: 5
     icon: {fileID: 2800000, guid: bbe334153f1eb5643a3e735f21b519e5, type: 3}
   - name: heart-necklace
     type: 4
-    value: 0
+    value: 2
     icon: {fileID: 2800000, guid: b7a588da5b67f3f4a981eef962c41387, type: 3}
   - name: rupee
     type: 4
-    value: 0
+    value: 4
     icon: {fileID: 2800000, guid: 6edb253a6f6acc7479db5fb5ab83cb64, type: 3}
   - name: two-coins
     type: 4
-    value: 0
+    value: 2
     icon: {fileID: 2800000, guid: 2d9bbd95240ccae448966343fb88c821, type: 3}
   - name: watch
     type: 4
-    value: 0
+    value: 3
     icon: {fileID: 2800000, guid: 8c25024ac8d53764686fead54c967d63, type: 3}

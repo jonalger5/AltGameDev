@@ -55,48 +55,52 @@ MonoBehaviour:
   - prisonerID: 0
     questID: 0
     questItem:
-      name: Vodka
-      type: 0
-      value: 0
-      icon: {fileID: 0}
+      name: beer-bottle
+      type: 1
+      value: 1
+      icon: {fileID: 2800000, guid: 25173785e1ae0974b845d4e3f5052e76, type: 3}
     acceptDialogue:
     - 'Prisoner: I need you to do something for me.'
     - 'You: Ok, what is it?'
     - 'Prisoner: Yesterday, one of the Kapos punished my brother after evening roll
       call and his condition is worsening '
-    - 'Prisoner: If you find any Vodka today, can you bring it to me so I can help
+    - 'Prisoner: If you find any Beer today, can you bring it to me so I can help
       him ease his pain?'
     - 'You: Of course, I''ll see what I can do.'
     - 'Prisoner: Thank you!'
     returnDialogue:
-    - 'Prisoner: Did you find any Vodka for my brother?'
+    - 'Prisoner: Did you find any Beer for my brother?'
     - 'You: Yes I did! Here you go.'
     - 'Prisoner: Thank you so much! My Brother will be so grateful for this!'
     standbyDialogue:
     - 'Prisoner: Did you find any Vodka for my brother?'
     - 'You: No, not yet'
-    desc: Get Vodka for the Prisoner's Brother
+    desc: Get Beer for the Prisoner's Brother
+    inProgress: 0
     complete: 0
   - prisonerID: 1
     questID: 0
     questItem:
-      name: Ammunition
-      type: 2
+      name: bolt-cutter
+      type: 3
       value: 0
       icon: {fileID: 0}
     acceptDialogue:
     - 'Prisoner: Oh Hey, I''ve been looking for you.'
     - 'You: Ok, what''s up?'
     - 'Prisoner: The Escape plan is starting to come together.'
-    - 'Prisoner: Sneak into Garrison Area tonight and bring me some ammunition.'
-    - 'You: Ok, I''ll go get the ammunition tonight.'
+    - 'Prisoner: First, we''ll need to get a pair of bolt cutters to cut through the
+      fence.'
+    - 'Prisoner: See if you can find some by the Mechanic Shop.'
+    - 'You: Ok, I''ll go get the bolt cutters tonight after evening Roll Call.'
     - 'Prisoner: Great! Be careful...'
     returnDialogue:
-    - 'Prisoner: Do you have the ammunition?'
-    - 'You: Yes, I was able to find some. '
+    - 'Prisoner: Do you have the bolt cutters?'
+    - 'You: Yes, I was able to find them. '
     - 'Prisoner: Thank you so much! I''ll let you know if there''s anything else we''ll
       need for the Escape Plan.'
     standbyDialogue:
     - 'Prisoner: Come back when you have the ammunition.'
-    desc: Get Ammunition for the Escape Plan
+    desc: Get the Bolt Cutters for the Escape Plan
+    inProgress: 0
     complete: 0

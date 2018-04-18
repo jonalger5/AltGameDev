@@ -631,7 +631,7 @@ public class PlayerController : MonoBehaviour {
             }           
         }
 
-        if (showInventory)
+        if (showInventory && !isSortingGame)
         {
             for (int x = 0; x < slotX; x++)
             {
