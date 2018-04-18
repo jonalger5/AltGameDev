@@ -12,10 +12,18 @@ public class GuardController : MonoBehaviour {
     private float dampling;
 
     [SerializeField]
+    private bool PrisonerInteraction;
+
+    [SerializeField]
+    private bool drawView;
+
+    [SerializeField]
     private float stealingDamage;
 
     [SerializeField]
     private bool canPatrol;
+    [SerializeField]
+    private bool canRotate;
     [SerializeField]
     public List<PatrolPoint> patrolRoute = new List<PatrolPoint>();
     private int index = 0;
@@ -49,6 +57,7 @@ public class GuardController : MonoBehaviour {
 
     private PlayerController _player;
     private Rigidbody rb;
+    private Animator _anim;
 
 	// Use this for initialization
 	void Start () {
@@ -57,6 +66,7 @@ public class GuardController : MonoBehaviour {
         meshFilter.mesh = mesh;
 
         _player = GameObject.Find("MainCharacter").GetComponent<PlayerController>();
+        _anim = GetComponent<Animator>();
 
         rb = GetComponent<Rigidbody>();
 
@@ -109,7 +119,7 @@ public class GuardController : MonoBehaviour {
             else
                 Move(patrolRoute[index]);
         }
-        else
+        else if(canRotate)
         {
             rb.velocity = Vector3.zero;
             if (transform.rotation != oldRotation)
@@ -138,7 +148,8 @@ public class GuardController : MonoBehaviour {
 
     void LateUpdate()
     {
-        DrawGuardView();
+        if(drawView)
+            DrawGuardView();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -183,9 +194,28 @@ public class GuardController : MonoBehaviour {
                         GameManager.gm.playerHealth = 100f;
                         SceneManager.LoadScene(scene.buildIndex);
                     }
+                    if(drawView && PrisonerInteraction)
+                    {
+                        StartCoroutine(ShotPlayer());
+                    }
                 }
             }
         }
+    }
+
+    private void LookAtPlayer()
+    {
+        Quaternion rotation = Quaternion.LookRotation(_player.transform.position - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * dampling);
+    }
+
+    IEnumerator ShotPlayer()
+    {
+        LookAtPlayer();
+        yield return new WaitForSeconds(1f);
+        _anim.Play("RifleFire");
+        yield return new WaitForSeconds(0.267f);
+        GameManager.gm.playerHealth = 0;
     }
 
     void DrawGuardView()

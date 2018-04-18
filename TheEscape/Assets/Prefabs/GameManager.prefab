@@ -54,5 +54,8 @@ MonoBehaviour:
   sceneIndex: 0
   playerHealth: 0
   currentQuests: 
-  itemDatabase: {fileID: 0}
+  inventory: []
   questDatabase: {fileID: 0}
+  qdInstance:
+    Quests: []
+  rollCallPoint: {fileID: 0}

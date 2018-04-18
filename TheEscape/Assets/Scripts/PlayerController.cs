@@ -52,7 +52,12 @@ public class PlayerController : MonoBehaviour {
     private int currentQuestIndex = 0;
     private Canvas questUI;
     public Text[] questUIText;
+
+    //Support/Tutorial Variables
     private GameObject rollCallPoint;
+    private GameObject rollCall;
+    private Canvas supportUI;
+    private Text supportText;
 
     //public static List<Item> inventory;
     private ItemDatabase itemDatabase;
@@ -125,6 +130,10 @@ public class PlayerController : MonoBehaviour {
         questUIText = GameObject.Find("/QuestUI/Quest Text").GetComponentsInChildren<Text>();
         questUI.gameObject.SetActive(false);
 
+        supportUI = GameObject.Find("SupportUI").GetComponent<Canvas>();
+        supportText = GameObject.Find("/SupportUI/Support Text").GetComponent<Text>();
+        supportUI.gameObject.SetActive(false);
+
         deathScreenUI = GameObject.Find("DeathScreenUI").GetComponent<Canvas>();
         deathScreenUI.gameObject.SetActive(false);
 
@@ -157,14 +166,20 @@ public class PlayerController : MonoBehaviour {
             timerdecrement = 0;
             timerdecrement = Time.fixedUnscaledDeltaTime;
         }
-        else
+        else if(isStealthGame)
         {
             timerText.gameObject.SetActive(false);
             quotaText.gameObject.SetActive(false);
             rollCallPoint = GameObject.Find("RollCallPoint");
             rollCallPoint.gameObject.SetActive(false);
         }
-
+        else
+        {
+            rollCall = GameObject.Find("RollCall - PI");
+            rollCall.SetActive(false);
+            timerText.gameObject.SetActive(false);
+            quotaText.gameObject.SetActive(false);
+        }
         Cursor.visible = false;
 
         NumOfItems = 6;
@@ -239,9 +254,9 @@ public class PlayerController : MonoBehaviour {
         //Activate Death Screen
         if (GameManager.gm.playerHealth <= 0)
         {
-            GameManager.gm.playerHealth = 0;
+            GameManager.gm.playerHealth = 100;
             //deathScreenUI.gameObject.SetActive(true);
-            SceneManager.LoadScene(0);
+            GameManager.gm.ReloadScene();
             Time.timeScale = 0;
             Cursor.visible = !Cursor.visible;
         }
@@ -381,7 +396,10 @@ public class PlayerController : MonoBehaviour {
                     {
                         dialogueUI.gameObject.SetActive(false);
                         isTalking = false;
-                        rollCallPoint.gameObject.SetActive(true);
+                        rollCall.gameObject.SetActive(true);
+
+                        StartCoroutine(GameManager.gm.RollCall(supportUI, supportText));
+
                     }
                         
                     break;
@@ -735,14 +753,14 @@ public class PlayerController : MonoBehaviour {
                     prisoner.ReturnQuest();
                     ResetQuestUIText();
                 }
-                else if (!CheckQuest(prisoner.activeQuest) && !prisoner.activeQuest.complete)
-                {
-                    dialogueUI.gameObject.SetActive(true);
-                    dialogueText.text = prisoner.activeQuest.standbyDialogue[0];
-                    dialogueIndex = 0;
-                    isTalking = true;
-                    dialogueType = DialogueType.standby;
-                }
+                //else if (!CheckQuest(prisoner.activeQuest) && !prisoner.activeQuest.complete)
+                //{
+                //    dialogueUI.gameObject.SetActive(true);
+                //    dialogueText.text = prisoner.activeQuest.standbyDialogue[0];
+                //    dialogueIndex = 0;
+                //    isTalking = true;
+                //    dialogueType = DialogueType.standby;
+                //}
             }
         }
     }
@@ -865,9 +883,8 @@ public class PlayerController : MonoBehaviour {
     }
     public void OnRestart()
     {
-        Scene scene = SceneManager.GetActiveScene();
         GameManager.gm.playerHealth = 100f;
-        SceneManager.LoadScene(scene.buildIndex);
+        GameManager.gm.ReloadScene();
     }
 
     public void OnMainMenu()
@@ -876,10 +893,7 @@ public class PlayerController : MonoBehaviour {
     }
     public void onNextScene()
     {
-
-        Scene scene = SceneManager.GetActiveScene();
-        GameManager.gm.playerHealth = 100f;
-        SceneManager.LoadScene(scene.buildIndex + 1);
+        GameManager.gm.AdvanceScene();
     }
     public void OnContinue()
     {
