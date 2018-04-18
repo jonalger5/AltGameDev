@@ -131,11 +131,7 @@ public class PlayerController : MonoBehaviour {
         dialogueUI.gameObject.SetActive(false);
         questUI = GameObject.Find("QuestUI").GetComponent<Canvas>();
         questUIText = GameObject.Find("/QuestUI/Quest Text").GetComponentsInChildren<Text>();
-        questUI.gameObject.SetActive(false);
-
-        supportUI = GameObject.Find("SupportUI").GetComponent<Canvas>();
-        supportText = GameObject.Find("/SupportUI/Support Text").GetComponent<Text>();
-        supportUI.gameObject.SetActive(false);
+        questUI.gameObject.SetActive(false);        
 
         deathScreenUI = GameObject.Find("DeathScreenUI").GetComponent<Canvas>();
         deathScreenUI.gameObject.SetActive(false);
@@ -182,6 +178,9 @@ public class PlayerController : MonoBehaviour {
             rollCall.SetActive(false);
             timerText.gameObject.SetActive(false);
             quotaText.gameObject.SetActive(false);
+            supportUI = GameObject.Find("SupportUI").GetComponent<Canvas>();
+            supportText = GameObject.Find("/SupportUI/Support Text").GetComponent<Text>();
+            supportUI.gameObject.SetActive(false);
         }
         Cursor.visible = false;
 
@@ -202,7 +201,6 @@ public class PlayerController : MonoBehaviour {
     {
         if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("SortingGame"))
         {
-            Debug.Log("we did it");
             timerText.text = "Time Left: " + timer.ToString("F2");
         }
         else if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("StealthMiniGame"))
@@ -700,7 +698,7 @@ public class PlayerController : MonoBehaviour {
 
         if (other.gameObject.name == "ClothingPile")
         {
-
+            Debug.Log("here");
             Cursor.visible = false;
             clothingcontact = false;
         }
