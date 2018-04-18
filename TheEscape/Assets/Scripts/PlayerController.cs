@@ -502,12 +502,14 @@ public class PlayerController : MonoBehaviour {
                                 {
                                     Remove(Position);
                                     UpdateQuotaText();
+                                    showItem = false;
                                 }
                                 else
                                 {
                                     GameManager.gm.playerHealth -= 5;
+                                    CanAccess = true;
+
                                 }
-                                showItem = false;
 
                             }
                             if (Input.GetMouseButtonDown(0) && CanAccess && valuableContact)
@@ -521,6 +523,7 @@ public class PlayerController : MonoBehaviour {
                                 else
                                 {
                                     GameManager.gm.playerHealth -= 5;
+                                    CanAccess = true;
                                 }
                                 showItem = false;
 
@@ -536,6 +539,7 @@ public class PlayerController : MonoBehaviour {
                                 else
                                 {
                                     GameManager.gm.playerHealth -= 5;
+                                    CanAccess = true;
                                 }
                                 showItem = false;
 
@@ -552,6 +556,7 @@ public class PlayerController : MonoBehaviour {
                                 else
                                 {
                                     GameManager.gm.playerHealth -= 5;
+                                    CanAccess = true;
                                 }
                                 showItem = false;
 
@@ -567,6 +572,7 @@ public class PlayerController : MonoBehaviour {
                                 else
                                 {
                                     GameManager.gm.playerHealth -= 5;
+                                    CanAccess = true;
                                 }
                                 showItem = false;
 
