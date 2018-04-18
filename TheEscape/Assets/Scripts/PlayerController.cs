@@ -698,7 +698,6 @@ public class PlayerController : MonoBehaviour {
 
         if (other.gameObject.name == "ClothingPile")
         {
-            Debug.Log("here");
             Cursor.visible = false;
             clothingcontact = false;
         }
