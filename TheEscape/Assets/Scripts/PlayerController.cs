@@ -403,7 +403,6 @@ public class PlayerController : MonoBehaviour {
                         rollCall.gameObject.SetActive(true);
 
                         StartCoroutine(GameManager.gm.RollCall(supportUI, supportText));
-
                     }
                         
                     break;

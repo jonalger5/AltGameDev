@@ -20573,10 +20573,12 @@ MonoBehaviour:
   speed: 4
   dampling: 2
   PrisonerInteraction: 1
+  drawView: 0
   stealingDamage: 25
   canPatrol: 0
   canRotate: 0
   patrolRoute: []
+  lookFrom: 0
   lookAt: 0
   viewRadius: 27.9
   viewAngle: 90
@@ -20604,10 +20606,12 @@ MonoBehaviour:
   speed: 4
   dampling: 2
   PrisonerInteraction: 1
+  drawView: 0
   stealingDamage: 25
   canPatrol: 0
   canRotate: 0
   patrolRoute: []
+  lookFrom: 0
   lookAt: 0
   viewRadius: 27.9
   viewAngle: 90
@@ -20635,10 +20639,12 @@ MonoBehaviour:
   speed: 4
   dampling: 2
   PrisonerInteraction: 1
+  drawView: 0
   stealingDamage: 25
   canPatrol: 0
   canRotate: 0
   patrolRoute: []
+  lookFrom: 0
   lookAt: 0
   viewRadius: 27.9
   viewAngle: 90
@@ -20666,10 +20672,12 @@ MonoBehaviour:
   speed: 4
   dampling: 2
   PrisonerInteraction: 1
+  drawView: 0
   stealingDamage: 25
   canPatrol: 0
   canRotate: 0
   patrolRoute: []
+  lookFrom: 0
   lookAt: 0
   viewRadius: 27.9
   viewAngle: 90
@@ -20697,10 +20705,12 @@ MonoBehaviour:
   speed: 4
   dampling: 2
   PrisonerInteraction: 1
+  drawView: 0
   stealingDamage: 25
   canPatrol: 0
   canRotate: 0
   patrolRoute: []
+  lookFrom: 0
   lookAt: 0
   viewRadius: 27.9
   viewAngle: 90
@@ -20728,10 +20738,12 @@ MonoBehaviour:
   speed: 4
   dampling: 2
   PrisonerInteraction: 1
+  drawView: 0
   stealingDamage: 25
   canPatrol: 0
   canRotate: 0
   patrolRoute: []
+  lookFrom: 0
   lookAt: 0
   viewRadius: 27.9
   viewAngle: 90
@@ -20759,10 +20771,12 @@ MonoBehaviour:
   speed: 4
   dampling: 2
   PrisonerInteraction: 1
+  drawView: 0
   stealingDamage: 25
   canPatrol: 0
   canRotate: 0
   patrolRoute: []
+  lookFrom: 0
   lookAt: 0
   viewRadius: 27.9
   viewAngle: 90
@@ -20790,10 +20804,12 @@ MonoBehaviour:
   speed: 4
   dampling: 2
   PrisonerInteraction: 1
+  drawView: 0
   stealingDamage: 25
   canPatrol: 0
   canRotate: 0
   patrolRoute: []
+  lookFrom: 0
   lookAt: 0
   viewRadius: 27.9
   viewAngle: 90
@@ -20821,10 +20837,12 @@ MonoBehaviour:
   speed: 4
   dampling: 2
   PrisonerInteraction: 1
+  drawView: 0
   stealingDamage: 25
   canPatrol: 0
   canRotate: 0
   patrolRoute: []
+  lookFrom: 0
   lookAt: 0
   viewRadius: 27.9
   viewAngle: 90
@@ -20852,10 +20870,12 @@ MonoBehaviour:
   speed: 4
   dampling: 2
   PrisonerInteraction: 1
+  drawView: 0
   stealingDamage: 25
   canPatrol: 0
   canRotate: 0
   patrolRoute: []
+  lookFrom: 0
   lookAt: 0
   viewRadius: 27.9
   viewAngle: 90
@@ -20883,10 +20903,12 @@ MonoBehaviour:
   speed: 4
   dampling: 2
   PrisonerInteraction: 1
+  drawView: 0
   stealingDamage: 25
   canPatrol: 0
   canRotate: 0
   patrolRoute: []
+  lookFrom: 0
   lookAt: 0
   viewRadius: 27.9
   viewAngle: 90
@@ -20914,10 +20936,12 @@ MonoBehaviour:
   speed: 4
   dampling: 2
   PrisonerInteraction: 1
+  drawView: 0
   stealingDamage: 25
   canPatrol: 0
   canRotate: 0
   patrolRoute: []
+  lookFrom: 0
   lookAt: 0
   viewRadius: 27.9
   viewAngle: 90
@@ -20944,11 +20968,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   dampling: 2
-  PrisonerInteraction: 0
+  PrisonerInteraction: 1
+  drawView: 1
   stealingDamage: 25
   canPatrol: 0
   canRotate: 0
   patrolRoute: []
+  lookFrom: 0
   lookAt: 0
   viewRadius: 27.9
   viewAngle: 90
@@ -20975,11 +21001,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   dampling: 2
-  PrisonerInteraction: 0
+  PrisonerInteraction: 1
+  drawView: 1
   stealingDamage: 25
   canPatrol: 0
   canRotate: 0
   patrolRoute: []
+  lookFrom: 0
   lookAt: 0
   viewRadius: 27.9
   viewAngle: 90
@@ -21007,10 +21035,12 @@ MonoBehaviour:
   speed: 4
   dampling: 2
   PrisonerInteraction: 1
+  drawView: 0
   stealingDamage: 25
   canPatrol: 0
   canRotate: 0
   patrolRoute: []
+  lookFrom: 0
   lookAt: 0
   viewRadius: 27.9
   viewAngle: 90
