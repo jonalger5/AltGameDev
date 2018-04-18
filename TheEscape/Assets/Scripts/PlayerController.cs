@@ -251,6 +251,10 @@ public class PlayerController : MonoBehaviour {
             }
         }
      
+        if(depositQuota == 0)
+        {
+            DisplayEndScreen();
+        }
         //Activate Death Screen
         if (GameManager.gm.playerHealth <= 0)
         {
@@ -500,6 +504,10 @@ public class PlayerController : MonoBehaviour {
                                     Remove(Position);
                                     UpdateQuotaText();
                                 }
+                                else
+                                {
+                                    GameManager.gm.playerHealth -= 5;
+                                }
                                 showItem = false;
 
                             }
@@ -511,6 +519,10 @@ public class PlayerController : MonoBehaviour {
                                     Remove(Position);
                                     UpdateQuotaText();
                                 }
+                                else
+                                {
+                                    GameManager.gm.playerHealth -= 5;
+                                }
                                 showItem = false;
 
                             }
@@ -521,6 +533,10 @@ public class PlayerController : MonoBehaviour {
                                 {
                                     Remove(Position);
                                     UpdateQuotaText();
+                                }
+                                else
+                                {
+                                    GameManager.gm.playerHealth -= 5;
                                 }
                                 showItem = false;
 
@@ -534,6 +550,10 @@ public class PlayerController : MonoBehaviour {
                                     Remove(Position);
                                     UpdateQuotaText();
                                 }
+                                else
+                                {
+                                    GameManager.gm.playerHealth -= 5;
+                                }
                                 showItem = false;
 
                             }
@@ -544,6 +564,10 @@ public class PlayerController : MonoBehaviour {
                                 {
                                     Remove(Position);
                                     UpdateQuotaText();
+                                }
+                                else
+                                {
+                                    GameManager.gm.playerHealth -= 5;
                                 }
                                 showItem = false;
 
@@ -892,6 +916,7 @@ public class PlayerController : MonoBehaviour {
 
         if (depositQuota == 0)
         {
+            depositQuota = -1;
             if(UnityEngine.Random.value > percentages[StealItems.Count])
             {
                 VictoryScreenUI.gameObject.SetActive(true);
