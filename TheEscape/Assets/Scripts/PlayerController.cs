@@ -256,10 +256,11 @@ public class PlayerController : MonoBehaviour {
             }
         }
      
-        if(depositQuota == 0)
-        {
-            DisplayEndScreen();
-        }
+        //if(depositQuota == 0)
+        //{
+            
+        //    DisplayEndScreen();
+        //}
         //Activate Death Screen
         if (GameManager.gm.playerHealth <= 0)
         {

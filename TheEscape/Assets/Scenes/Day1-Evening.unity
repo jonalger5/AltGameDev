@@ -587,11 +587,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114808659691326788, guid: 9a5dd62d4e4d9694d90b1579eade9888,
-        type: 2}
-      propertyPath: Items.Array.data[3].name
-      value: Vodka
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9a5dd62d4e4d9694d90b1579eade9888, type: 2}
   m_IsPrefabParent: 0
