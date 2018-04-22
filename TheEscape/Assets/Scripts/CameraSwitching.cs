@@ -19,7 +19,7 @@ public class CameraSwitching : MonoBehaviour
     {
         if(other.gameObject.layer == 9)
         {
-            //mainCamera.cullingMask = seeThroughMask;
+            mainCamera.cullingMask = seeThroughMask;
             mainCamera.enabled = false;
             alternateCamera.enabled = true;
         }        
@@ -29,7 +29,7 @@ public class CameraSwitching : MonoBehaviour
     {
         if (other.gameObject.layer == 9)
         {
-            //mainCamera.cullingMask = origMask;
+            mainCamera.cullingMask = origMask;
             alternateCamera.enabled = false;
             mainCamera.enabled = true;
         }          
