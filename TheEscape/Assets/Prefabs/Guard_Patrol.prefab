@@ -1391,11 +1391,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   dampling: 2
+  PrisonerInteraction: 0
+  drawView: 1
   stealingDamage: 25
   canPatrol: 1
+  canRotate: 0
   patrolRoute:
   - {fileID: 0}
   - {fileID: 0}
+  lookFrom: 0
   lookAt: 90
   viewRadius: 30.8
   viewAngle: 65
