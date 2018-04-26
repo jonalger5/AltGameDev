@@ -48,6 +48,11 @@ ModelImporter:
     100080: mixamorig:Spine
     100082: mixamorig:Spine1
     100084: mixamorig:Spine2
+    100086: AKM_Lod_0_0
+    100088: lock_Lod_0_0
+    100090: magazine_Lod_0_0
+    100092: protector_Lod_0_0
+    100094: transform1
     400000: //RootNode
     400002: Guard
     400004: mixamorig:Head
@@ -91,7 +96,25 @@ ModelImporter:
     400080: mixamorig:Spine
     400082: mixamorig:Spine1
     400084: mixamorig:Spine2
+    400086: AKM_Lod_0_0
+    400088: lock_Lod_0_0
+    400090: magazine_Lod_0_0
+    400092: protector_Lod_0_0
+    400094: transform1
+    2100000: AKM
+    2300000: AKM_Lod_0_0
+    2300002: lock_Lod_0_0
+    2300004: magazine_Lod_0_0
+    2300006: protector_Lod_0_0
+    3300000: AKM_Lod_0_0
+    3300002: lock_Lod_0_0
+    3300004: magazine_Lod_0_0
+    3300006: protector_Lod_0_0
     4300000: Guard
+    4300002: AKM_Lod_0_0
+    4300004: protector_Lod_0_0
+    4300006: lock_Lod_0_0
+    4300008: magazine_Lod_0_0
     9500000: //RootNode
     13700000: Guard
   externalObjects:
