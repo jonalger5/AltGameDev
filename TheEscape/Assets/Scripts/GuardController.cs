@@ -66,7 +66,7 @@ public class GuardController : MonoBehaviour {
         mesh.name = "Mesh";
         meshFilter.mesh = mesh;
 
-        _player = GameObject.Find("MainCharacter").GetComponent<PlayerController>();
+        _player = GameObject.Find("HeroLow").GetComponent<PlayerController>();
         _anim = GetComponent<Animator>();
 
         rb = GetComponent<Rigidbody>();
@@ -191,7 +191,8 @@ public class GuardController : MonoBehaviour {
                     }
                     if (_player.isStealthGame)
                     {
-                        StartCoroutine(ShotPlayer());
+                        //Debug.Log("Here");
+                        //StartCoroutine(ShotPlayer());
                         //GameManager.gm.playerHealth = 100f;
                         //GameManager.gm.ReloadScene();
                     }
