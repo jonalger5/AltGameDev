@@ -5,12 +5,18 @@ using UnityEngine;
 public class PlayerAnimConditions : MonoBehaviour
 {
     Animator anim;
+    public bool isStealth;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
         anim = GetComponent<Animator>();
-	}
+        
+        if (isStealth)
+        {
+            anim.SetBool("isStealth", true);
+        }
+    }
 	
 	// Update is called once per frame
 	void Update ()
