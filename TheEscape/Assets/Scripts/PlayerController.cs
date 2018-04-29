@@ -206,6 +206,12 @@ public class PlayerController : MonoBehaviour {
 
     void UpdateTimerText()
     {
+        if(isSortingGame && firstSorting)
+        {
+            timerText.text = "Grab items from large pile and sort items by item type";
+            LetsWait(10);
+            firstSorting = false;
+        }
         if (isSortingGame)
         {
             timerText.text = "Time Left: " + timer.ToString("F2");
