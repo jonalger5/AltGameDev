@@ -114,6 +114,8 @@ public class PlayerController : MonoBehaviour {
     private bool Consumablecontact = false;
     private bool Documentcontact = false;
 
+    private bool firstSorting;
+
     // Use this for initialization
     void Start () {
         itemDatabase = GameObject.Find("Item Database").GetComponent<ItemDatabase>();
@@ -151,6 +153,7 @@ public class PlayerController : MonoBehaviour {
         StealItems = new List<Item>();
         Time.timeScale = 1;
 
+        firstSorting = true;
         //deathScreenUI.gameObject.SetActive(false);
         //PauseScreenUI.gameObject.SetActive(false);
         //VictoryScreenUI.gameObject.SetActive(false);
@@ -254,6 +257,15 @@ public class PlayerController : MonoBehaviour {
                 }
                 UpdateTimerText();
             }
+            /*
+            if (firstSorting)
+            {
+                firstSorting = false;
+                dialogueUI.gameObject.SetActive(true);
+                dialogueText.text = "test";
+
+            }
+            */
         }
      
         //if(depositQuota == 0)
@@ -492,7 +504,7 @@ public class PlayerController : MonoBehaviour {
                     Position = x * slotY + y;
                     if (Position < GameManager.gm.inventory.Count)
                     {
-                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 10 + x * 60, 50, 50);
+                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 3 + x * 60, 50, 50);
                         GUI.Box(slot, GameManager.gm.inventory[Position].icon);
                         if (slot.Contains(Event.current.mousePosition))
                         {
@@ -611,7 +623,7 @@ public class PlayerController : MonoBehaviour {
                     }
                     else
                     {
-                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 10 + x * 60, 50, 50);
+                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 3 + x * 60, 50, 50);
                         GUI.Box(slot, EmptySlot);
                     }
                 }
@@ -624,7 +636,7 @@ public class PlayerController : MonoBehaviour {
                     Position1 = i * slotY + j;
                     if (Position1 < StealItems.Count)
                     {
-                        Rect slot = new Rect(Screen.width / 100 + j * 60, Screen.height / 3 + i * 60, 50, 50);
+                        Rect slot = new Rect(Screen.width / 100 + j * 60, Screen.height / 10 + i * 60, 50, 50);
                         GUI.Box(slot, StealItems[Position1].icon);
                         if (slot.Contains(Event.current.mousePosition))
                         {
@@ -647,7 +659,7 @@ public class PlayerController : MonoBehaviour {
                     }
                     else
                     {
-                        Rect slot = new Rect(Screen.width / 100 + j * 60, Screen.height / 3 + i * 60, 50, 50);
+                        Rect slot = new Rect(Screen.width / 100 + j * 60, Screen.height / 10 + i * 60, 50, 50);
                         GUI.Box(slot, EmptySlot);
                     }
                 }
@@ -663,7 +675,7 @@ public class PlayerController : MonoBehaviour {
                     Position = x * slotY + y;
                     if (Position < GameManager.gm.inventory.Count)
                     {
-                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 10 + x * 60, 50, 50);
+                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 3 + x * 60, 50, 50);
                         GUI.Box(slot, GameManager.gm.inventory[Position].icon);
                         if (slot.Contains(Event.current.mousePosition))
                         {
