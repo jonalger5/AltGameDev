@@ -6,13 +6,13 @@ public class CameraSwitching : MonoBehaviour
 {
 
     public Camera mainCamera;
-    public Camera alternateCamera;
+    // public Camera alternateCamera;
     private int origMask = -1;
-    private int seeThroughMask = -513;
+    private int seeThroughMask = -5;
 
     void Start()
     {
-        alternateCamera.enabled = false;
+        // alternateCamera.enabled = false;
         mainCamera.enabled = true;
     }
     public void OnTriggerEnter(Collider other)
@@ -20,8 +20,8 @@ public class CameraSwitching : MonoBehaviour
         if(other.gameObject.layer == 9)
         {
             mainCamera.cullingMask = seeThroughMask;
-            mainCamera.enabled = false;
-            alternateCamera.enabled = true;
+            // mainCamera.enabled = false;
+            // alternateCamera.enabled = true;
         }        
     }
 
@@ -30,8 +30,8 @@ public class CameraSwitching : MonoBehaviour
         if (other.gameObject.layer == 9)
         {
             mainCamera.cullingMask = origMask;
-            alternateCamera.enabled = false;
-            mainCamera.enabled = true;
+            // alternateCamera.enabled = false;
+            // mainCamera.enabled = true;
         }          
     }
 
@@ -41,8 +41,8 @@ public class CameraSwitching : MonoBehaviour
         {
             if (mainCamera.enabled)
             {
-                mainCamera.enabled = false;
-                alternateCamera.enabled = true;
+                // mainCamera.enabled = false;
+                // alternateCamera.enabled = true;
             }
         }
     }
