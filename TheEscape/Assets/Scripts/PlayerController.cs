@@ -295,12 +295,12 @@ public class PlayerController : MonoBehaviour {
             float h = Input.GetAxis("Horizontal");
             float v = Input.GetAxis("Vertical");            
             
-            if(Input.GetKeyDown(KeyCode.V) && sprintTimer < sprintTimeOut)
+            if(Input.GetKeyDown(KeyCode.LeftShift) && sprintTimer < sprintTimeOut)
             {
                 isSprinting = true;
                 sprintCoolDown = false;                              
             }
-            if(Input.GetKeyUp(KeyCode.V))
+            if(Input.GetKeyUp(KeyCode.LeftShift))
             {
                 isSprinting = false;
                 sprintCoolDown = true;

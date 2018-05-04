@@ -128,3 +128,51 @@ MonoBehaviour:
     desc: Get the Socks for the Prisoner
     inProgress: 0
     complete: 0
+  - prisonerID: 1
+    questID: 0
+    questItem:
+      name: socks
+      type: 0
+      value: 0
+      icon: {fileID: 2800000, guid: f43d23286710723469896eb1500b7fce, type: 3}
+    acceptDialogue:
+    - 'Prisoner: Can you do me a favor?'
+    - 'You: Of course, what do you need me to do?'
+    - "Prisoner: It\u2019s starting to get cold out and my socks aren\u2019t able
+      to keep my feet warm."
+    - 'Prisoner: Could you get me an extra pair?'
+    - 'You: Of course, I''ll see what I can do.'
+    - 'Prisoner: Thank you!'
+    returnDialogue:
+    - 'Prisoner: Did you find any socks?'
+    - 'You: Yes, I was able to find them. '
+    - 'Prisoner: Thank you so much! '
+    standbyDialogue:
+    - 'Prisoner: Come back when you have the ammunition.'
+    desc: Get the Socks for the Prisoner
+    inProgress: 0
+    complete: 0
+  - prisonerID: 0
+    questID: 0
+    questItem:
+      name: flute
+      type: 5
+      value: 0
+      icon: {fileID: 2800000, guid: a6d371deceec4a94b8e0d8ff22141f0d, type: 3}
+    acceptDialogue:
+    - 'Prisoner: Can you do me a favor?'
+    - 'You: Of course, what do you need me to do?'
+    - 'Prisoner: Before I came here, I was a flute player for a local music group.'
+    - 'Prisoner: I want to be able to play again. Do you think you could find one
+      for me?'
+    - 'You: Of course, I''ll see what I can do.'
+    - 'Prisoner: Thank you!'
+    returnDialogue:
+    - 'Prisoner: Did you find any socks?'
+    - 'You: Yes, I was able to find them. '
+    - 'Prisoner: Thank you so much! '
+    standbyDialogue:
+    - 'Prisoner: Come back when you have the ammunition.'
+    desc: Get the Socks for the Prisoner
+    inProgress: 0
+    complete: 0
