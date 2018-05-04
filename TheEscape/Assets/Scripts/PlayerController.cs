@@ -737,31 +737,31 @@ public class PlayerController : MonoBehaviour {
         if (other.gameObject.name == "ConsumablePile")
         {
 
-            Cursor.visible = false;
+            //Cursor.visible = false;
             Consumablecontact = false;
         }
 
         if (other.gameObject.name == "OtherPile")
         {
-            Cursor.visible = false;
+            //Cursor.visible = false;
             otherContact = false;
         }
 
         if (other.gameObject.name == "ValuablePile")
         {
-            Cursor.visible = false;
+            //Cursor.visible = false;
             valuableContact = false;
         }
 
         if (other.gameObject.name == "ClothingPile")
         {
-            Cursor.visible = false;
+            //Cursor.visible = false;
             clothingcontact = false;
         }
 
         if (other.gameObject.name == "DocumentPile")
         {
-            Cursor.visible = false;
+            //Cursor.visible = false;
             Documentcontact = false;
         }
         
@@ -784,32 +784,32 @@ public class PlayerController : MonoBehaviour {
         if (other.gameObject.name == "ConsumablePile")
         {
 
-            Cursor.visible = true;
+           // Cursor.visible = true;
             Consumablecontact = true;
         }
 
         if (other.gameObject.name == "OtherPile")
         {
-            Cursor.visible = true;
+            //Cursor.visible = true;
             otherContact = true;
         }
 
         if (other.gameObject.name == "ValuablePile")
         {
-            Cursor.visible = true;
+           // Cursor.visible = true;
             valuableContact = true;
         }
 
         if (other.gameObject.name == "ClothingPile")
         {
 
-            Cursor.visible = true;
+           // Cursor.visible = true;
             clothingcontact = true;
         }
 
         if (other.gameObject.name == "DocumentPile")
         {
-            Cursor.visible = true;
+           // Cursor.visible = true;
             Documentcontact = true;
         }
         
