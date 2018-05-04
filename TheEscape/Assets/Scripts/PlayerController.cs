@@ -398,7 +398,6 @@ public class PlayerController : MonoBehaviour {
             }
             PauseScreenUI.gameObject.SetActive(isPaused);
         }
-        
         if (Input.GetMouseButtonDown(1))
         {
             Cursor.visible = !Cursor.visible;
@@ -772,7 +771,7 @@ public class PlayerController : MonoBehaviour {
         {
         if (other.gameObject.name == "PileOfItems")
         {
-            Debug.Log(isSortingGame);
+            //Debug.Log(isSortingGame);
             int PickupNum = NumOfItems - GameManager.gm.inventory.Count;
             for (int i = 0;i < PickupNum; i++)
             {
@@ -996,14 +995,14 @@ public class PlayerController : MonoBehaviour {
     }
     public void OnContinue()
     {
-        isPaused = !isPaused;
+        isPaused = false;
         showInventory = !showInventory;
         timerdecrement = Time.fixedUnscaledDeltaTime;
         Time.timeScale = 1;
         transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
-        
-        Cursor.visible = !Cursor.visible;
-        PauseScreenUI.gameObject.SetActive(isPaused);
+        Cursor.visible = false;
+        PauseScreenUI = GameObject.Find("PauseScreen").GetComponent<Canvas>();
+        PauseScreenUI.gameObject.SetActive(false);
     }
 
 
