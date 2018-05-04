@@ -412,13 +412,13 @@ public class PlayerController : MonoBehaviour {
         {
             transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
         }
-        /*
+        
         if (Consumablecontact || otherContact || valuableContact || clothingcontact || Documentcontact )
         {
             transform.Rotate(0, 0, 0);
-            Cursor.visible = true;
+            //Cursor.visible = true;
         }
-        */
+        
 
         if (Input.GetKeyDown(KeyCode.Space) && isTalking)
         {
@@ -537,6 +537,7 @@ public class PlayerController : MonoBehaviour {
                                 if (GameManager.gm.inventory[Position].type.ToString() == "Consumable")
                                 {
                                     Remove(Position);
+                                    LetsWait(1);
                                     UpdateQuotaText();
                                     showItem = false;
                                 }
@@ -554,6 +555,7 @@ public class PlayerController : MonoBehaviour {
                                 if (GameManager.gm.inventory[Position].type.ToString() == "Valuable")
                                 {
                                     Remove(Position);
+                                    LetsWait(1);
                                     UpdateQuotaText();
                                 }
                                 else
@@ -570,6 +572,7 @@ public class PlayerController : MonoBehaviour {
                                 if (GameManager.gm.inventory[Position].type.ToString() == "Other")
                                 {
                                     Remove(Position);
+                                    LetsWait(1);
                                     UpdateQuotaText();
                                 }
                                 else
@@ -587,6 +590,7 @@ public class PlayerController : MonoBehaviour {
                                 if (GameManager.gm.inventory[Position].type.ToString() == "Documents")
                                 {
                                     Remove(Position);
+                                    LetsWait(1);
                                     UpdateQuotaText();
                                 }
                                 else
@@ -603,6 +607,7 @@ public class PlayerController : MonoBehaviour {
                                 if (GameManager.gm.inventory[Position].type.ToString() == "Clothing")
                                 {
                                     Remove(Position);
+                                    LetsWait(1);
                                     UpdateQuotaText();
                                 }
                                 else
@@ -615,13 +620,14 @@ public class PlayerController : MonoBehaviour {
                             }
 
 
-                            if (Input.GetMouseButtonDown(0) && CanAccess && CanAccess && !Consumablecontact && !otherContact && !valuableContact && !clothingcontact && !Documentcontact)
+                            if (Input.GetMouseButtonDown(0) && CanAccess && !Consumablecontact && !otherContact && !valuableContact && !clothingcontact && !Documentcontact)
                             {
                                 CanAccess = !CanAccess;
                                 isStealing = true;
                                 stealTimer = 0;
                                 StealItems.Add(GameManager.gm.inventory[Position]);
                                 Remove(Position);
+                                LetsWait(1);
                                 NumOfItems--;
                                 showItem = false;
 
