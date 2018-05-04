@@ -338,11 +338,13 @@ public class PlayerController : MonoBehaviour {
         else
             _anim.SetFloat("Walk", 0);
 
+        /*
         if (!showInventory && !isTalking && !(Consumablecontact || otherContact || valuableContact || clothingcontact || Documentcontact ))
         {
             transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
             //Cursor.visible = false;
         }
+        */
 
         if (Input.GetKeyDown(KeyCode.I))
         {
