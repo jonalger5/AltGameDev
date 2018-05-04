@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour {
     private bool isPaused;
     private float timerdecrement;
 
-    private int NumOfItems ;
+    private int NumOfItems = 6;
     private int Position;
     private int Position1;
     private bool CanAccess = true;
@@ -154,6 +154,7 @@ public class PlayerController : MonoBehaviour {
         Time.timeScale = 1;
 
         firstSorting = true;
+        Cursor.visible = false;
         //deathScreenUI.gameObject.SetActive(false);
         //PauseScreenUI.gameObject.SetActive(false);
         //VictoryScreenUI.gameObject.SetActive(false);
@@ -167,6 +168,7 @@ public class PlayerController : MonoBehaviour {
             timerdecrement = 0;
             timerdecrement = Time.fixedUnscaledDeltaTime;
             GameManager.gm.hasReceivedQuest = false;
+            Cursor.visible = false;
         }
         else if(isStealthGame)
         {
@@ -189,7 +191,6 @@ public class PlayerController : MonoBehaviour {
             if (GameManager.gm.hasReceivedQuest)
                 rollCall.SetActive(true);
         }
-        Cursor.visible = false;
 
         NumOfItems = 6;
         percentages = new Dictionary<int, double>();
@@ -286,7 +287,7 @@ public class PlayerController : MonoBehaviour {
             //deathScreenUI.gameObject.SetActive(true);
             GameManager.gm.ReloadScene();
             Time.timeScale = 0;
-            Cursor.visible = !Cursor.visible;
+            Cursor.visible = true;
         }
 
         //Setting Health and Sprint Meter
@@ -336,7 +337,7 @@ public class PlayerController : MonoBehaviour {
 
                 transform.Translate(Vector3.forward * Time.deltaTime * v * speed);
                 transform.Translate(Vector3.right * Time.deltaTime * h * speed);
-                _anim.SetFloat("Walk", v);
+                //_anim.SetFloat("Walk", v);
             }            
         }
         else
@@ -345,13 +346,13 @@ public class PlayerController : MonoBehaviour {
         if (!showInventory && !isTalking && !(Consumablecontact || otherContact || valuableContact || clothingcontact || Documentcontact ))
         {
             transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
-            Cursor.visible = false;
+            //Cursor.visible = false;
         }
 
         if (Input.GetKeyDown(KeyCode.I))
         {
             showInventory = !showInventory;
-            Cursor.visible = !Cursor.visible;
+            //Cursor.visible = !Cursor.visible;
 
             //Shows Quest Log
             if (showInventory)
@@ -391,14 +392,15 @@ public class PlayerController : MonoBehaviour {
                 timerdecrement = 0;
                 Time.timeScale = 0;
                 transform.Rotate(0, 0, 0);
+                Cursor.visible = true;
             }
             else if (!isPaused)
             {
                 timerdecrement = Time.fixedUnscaledDeltaTime;
                 Time.timeScale = 1;
                 transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
+                Cursor.visible = false;
             }
-            Cursor.visible = !Cursor.visible;
 
             PauseScreenUI.gameObject.SetActive(isPaused);
         }
@@ -515,8 +517,7 @@ public class PlayerController : MonoBehaviour {
         ItemDetails = "";
 
         //Shows both Inventory and Sorting Items
-        if (isSortingGame)
-        {
+        
             //GUI.Box(new Rect(10, 50, 240, 240), InventoryBackground);
             for (int x = 0; x < slotX; x++)
             {
@@ -685,7 +686,7 @@ public class PlayerController : MonoBehaviour {
                     }
                 }
             }           
-        }
+        
 
         if (showInventory && !isSortingGame)
         {
@@ -766,9 +767,10 @@ public class PlayerController : MonoBehaviour {
         
     }
         void OnTriggerEnter(Collider other)
-    {
+        {
         if (other.gameObject.name == "PileOfItems")
         {
+            Debug.Log(isSortingGame);
             int PickupNum = NumOfItems - GameManager.gm.inventory.Count;
             for (int i = 0;i < PickupNum; i++)
             {
