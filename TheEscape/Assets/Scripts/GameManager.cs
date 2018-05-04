@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
 
     public int sceneIndex;
     public float playerHealth;
+    public float playerStartingHealth;
     public List<int> currentQuests;
     public List<Item> inventory;
     public QuestDatabase questDatabase;
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour {
     {
         sceneIndex = SceneManager.GetActiveScene().buildIndex;
         playerHealth = 100f;
+        playerStartingHealth = playerHealth;
         currentQuests = new List<int>();
         inventory = new List<Item>();     
         questDatabase = GameObject.Find("Quest Database").GetComponent<QuestDatabase>();
@@ -41,6 +43,7 @@ public class GameManager : MonoBehaviour {
 
     public void AdvanceScene()
     {
+        playerStartingHealth = playerHealth;
         sceneIndex++;
         if (sceneIndex == SceneManager.sceneCountInBuildSettings)
             sceneIndex = 0;
@@ -49,6 +52,7 @@ public class GameManager : MonoBehaviour {
 
     public void ReloadScene()
     {
+        playerHealth = playerStartingHealth;
         SceneManager.LoadScene(sceneIndex);
     }
 

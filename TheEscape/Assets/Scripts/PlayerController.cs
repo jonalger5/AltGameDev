@@ -155,11 +155,6 @@ public class PlayerController : MonoBehaviour {
 
         firstSorting = true;
         Cursor.visible = false;
-        //deathScreenUI.gameObject.SetActive(false);
-        //PauseScreenUI.gameObject.SetActive(false);
-        //VictoryScreenUI.gameObject.SetActive(false);
-        //EndScreen.gameObject.SetActive(false);
-        //EndScreen1.gameObject.SetActive(false);
 
         if (isSortingGame)
         {            
@@ -392,7 +387,7 @@ public class PlayerController : MonoBehaviour {
                 timerdecrement = 0;
                 Time.timeScale = 0;
                 transform.Rotate(0, 0, 0);
-                Cursor.visible = true;
+                Cursor.visible = true;                
             }
             else if (!isPaused)
             {
@@ -401,9 +396,9 @@ public class PlayerController : MonoBehaviour {
                 transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
                 Cursor.visible = false;
             }
-
             PauseScreenUI.gameObject.SetActive(isPaused);
         }
+        
         if (Input.GetMouseButtonDown(1))
         {
             Cursor.visible = !Cursor.visible;
@@ -517,7 +512,8 @@ public class PlayerController : MonoBehaviour {
         ItemDetails = "";
 
         //Shows both Inventory and Sorting Items
-        
+        if (isSortingGame)
+        {
             //GUI.Box(new Rect(10, 50, 240, 240), InventoryBackground);
             for (int x = 0; x < slotX; x++)
             {
@@ -619,7 +615,7 @@ public class PlayerController : MonoBehaviour {
                             }
 
 
-                            if (Input.GetMouseButtonDown(0) && CanAccess && CanAccess && !Consumablecontact && !otherContact && !valuableContact && !clothingcontact && !Documentcontact )
+                            if (Input.GetMouseButtonDown(0) && CanAccess && CanAccess && !Consumablecontact && !otherContact && !valuableContact && !clothingcontact && !Documentcontact)
                             {
                                 CanAccess = !CanAccess;
                                 isStealing = true;
@@ -685,8 +681,8 @@ public class PlayerController : MonoBehaviour {
                         GUI.Box(slot, EmptySlot);
                     }
                 }
-            }           
-        
+            }
+        }
 
         if (showInventory && !isSortingGame)
         {
@@ -1001,7 +997,6 @@ public class PlayerController : MonoBehaviour {
         transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
         
         Cursor.visible = !Cursor.visible;
-
         PauseScreenUI.gameObject.SetActive(isPaused);
     }
 

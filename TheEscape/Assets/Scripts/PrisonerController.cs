@@ -44,7 +44,7 @@ public class PrisonerController : MonoBehaviour {
                 break;
             }
         }
-        _player = GameObject.Find("MainCharacter").GetComponent<PlayerController>();
+        _player = GameObject.Find("HeroLow").GetComponent<PlayerController>();
         _complete.SetActive(false);
         _standby.SetActive(false);
         _incomplete.SetActive(false);      
