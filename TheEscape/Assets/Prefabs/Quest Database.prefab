@@ -131,25 +131,23 @@ MonoBehaviour:
   - prisonerID: 1
     questID: 0
     questItem:
-      name: socks
-      type: 0
+      name: rope
+      type: 3
       value: 0
-      icon: {fileID: 2800000, guid: f43d23286710723469896eb1500b7fce, type: 3}
+      icon: {fileID: 2800000, guid: 4b896ddd64fb9b342ae303058506abd7, type: 3}
     acceptDialogue:
-    - 'Prisoner: Can you do me a favor?'
-    - 'You: Of course, what do you need me to do?'
-    - "Prisoner: It\u2019s starting to get cold out and my socks aren\u2019t able
-      to keep my feet warm."
-    - 'Prisoner: Could you get me an extra pair?'
-    - 'You: Of course, I''ll see what I can do.'
-    - 'Prisoner: Thank you!'
+    - 'Prisoner: The Escape plan is starting to come together.'
+    - 'Prisoner: The next thing we''ll need is rope to tie up some of the Guards.'
+    - 'You: Ok, I''ll go get the rope tonight after evening Roll Call.'
+    - 'Prisoner: Great! Be careful...'
     returnDialogue:
-    - 'Prisoner: Did you find any socks?'
+    - 'Prisoner: Did you find the rope?'
     - 'You: Yes, I was able to find them. '
-    - 'Prisoner: Thank you so much! '
+    - 'Prisoner: Thank you so much! I''ll let you know if there''s anything else we''ll
+      need for the Escape Plan.'
     standbyDialogue:
     - 'Prisoner: Come back when you have the ammunition.'
-    desc: Get the Socks for the Prisoner
+    desc: Get Rope for the Escape Plan
     inProgress: 0
     complete: 0
   - prisonerID: 0
@@ -168,11 +166,39 @@ MonoBehaviour:
     - 'You: Of course, I''ll see what I can do.'
     - 'Prisoner: Thank you!'
     returnDialogue:
-    - 'Prisoner: Did you find any socks?'
-    - 'You: Yes, I was able to find them. '
+    - 'Prisoner: Did you find a flute?'
+    - 'You: Yes, I was able to find one. '
     - 'Prisoner: Thank you so much! '
     standbyDialogue:
     - 'Prisoner: Come back when you have the ammunition.'
-    desc: Get the Socks for the Prisoner
+    desc: Get a Flute for the Prisoner
+    inProgress: 0
+    complete: 0
+  - prisonerID: 1
+    questID: 0
+    questItem:
+      name: butterfly knife
+      type: 3
+      value: 0
+      icon: {fileID: 2800000, guid: 6fde56879167d604b8218ec05629b480, type: 3}
+    acceptDialogue:
+    - 'Prisoner: Oh hey, glad I caught you.'
+    - "You: What\u2019s wrong? Is the Escape Plan going ok?"
+    - 'Prisoner: No. Tying up the Guards will take too long and could hurt our chances
+      for escaping.'
+    - 'Prisoner: See if you can find a knife that I could use to take out some of
+      the Guards.'
+    - 'You: Ok, I can get a knife after evening roll call.'
+    - "You: Are you sure killing the Guards won\u2019t draw attention?"
+    - "Prisoner: Hopefully not but it\u2019s our only option."
+    - 'You: Ok, so be it.'
+    - 'Prisoner: Great! Be careful...'
+    returnDialogue:
+    - 'Prisoner: Did you find a flute?'
+    - 'You: Yes, I was able to find one. '
+    - 'Prisoner: Thank you so much! '
+    standbyDialogue:
+    - 'Prisoner: Come back when you have the ammunition.'
+    desc: Get a Knife for the Escape Plan
     inProgress: 0
     complete: 0
