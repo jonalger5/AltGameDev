@@ -415,6 +415,8 @@ public class PlayerController : MonoBehaviour {
             transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
             timerdecrement = Time.fixedUnscaledDeltaTime;
             Time.timeScale = 1;
+            showInventory = false;
+            isPaused = false;
         }
         
         if (Consumablecontact || otherContact || valuableContact || clothingcontact || Documentcontact )
