@@ -26643,7 +26643,7 @@ MonoBehaviour:
   drawView: 1
   stealingDamage: 25
   canPatrol: 0
-  canRotate: 1
+  canRotate: 0
   patrolRoute:
   - {fileID: 0}
   - {fileID: 0}
@@ -26777,7 +26777,7 @@ MonoBehaviour:
   drawView: 1
   stealingDamage: 25
   canPatrol: 0
-  canRotate: 1
+  canRotate: 0
   patrolRoute:
   - {fileID: 0}
   - {fileID: 0}
