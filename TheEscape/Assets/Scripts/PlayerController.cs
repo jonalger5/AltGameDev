@@ -82,6 +82,8 @@ public class PlayerController : MonoBehaviour {
     private Image actionMeter;
 
     [SerializeField]
+    public bool isEscapeScene;
+    [SerializeField]
     public bool isSortingGame;
     [SerializeField]
     public bool isStealthGame;
@@ -173,6 +175,12 @@ public class PlayerController : MonoBehaviour {
             rollCallPoint.gameObject.SetActive(false);
             GameManager.gm.hasReceivedQuest = false;
         }
+        else if (isEscapeScene)
+        {
+            supportUI = GameObject.Find("SupportUI").GetComponent<Canvas>();
+            supportText = GameObject.Find("/SupportUI/Support Text").GetComponent<Text>();
+            StartCoroutine(GameManager.gm.EscapeScene(supportUI, supportText));
+        }
         else
         {
             rollCall = GameObject.Find("RollCall - PI");
@@ -245,255 +253,253 @@ public class PlayerController : MonoBehaviour {
     // Update is called once per frame
     void Update ()
     {
-        if (isSortingGame)
+        if (!isEscapeScene)
         {
-            if (timer > 0.0f)
+            if (isSortingGame)
             {
-                timer -= timerdecrement;
-                if (timer < 0.0f)
+                if (timer > 0.0f)
                 {
-                    // DisplayEndScreen();
-                    GameManager.gm.inventory.AddRange(StealItems);
-                    GameManager.gm.AdvanceScene();
-                    timer = 0.0f;
+                    timer -= timerdecrement;
+                    if (timer < 0.0f)
+                    {
+                        // DisplayEndScreen();
+                        GameManager.gm.inventory.AddRange(StealItems);
+                        GameManager.gm.AdvanceScene();
+                        timer = 0.0f;
+                    }
+                    UpdateTimerText();
                 }
-                UpdateTimerText();
-            }
-            /*
-            if (firstSorting)
-            {
-                firstSorting = false;
-                dialogueUI.gameObject.SetActive(true);
-                dialogueText.text = "test";
+                /*
+                if (firstSorting)
+                {
+                    firstSorting = false;
+                    dialogueUI.gameObject.SetActive(true);
+                    dialogueText.text = "test";
 
+                }
+                */
+            }
+
+            //if(depositQuota == 0)
+            //{
+
+            //    DisplayEndScreen();
+            //}
+            //Activate Death Screen
+            if (GameManager.gm.playerHealth <= 0)
+            {
+                GameManager.gm.playerHealth = 100;
+                //deathScreenUI.gameObject.SetActive(true);
+                GameManager.gm.ReloadScene();
+                Time.timeScale = 0;
+                Cursor.visible = true;
+            }
+
+            //Setting Health and Sprint Meter
+            healthMeter.rectTransform.localScale = new Vector3(GameManager.gm.playerHealth / 100, 1, 1);
+            sprintMeter.rectTransform.localScale = new Vector3((sprintTimeOut - sprintTimer) / sprintTimeOut, 1, 1);
+
+            //Used for Movement
+            if (!isTalking)
+            {
+                float h = Input.GetAxis("Horizontal");
+                float v = Input.GetAxis("Vertical");
+
+                if (Input.GetKeyDown(KeyCode.LeftShift) && sprintTimer < sprintTimeOut)
+                {
+                    isSprinting = true;
+                    sprintCoolDown = false;
+                }
+                if (Input.GetKeyUp(KeyCode.LeftShift))
+                {
+                    isSprinting = false;
+                    sprintCoolDown = true;
+                }
+
+                if (isSprinting)
+                {
+                    sprintTimer += Time.deltaTime;
+
+                    if (sprintTimer > sprintTimeOut)
+                    {
+                        isSprinting = false;
+                    }
+
+                    transform.Translate(Vector3.forward * Time.deltaTime * v * sprint);
+                    transform.Translate(Vector3.right * Time.deltaTime * h * sprint);
+                }
+                else
+                {
+                    if (sprintTimer > 0 && sprintCoolDown)
+                    {
+                        sprintTimer -= Time.deltaTime;
+                    }
+                    else if (sprintTimer < 0 && sprintCoolDown)
+                    {
+                        sprintCoolDown = false;
+                        sprintTimer = 0;
+                    }
+
+                    transform.Translate(Vector3.forward * Time.deltaTime * v * speed);
+                    transform.Translate(Vector3.right * Time.deltaTime * h * speed);
+                    //_anim.SetFloat("Walk", v);
+                }
+            }
+            else
+                _anim.SetFloat("Walk", 0);
+
+            /*
+            if (!showInventory && !isTalking && !(Consumablecontact || otherContact || valuableContact || clothingcontact || Documentcontact ))
+            {
+                transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
+                //Cursor.visible = false;
             }
             */
-        }
-        
-     
-        //if(depositQuota == 0)
-        //{
-            
-        //    DisplayEndScreen();
-        //}
-        //Activate Death Screen
-        if (GameManager.gm.playerHealth <= 0)
-        {
-            GameManager.gm.playerHealth = 100;
-            //deathScreenUI.gameObject.SetActive(true);
-            GameManager.gm.ReloadScene();
-            Time.timeScale = 0;
-            Cursor.visible = true;
-        }
 
-        //Setting Health and Sprint Meter
-        healthMeter.rectTransform.localScale = new Vector3(GameManager.gm.playerHealth / 100, 1, 1);
-        sprintMeter.rectTransform.localScale = new Vector3((sprintTimeOut - sprintTimer) / sprintTimeOut, 1, 1);
-
-        //Used for Movement
-        if (!isTalking)
-        {
-            float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");            
-            
-            if(Input.GetKeyDown(KeyCode.LeftShift) && sprintTimer < sprintTimeOut)
+            if (Input.GetKeyDown(KeyCode.I))
             {
-                isSprinting = true;
-                sprintCoolDown = false;                              
-            }
-            if(Input.GetKeyUp(KeyCode.LeftShift))
-            {
-                isSprinting = false;
-                sprintCoolDown = true;
-            }
+                showInventory = !showInventory;
+                //Cursor.visible = !Cursor.visible;
 
-            if (isSprinting)
-            {
-                sprintTimer += Time.deltaTime;
-
-                if (sprintTimer > sprintTimeOut)
+                //Shows Quest Log
+                if (showInventory)
                 {
-                    isSprinting = false;                   
-                }
+                    questUI.gameObject.SetActive(true);
+                    ResetQuestUIText();
 
-                transform.Translate(Vector3.forward * Time.deltaTime * v * sprint);
-                transform.Translate(Vector3.right * Time.deltaTime * h * sprint);
-            }
-            else
-            {              
-                if (sprintTimer > 0 && sprintCoolDown)
-                {
-                    sprintTimer -= Time.deltaTime;
-                }                   
-                else if(sprintTimer < 0 && sprintCoolDown) 
-                {
-                    sprintCoolDown = false;
-                    sprintTimer = 0;
-                }
-
-                transform.Translate(Vector3.forward * Time.deltaTime * v * speed);
-                transform.Translate(Vector3.right * Time.deltaTime * h * speed);
-                //_anim.SetFloat("Walk", v);
-            }            
-        }
-        else
-            _anim.SetFloat("Walk", 0);
-
-        /*
-        if (!showInventory && !isTalking && !(Consumablecontact || otherContact || valuableContact || clothingcontact || Documentcontact ))
-        {
-            transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
-            //Cursor.visible = false;
-        }
-        */
-
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            showInventory = !showInventory;
-            //Cursor.visible = !Cursor.visible;
-
-            //Shows Quest Log
-            if (showInventory)
-            {
-                questUI.gameObject.SetActive(true);
-                ResetQuestUIText();
-
-                for (int i = 0; i < GameManager.gm.currentQuests.Count; i++)
-                {
-
-                    if (CheckQuest(GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]]))
+                    for (int i = 0; i < GameManager.gm.currentQuests.Count; i++)
                     {
-                        questUIText[i].text = GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]].desc;
-                        questUIText[i].color = Color.green;
-                    }
 
-                    else
-                    {
-                        questUIText[i].text = GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]].desc;
-                        questUIText[i].color = Color.red;
+                        if (CheckQuest(GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]]))
+                        {
+                            questUIText[i].text = GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]].desc;
+                            questUIText[i].color = Color.green;
+                        }
+
+                        else
+                        {
+                            questUIText[i].text = GameManager.gm.qdInstance.Quests[GameManager.gm.currentQuests[i]].desc;
+                            questUIText[i].color = Color.red;
+                        }
                     }
                 }
+                else
+                {
+                    questUI.gameObject.SetActive(false);
+                    showItem = false;
+                }
             }
-            else
-            {
-                questUI.gameObject.SetActive(false);
-                showItem = false;
-            }            
-        }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            isPaused = !isPaused;
-            showInventory = !showInventory;
-            if (isPaused)
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                timerdecrement = 0;
-                Time.timeScale = 0;
+                isPaused = !isPaused;
+                showInventory = !showInventory;
+                if (isPaused)
+                {
+                    timerdecrement = 0;
+                    Time.timeScale = 0;
+                    transform.Rotate(0, 0, 0);
+                    Cursor.visible = true;
+                }
+                else if (!isPaused)
+                {
+                    timerdecrement = Time.fixedUnscaledDeltaTime;
+                    Time.timeScale = 1;
+                    transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
+                    Cursor.visible = false;
+                }
+                PauseScreenUI.gameObject.SetActive(isPaused);
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                Cursor.visible = !Cursor.visible;
+            }
+            if (Cursor.visible)
+            {
                 transform.Rotate(0, 0, 0);
-                Cursor.visible = true;                
+
             }
-            else if (!isPaused)
+            if (!Cursor.visible)
             {
-                timerdecrement = Time.fixedUnscaledDeltaTime;
-                Time.timeScale = 1;
                 transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
-                Cursor.visible = false;
             }
-            PauseScreenUI.gameObject.SetActive(isPaused);
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            Cursor.visible = !Cursor.visible;
-        }
-        if (Cursor.visible)
-        {
-            transform.Rotate(0, 0, 0);
 
-        }
-        if (!Cursor.visible)
-        {
-            transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
-            timerdecrement = Time.fixedUnscaledDeltaTime;
-            Time.timeScale = 1;
-            showInventory = false;
-            isPaused = false;
-        }
-        
-        if (Consumablecontact || otherContact || valuableContact || clothingcontact || Documentcontact )
-        {
-            transform.Rotate(0, 0, 0);
-            //Cursor.visible = true;
-        }
-        
-
-        if (Input.GetKeyDown(KeyCode.Space) && isTalking)
-        {
-            sprintTimer = 0;
-            switch (dialogueType)
+            if (Consumablecontact || otherContact || valuableContact || clothingcontact || Documentcontact)
             {
-                case DialogueType.accepting:
-                    
-                    if (dialogueIndex != GameManager.gm.qdInstance.Quests[currentQuestIndex].acceptDialogue.Count - 1)
-                    {
-                        dialogueIndex++;
-                        dialogueText.text = GameManager.gm.qdInstance.Quests[currentQuestIndex].acceptDialogue[dialogueIndex];
-                    }
-                    else
-                    {
-                        dialogueUI.gameObject.SetActive(false);
-                        isTalking = false;
-                        rollCall.gameObject.SetActive(true);
-                        GameManager.gm.hasReceivedQuest = true;
-                        StartCoroutine(GameManager.gm.RollCall(supportUI, supportText));
-                    }
-                        
-                    break;
-
-                case DialogueType.returning:
-                    if (dialogueIndex != GameManager.gm.qdInstance.Quests[currentQuestIndex].returnDialogue.Count - 1)
-                    {
-                        dialogueIndex++;
-                        dialogueText.text = GameManager.gm.qdInstance.Quests[currentQuestIndex].returnDialogue[dialogueIndex];
-                    }
-                    else
-                    {
-                        dialogueUI.gameObject.SetActive(false);
-                        isTalking = false;
-                    }
-
-                    break;
-
-                case DialogueType.standby:
-                    if (dialogueIndex != GameManager.gm.qdInstance.Quests[currentQuestIndex].standbyDialogue.Count - 1)
-                    {
-                        dialogueIndex++;
-                        dialogueText.text = GameManager.gm.qdInstance.Quests[currentQuestIndex].standbyDialogue[dialogueIndex];
-                    }
-                    else
-                    {
-                        dialogueUI.gameObject.SetActive(false);
-                        isTalking = false;
-                    }
-
-                    break;
-
-                default:
-                    break;
+                transform.Rotate(0, 0, 0);
+                //Cursor.visible = true;
             }
-        }        
 
-        if (isStealing)
-        {
-            actionMeterFull.gameObject.SetActive(true);
-            actionMeter.rectTransform.localScale = new Vector3((_stealTimeout - stealTimer) / _stealTimeout, 1, 1);
-            stealTimer += Time.deltaTime;
-            if (stealTimer >= _stealTimeout)
+
+            if (Input.GetKeyDown(KeyCode.Space) && isTalking)
             {
-                actionMeterFull.gameObject.SetActive(false);
-                isStealing = false;
-                stealTimer = 0;
+                sprintTimer = 0;
+                switch (dialogueType)
+                {
+                    case DialogueType.accepting:
+
+                        if (dialogueIndex != GameManager.gm.qdInstance.Quests[currentQuestIndex].acceptDialogue.Count - 1)
+                        {
+                            dialogueIndex++;
+                            dialogueText.text = GameManager.gm.qdInstance.Quests[currentQuestIndex].acceptDialogue[dialogueIndex];
+                        }
+                        else
+                        {
+                            dialogueUI.gameObject.SetActive(false);
+                            isTalking = false;
+                            rollCall.gameObject.SetActive(true);
+                            GameManager.gm.hasReceivedQuest = true;
+                            StartCoroutine(GameManager.gm.RollCall(supportUI, supportText));
+                        }
+
+                        break;
+
+                    case DialogueType.returning:
+                        if (dialogueIndex != GameManager.gm.qdInstance.Quests[currentQuestIndex].returnDialogue.Count - 1)
+                        {
+                            dialogueIndex++;
+                            dialogueText.text = GameManager.gm.qdInstance.Quests[currentQuestIndex].returnDialogue[dialogueIndex];
+                        }
+                        else
+                        {
+                            dialogueUI.gameObject.SetActive(false);
+                            isTalking = false;
+                        }
+
+                        break;
+
+                    case DialogueType.standby:
+                        if (dialogueIndex != GameManager.gm.qdInstance.Quests[currentQuestIndex].standbyDialogue.Count - 1)
+                        {
+                            dialogueIndex++;
+                            dialogueText.text = GameManager.gm.qdInstance.Quests[currentQuestIndex].standbyDialogue[dialogueIndex];
+                        }
+                        else
+                        {
+                            dialogueUI.gameObject.SetActive(false);
+                            isTalking = false;
+                        }
+
+                        break;
+
+                    default:
+                        break;
+                }
             }
-        }        
+
+            if (isStealing)
+            {
+                actionMeterFull.gameObject.SetActive(true);
+                actionMeter.rectTransform.localScale = new Vector3((_stealTimeout - stealTimer) / _stealTimeout, 1, 1);
+                stealTimer += Time.deltaTime;
+                if (stealTimer >= _stealTimeout)
+                {
+                    actionMeterFull.gameObject.SetActive(false);
+                    isStealing = false;
+                    stealTimer = 0;
+                }
+            }
+        }             
     }
     public IEnumerator LetsWait(float seconds)
     {

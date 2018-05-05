@@ -66,4 +66,20 @@ public class GameManager : MonoBehaviour {
         yield return new WaitForSeconds(2f);
         text.text = "Report for Roll Call";
     }
+
+    public IEnumerator EscapeScene(Canvas textUI, Text text)
+    {
+        textUI.gameObject.SetActive(true);
+        text.text = "* Breathing Hard *";
+        yield return new WaitForSeconds(2f);
+        text.text = "Prisoner: Can't believe we made it";
+        yield return new WaitForSeconds(2f);
+        text.text = "You: Yea, me neither";
+        yield return new WaitForSeconds(2f);
+        text.text = "Prisoner: Wait, Did you hear that?";
+        yield return new WaitForSeconds(2f);
+        text.text = "* Shooting *";
+        yield return new WaitForSeconds(5.767f);
+        AdvanceScene();
+    }
 }
