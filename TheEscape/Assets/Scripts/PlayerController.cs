@@ -668,11 +668,12 @@ public class PlayerController : MonoBehaviour {
                             ItemDetails = ShowItem(StealItems[Position1]);
                             showItem = true;
 
-                            if (Input.GetMouseButtonDown(0))
+                            if (Input.GetMouseButtonDown(0) && CanAccess)
                             {
                                 CanAccess = !CanAccess;
                                 GameManager.gm.inventory.Add(StealItems[Position1]);
                                 RemoveSteal(Position1);
+                                LetsWait(1);
                                 NumOfItems++;
                                 showItem = false;
 
@@ -711,6 +712,7 @@ public class PlayerController : MonoBehaviour {
                             {
                                 CanAccess = !CanAccess;
                                 GameManager.gm.playerHealth += GameManager.gm.inventory[Position].value;
+                                LetsWait(1);
                                 Remove(Position);
                                 showItem = false;
                             }
