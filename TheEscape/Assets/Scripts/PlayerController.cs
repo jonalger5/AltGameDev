@@ -355,6 +355,7 @@ public class PlayerController : MonoBehaviour {
             //Shows Quest Log
             if (showInventory)
             {
+                Cursor.visible = true;
                 questUI.gameObject.SetActive(true);
                 ResetQuestUIText();
 
@@ -376,6 +377,7 @@ public class PlayerController : MonoBehaviour {
             }
             else
             {
+                Cursor.visible = false;
                 questUI.gameObject.SetActive(false);
                 showItem = false;
             }            
