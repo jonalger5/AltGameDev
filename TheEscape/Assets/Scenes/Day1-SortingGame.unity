@@ -687,6 +687,12 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9db9342657ae23a489fab7f2a399267f, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &488733087 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114515149654140938, guid: 9db9342657ae23a489fab7f2a399267f,
+    type: 2}
+  m_PrefabInternal: {fileID: 488733086}
+  m_Script: {fileID: 11500000, guid: f99a8735685c6fc4c80202bfffbf909a, type: 3}
 --- !u!1 &694143944
 GameObject:
   m_ObjectHideFlags: 0
@@ -2354,17 +2360,17 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2133665469}
+      objectReference: {fileID: 488733087}
     - target: {fileID: 114615224148710066, guid: 4404e484a121ebd468b147692cd97119,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2133665469}
+      objectReference: {fileID: 488733087}
     - target: {fileID: 114245796643972534, guid: 4404e484a121ebd468b147692cd97119,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2133665469}
+      objectReference: {fileID: 488733087}
     - target: {fileID: 224880875060658740, guid: 4404e484a121ebd468b147692cd97119,
         type: 2}
       propertyPath: m_LocalPosition.x
@@ -2378,6 +2384,21 @@ Prefab:
     - target: {fileID: 1192357176725250, guid: 4404e484a121ebd468b147692cd97119, type: 2}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114687573032404714, guid: 4404e484a121ebd468b147692cd97119,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnContinue
+      objectReference: {fileID: 0}
+    - target: {fileID: 114245796643972534, guid: 4404e484a121ebd468b147692cd97119,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnQuit
+      objectReference: {fileID: 0}
+    - target: {fileID: 114615224148710066, guid: 4404e484a121ebd468b147692cd97119,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnMainMenu
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4404e484a121ebd468b147692cd97119, type: 2}

@@ -32,8 +32,11 @@ public class Ending : MonoBehaviour {
 
         if (Input.anyKeyDown)
         {
-            if(showingCredits)
-                SceneManager.LoadScene(0);
+            if (showingCredits)
+            {
+                Cursor.visible = true;
+                SceneManager.LoadScene(0);                
+            }               
             else
             {
                 index++;

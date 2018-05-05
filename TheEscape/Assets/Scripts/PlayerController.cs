@@ -465,6 +465,13 @@ public class PlayerController : MonoBehaviour {
                         {
                             dialogueUI.gameObject.SetActive(false);
                             isTalking = false;
+
+                            if(GameManager.gm.qdInstance.Quests[currentQuestIndex].prisonerID == 1)
+                            {
+                                rollCall.gameObject.SetActive(true);
+                                GameManager.gm.hasReceivedQuest = true;
+                                StartCoroutine(GameManager.gm.RollCall(supportUI, supportText));
+                            }
                         }
 
                         break;

@@ -717,7 +717,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4469783795290972, guid: 9db9342657ae23a489fab7f2a399267f, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0.98
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4469783795290972, guid: 9db9342657ae23a489fab7f2a399267f, type: 2}
       propertyPath: m_LocalPosition.y
@@ -725,7 +725,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4469783795290972, guid: 9db9342657ae23a489fab7f2a399267f, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 132.44
+      value: 137.57
       objectReference: {fileID: 0}
     - target: {fileID: 4469783795290972, guid: 9db9342657ae23a489fab7f2a399267f, type: 2}
       propertyPath: m_LocalRotation.x
@@ -2502,7 +2502,7 @@ Prefab:
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 338286980}
     - target: {fileID: 114615224148710066, guid: 4404e484a121ebd468b147692cd97119,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName

@@ -191,14 +191,11 @@ public class GuardController : MonoBehaviour {
                     }
                     if (_player.isStealthGame)
                     {
-                        //Debug.Log("Here");
-                        //StartCoroutine(ShotPlayer());
-                        //GameManager.gm.playerHealth = 100f;
-                        //GameManager.gm.ReloadScene();
+                        StartCoroutine(ShotPlayer());
+                        GameManager.gm.ReloadScene();
                     }
                     if(drawView && PrisonerInteraction)
                     {
-                        //Debug.Log("Here");
                         StartCoroutine(ShotPlayer());
                     }
                 }

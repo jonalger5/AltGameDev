@@ -155,6 +155,11 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -141.96501
       objectReference: {fileID: 0}
+    - target: {fileID: 114500366446205350, guid: 27eaf078c992be8439e8838ea46acd43,
+        type: 2}
+      propertyPath: id
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 27eaf078c992be8439e8838ea46acd43, type: 2}
   m_IsPrefabParent: 0
@@ -214,6 +219,12 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9db9342657ae23a489fab7f2a399267f, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &368515164 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114515149654140938, guid: 9db9342657ae23a489fab7f2a399267f,
+    type: 2}
+  m_PrefabInternal: {fileID: 368515163}
+  m_Script: {fileID: 11500000, guid: f99a8735685c6fc4c80202bfffbf909a, type: 3}
 --- !u!1001 &401150886
 Prefab:
   m_ObjectHideFlags: 0
@@ -804,6 +815,36 @@ Prefab:
         type: 2}
       propertyPath: m_LocalScale.z
       value: 1.46875
+      objectReference: {fileID: 0}
+    - target: {fileID: 114687573032404714, guid: 4404e484a121ebd468b147692cd97119,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 368515164}
+    - target: {fileID: 114687573032404714, guid: 4404e484a121ebd468b147692cd97119,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnContinue
+      objectReference: {fileID: 0}
+    - target: {fileID: 114245796643972534, guid: 4404e484a121ebd468b147692cd97119,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 368515164}
+    - target: {fileID: 114245796643972534, guid: 4404e484a121ebd468b147692cd97119,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnQuit
+      objectReference: {fileID: 0}
+    - target: {fileID: 114615224148710066, guid: 4404e484a121ebd468b147692cd97119,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 368515164}
+    - target: {fileID: 114615224148710066, guid: 4404e484a121ebd468b147692cd97119,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnMainMenu
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4404e484a121ebd468b147692cd97119, type: 2}
