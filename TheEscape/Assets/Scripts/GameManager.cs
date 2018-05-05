@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour {
         text.text = "Prisoner: Wait, Did you hear that?";
         yield return new WaitForSeconds(2f);
         text.text = "* Shooting *";
-        yield return new WaitForSeconds(5.767f);
+        yield return new WaitForSeconds(5f);
         AdvanceScene();
     }
 }

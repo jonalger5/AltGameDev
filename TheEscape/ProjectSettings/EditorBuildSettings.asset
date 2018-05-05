@@ -21,8 +21,35 @@ EditorBuildSettings:
     path: Assets/Scenes/Day1-Evening.unity
     guid: ebf1e9dd087c81e4ab9d545757f32b84
   - enabled: 1
-    path: Assets/Scenes/Day1 - Stealth.unity
-    guid: 371e1828791cd6b478d543d959ab8c87
+    path: Assets/Scenes/Day4 - Stealth.unity
+    guid: ed8226bbcb74c0d48a536440cffd36c8
+  - enabled: 1
+    path: Assets/Scenes/Day2-Morning.unity
+    guid: 8d00c044c4ceabf40bc5e1d09a2175e4
+  - enabled: 1
+    path: Assets/Scenes/Day2-SortingGame.unity
+    guid: 61255a8d1733ee04ab43e82d6d0aa53b
+  - enabled: 1
+    path: Assets/Scenes/Day2-Evening.unity
+    guid: e5a6fd5b8f3d8904e84c20d6e18f51e0
+  - enabled: 1
+    path: Assets/Scenes/Day3 - Stealth.unity
+    guid: a667cf3dd01643b4aad17521fab6305c
+  - enabled: 1
+    path: Assets/Scenes/Day3-Morning.unity
+    guid: c9c3af4dd493b9940ad88b385abdff3d
+  - enabled: 1
+    path: Assets/Scenes/Day3-SortingGame.unity
+    guid: 0f3cda2d5c782f04bac181358f1517b0
+  - enabled: 1
+    path: Assets/Scenes/Day3-Evening.unity
+    guid: ad570c12b5f07eb458e143f7c225f3cf
+  - enabled: 1
+    path: Assets/Scenes/Day2 - Stealth.unity
+    guid: 6e1434b075335464d922fd3a99d04f31
+  - enabled: 1
+    path: Assets/Scenes/Escape.unity
+    guid: 1ffe21840a3baa440a30087eb2b12596
   - enabled: 1
     path: Assets/Scenes/Ending.unity
     guid: 6bc56fa46d5433c4cadb3dd662ea101e
