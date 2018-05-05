@@ -348,13 +348,6 @@ public class PlayerController : MonoBehaviour {
             else
                 _anim.SetFloat("Walk", 0);
 
-            /*
-            if (!showInventory && !isTalking && !(Consumablecontact || otherContact || valuableContact || clothingcontact || Documentcontact ))
-            {
-                transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
-                //Cursor.visible = false;
-            }
-            */
 
             if (Input.GetKeyDown(KeyCode.I))
             {
@@ -367,6 +360,7 @@ public class PlayerController : MonoBehaviour {
                 //Shows Quest Log
                 if (showInventory)
                 {
+                    Cursor.visible = true;
                     questUI.gameObject.SetActive(true);
                     ResetQuestUIText();
 
@@ -388,15 +382,10 @@ public class PlayerController : MonoBehaviour {
                 }
                 else
                 {
+                    Cursor.visible = false;
                     questUI.gameObject.SetActive(false);
                     showItem = false;
                 }
-            }
-            else
-            {
-                Cursor.visible = false;
-                questUI.gameObject.SetActive(false);
-                showItem = false;
             }
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -418,6 +407,7 @@ public class PlayerController : MonoBehaviour {
                 }
                 PauseScreenUI.gameObject.SetActive(isPaused);
             }
+            Debug.Log(isPaused);
             if (Input.GetMouseButtonDown(1))
             {
                 Cursor.visible = !Cursor.visible;
@@ -430,6 +420,10 @@ public class PlayerController : MonoBehaviour {
             if (!Cursor.visible)
             {
                 transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
+                timerdecrement = Time.fixedUnscaledDeltaTime;
+                Time.timeScale = 1;
+                showInventory = false;
+                isPaused = false;
             }
 
             if (Consumablecontact || otherContact || valuableContact || clothingcontact || Documentcontact)
