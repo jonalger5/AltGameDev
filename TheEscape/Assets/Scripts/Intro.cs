@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Intro : MonoBehaviour {
 
@@ -28,9 +29,16 @@ public class Intro : MonoBehaviour {
         {
             index++;
             if (index == storytext.Count)
-                GameManager.gm.AdvanceScene();
+            {
+                //GameManager.gm.AdvanceScene();
+                SceneManager.LoadScene(2);
+                
+            }
             else
+            {
                 text.text = storytext[index];
+
+            }
         }
 	}
 }

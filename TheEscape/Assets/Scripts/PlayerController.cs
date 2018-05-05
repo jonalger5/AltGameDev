@@ -360,6 +360,9 @@ public class PlayerController : MonoBehaviour {
             {
                 showInventory = !showInventory;
                 //Cursor.visible = !Cursor.visible;
+                Cursor.visible = true;
+                questUI.gameObject.SetActive(true);
+                ResetQuestUIText();
 
                 //Shows Quest Log
                 if (showInventory)
@@ -389,7 +392,12 @@ public class PlayerController : MonoBehaviour {
                     showItem = false;
                 }
             }
-
+            else
+            {
+                Cursor.visible = false;
+                questUI.gameObject.SetActive(false);
+                showItem = false;
+            }
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 isPaused = !isPaused;
@@ -499,7 +507,8 @@ public class PlayerController : MonoBehaviour {
                     stealTimer = 0;
                 }
             }
-        }             
+        }
+           
     }
     public IEnumerator LetsWait(float seconds)
     {
