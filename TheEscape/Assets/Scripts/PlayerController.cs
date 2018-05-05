@@ -407,7 +407,6 @@ public class PlayerController : MonoBehaviour {
                 }
                 PauseScreenUI.gameObject.SetActive(isPaused);
             }
-            Debug.Log(isPaused);
             if (Input.GetMouseButtonDown(1))
             {
                 Cursor.visible = !Cursor.visible;
@@ -715,7 +714,7 @@ public class PlayerController : MonoBehaviour {
                     Position = x * slotY + y;
                     if (Position < GameManager.gm.inventory.Count)
                     {
-                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 3 + x * 60, 50, 50);
+                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 10 + x * 60, 50, 50);
                         GUI.Box(slot, GameManager.gm.inventory[Position].icon);
                         if (slot.Contains(Event.current.mousePosition))
                         {
@@ -999,7 +998,6 @@ public class PlayerController : MonoBehaviour {
     }
     public void OnRestart()
     {
-        GameManager.gm.playerHealth = 100f;
         GameManager.gm.ReloadScene();
     }
 
