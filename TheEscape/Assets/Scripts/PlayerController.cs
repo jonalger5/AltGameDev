@@ -537,7 +537,7 @@ public class PlayerController : MonoBehaviour {
                     Position = x * slotY + y;
                     if (Position < GameManager.gm.inventory.Count)
                     {
-                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 10 + x * 60, 50, 50);
+                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 3 + x * 60, 50, 50);
                         GUI.Box(slot, GameManager.gm.inventory[Position].icon);
                         if (slot.Contains(Event.current.mousePosition))
                         {
@@ -662,7 +662,7 @@ public class PlayerController : MonoBehaviour {
                     }
                     else
                     {
-                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 10 + x * 60, 50, 50);
+                        Rect slot = new Rect(Screen.width / 100 + y * 60, Screen.height / 3 + x * 60, 50, 50);
                         GUI.Box(slot, EmptySlot);
                     }
                 }
@@ -675,7 +675,7 @@ public class PlayerController : MonoBehaviour {
                     Position1 = i * slotY + j;
                     if (Position1 < StealItems.Count)
                     {
-                        Rect slot = new Rect(Screen.width / 100 + j * 60, Screen.height / 3 + i * 60, 50, 50);
+                        Rect slot = new Rect(Screen.width / 100 + j * 60, Screen.height / 10 + i * 60, 50, 50);
                         GUI.Box(slot, StealItems[Position1].icon);
                         if (slot.Contains(Event.current.mousePosition))
                         {
@@ -699,7 +699,7 @@ public class PlayerController : MonoBehaviour {
                     }
                     else
                     {
-                        Rect slot = new Rect(Screen.width / 100 + j * 60, Screen.height / 3 + i * 60, 50, 50);
+                        Rect slot = new Rect(Screen.width / 100 + j * 60, Screen.height / 10 + i * 60, 50, 50);
                         GUI.Box(slot, EmptySlot);
                     }
                 }
@@ -790,11 +790,11 @@ public class PlayerController : MonoBehaviour {
         if (other.gameObject.name == "PileOfItems")
         {
             //Debug.Log(isSortingGame);
-            int PickupNum = NumOfItems - StealItems.Count;
+            int PickupNum = NumOfItems - GameManager.gm.inventory.Count;
             for (int i = 0;i < PickupNum; i++)
             {
                 itemnum = UnityEngine.Random.Range(0, 25);
-                StealItems.Add(itemDatabase.Items[itemnum]);
+                GameManager.gm.inventory.Add(itemDatabase.Items[itemnum]);
             }
 
         }
