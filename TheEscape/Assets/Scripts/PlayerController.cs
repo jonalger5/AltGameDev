@@ -269,6 +269,7 @@ public class PlayerController : MonoBehaviour {
             }
             */
         }
+        
      
         //if(depositQuota == 0)
         //{
@@ -412,6 +413,8 @@ public class PlayerController : MonoBehaviour {
         if (!Cursor.visible)
         {
             transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity, 0);
+            timerdecrement = Time.fixedUnscaledDeltaTime;
+            Time.timeScale = 1;
         }
         
         if (Consumablecontact || otherContact || valuableContact || clothingcontact || Documentcontact )
