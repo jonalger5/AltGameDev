@@ -198,6 +198,7 @@ public class GuardController : MonoBehaviour {
                     }
                     if(drawView && PrisonerInteraction)
                     {
+                        //Debug.Log("Here");
                         StartCoroutine(ShotPlayer());
                     }
                 }
